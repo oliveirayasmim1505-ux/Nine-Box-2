@@ -1,9 +1,12 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="pt-br">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Sobre — Portal de Estágio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="../css/style.css">
   <link rel="stylesheet" href="../css/pages.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
@@ -11,34 +14,20 @@
 <body>
 
 <header>
-  <h2>Sobre</h2>
-  <a href="../index.html">Voltar</a>
+  <h2>Sobre o Sistema</h2>
+  <button id="dark-mode-btn" onclick="toggleDarkMode()" title="Modo escuro"><i class="fa-solid fa-moon"></i></button>
+  <button id="dark-mode-btn" onclick="toggleDarkMode()" title="Modo escuro"><i class="fa-solid fa-moon"></i></button>
+  <a href="<a href="../index.html">Voltar</a>" style="display:none">x</a>
 </header>
 
 <nav class="navbar">
   <ul class="navbar-nav">
-    <li class="navbar-item">
-      <a href="../index.html" class="navbar-link">
-        <i class="fa-solid fa-home"></i>
-        <span>Início</span>
-      </a>
-    </li>
-    <li class="navbar-item">
-      <a href="cadastrar.html" class="navbar-link">
-        <i class="fa-solid fa-user-plus"></i>
-        <span>Cadastrar</span>
-      </a>
-    </li>
-    <li class="navbar-item">
-      <a href="consultar.html" class="navbar-link">
-        <i class="fa-solid fa-magnifying-glass"></i>
-        <span>Consultar</span>
-      </a>
-    </li>
+    <li class="navbar-item"><a href="../index.html" class="navbar-link"><i class="fa-solid fa-home"></i><span>Início</span></a></li>
+    <li class="navbar-item"><a href="cadastrar.html" class="navbar-link"><i class="fa-solid fa-user-plus"></i><span>Cadastrar</span></a></li>
+    <li class="navbar-item"><a href="consultar.html" class="navbar-link"><i class="fa-solid fa-magnifying-glass"></i><span>Consultar</span></a></li>
     <li class="navbar-item navbar-item-dropdown">
       <a href="#" class="navbar-link navbar-link-dropdown" onclick="toggleSubmenu(event, this)">
-        <i class="fa-solid fa-star"></i>
-        <span>Avaliações</span>
+        <i class="fa-solid fa-star"></i><span>Avaliações</span>
         <i class="fa-solid fa-chevron-down navbar-chevron"></i>
       </a>
       <ul class="navbar-submenu">
@@ -48,95 +37,251 @@
         <li><a href="avaliacao-180.html" class="navbar-submenu-link"><i class="fa-solid fa-rotate"></i> 180°</a></li>
       </ul>
     </li>
-    <li class="navbar-item">
-      <a href="relatorios.html" class="navbar-link">
-        <i class="fa-solid fa-chart-bar"></i>
-        <span>Relatórios</span>
-      </a>
-    </li>
-    <li class="navbar-item">
-      <a href="../perfil.html" class="navbar-link">
-        <i class="fa-solid fa-user"></i>
-        <span>Perfil</span>
-      </a>
-    </li>
-    <li class="navbar-item">
-      <a href="sobre.html" class="navbar-link active">
-        <i class="fa-solid fa-circle-info"></i>
-        <span>Sobre</span>
-      </a>
-    </li>
+    <li class="navbar-item"><a href="relatorios.html" class="navbar-link"><i class="fa-solid fa-chart-bar"></i><span>Relatórios</span></a></li>
+    <li class="navbar-item"><a href="../perfil.html" class="navbar-link"><i class="fa-solid fa-user"></i><span>Perfil</span></a></li>
+    <li class="navbar-item"><a href="sobre.html" class="navbar-link active"><i class="fa-solid fa-circle-info"></i><span>Sobre</span></a></li>
   </ul>
 </nav>
 
-<main class="wrapper pg-wrapper">
-  <div class="pg-card sobre-card">
+<main class="sobre-main">
 
-    <div class="sobre-logo">
+  <!-- HERO -->
+  <div class="sobre-hero">
+    <div class="sobre-hero-icon">
       <i class="fa-solid fa-graduation-cap"></i>
     </div>
-
-    <h3 class="sobre-titulo">Portal de Estágio</h3>
-    <p class="sobre-versao">Versão 2.0</p>
-
-    <p class="sobre-desc">
-      Sistema completo de gestão e avaliação para programas de estágio.
-      Permite cadastrar, avaliar e acompanhar o desempenho de professores
-      e estagiários com controle de acesso por perfil.
-    </p>
-
-    <div class="sobre-features">
-      <div class="sobre-feature">
-        <i class="fa-solid fa-user-plus"></i>
-        <span>Cadastro com e-mail acadêmico e senha</span>
-      </div>
-      <div class="sobre-feature">
-        <i class="fa-solid fa-star"></i>
-        <span>Avaliação por critérios para professores</span>
-      </div>
-      <div class="sobre-feature">
-        <i class="fa-regular fa-comment"></i>
-        <span>Avaliação por comentários para estagiários</span>
-      </div>
-      <div class="sobre-feature">
-        <i class="fa-solid fa-th"></i>
-        <span>Nine Box Grid de performance e potencial</span>
-      </div>
-      <div class="sobre-feature">
-        <i class="fa-solid fa-lock"></i>
-        <span>Controle de acesso por tipo de usuário</span>
-      </div>
-      <div class="sobre-feature">
-        <i class="fa-solid fa-chart-bar"></i>
-        <span>Relatórios com exportação em CSV</span>
-      </div>
-      <div class="sobre-feature">
-        <i class="fa-solid fa-floppy-disk"></i>
-        <span>Dados salvos localmente no navegador</span>
-      </div>
+    <div class="sobre-hero-text">
+      <h1 class="sobre-hero-titulo">Portal de Estágio</h1>
+      <span class="sobre-versao-badge">Versão 2.0</span>
+      <p class="sobre-hero-desc">
+        Sistema de gestão e avaliação desenvolvido para apoiar programas de estágio
+        supervisionado, promovendo o acompanhamento estruturado do desempenho de
+        estagiários e professores orientadores.
+      </p>
     </div>
+  </div>
 
-    <!-- SEÇÃO DE DADOS -->
-    <div class="sobre-dados">
-      <h4 class="sobre-dados-titulo">
-        <i class="fa-solid fa-database"></i> Gerenciar Dados
-      </h4>
-      <p class="sobre-dados-desc">Exporte um backup completo dos seus dados ou restaure a partir de um arquivo JSON.</p>
+  <!-- OBJETIVO -->
+  <section class="sobre-section">
+    <h2 class="sobre-section-titulo">
+      <i class="fa-solid fa-bullseye"></i> Objetivo
+    </h2>
+    <div class="sobre-texto-card">
+      <p>
+        O Portal de Estágio foi desenvolvido com o objetivo de digitalizar e organizar
+        o processo de avaliação em programas de estágio, substituindo métodos manuais
+        por uma plataforma centralizada, segura e de fácil utilização.
+      </p>
+      <p>
+        O sistema permite que gestores e professores orientadores registrem avaliações
+        de desempenho, acompanhem a evolução dos estagiários ao longo do tempo e
+        gerem relatórios para embasar decisões de desenvolvimento profissional.
+      </p>
+    </div>
+  </section>
+
+  <!-- FUNCIONALIDADES -->
+  <section class="sobre-section">
+    <h2 class="sobre-section-titulo">
+      <i class="fa-solid fa-list-check"></i> Funcionalidades do Sistema
+    </h2>
+    <div class="sobre-features-grid">
+
+      <div class="sobre-feature-card">
+        <div class="sobre-feature-icon" style="background:#eff6ff">
+          <i class="fa-solid fa-users" style="color:#3b82f6"></i>
+        </div>
+        <div>
+          <strong>Gestão de Usuários</strong>
+          <span>Cadastro de professores e estagiários com autenticação por e-mail acadêmico e senha</span>
+        </div>
+      </div>
+
+      <div class="sobre-feature-card">
+        <div class="sobre-feature-icon" style="background:#f0fdf4">
+          <i class="fa-solid fa-star" style="color:#16a34a"></i>
+        </div>
+        <div>
+          <strong>Avaliação de Professores</strong>
+          <span>Avaliação por critérios com pontuação de 1 a 5 estrelas em pontualidade, comunicação, didática e outros</span>
+        </div>
+      </div>
+
+      <div class="sobre-feature-card">
+        <div class="sobre-feature-icon" style="background:#fef3c7">
+          <i class="fa-regular fa-comment" style="color:#d97706"></i>
+        </div>
+        <div>
+          <strong>Avaliação de Estagiários</strong>
+          <span>Avaliação qualitativa por comentários estruturados, preservando a privacidade da pontuação</span>
+        </div>
+      </div>
+
+      <div class="sobre-feature-card">
+        <div class="sobre-feature-icon" style="background:#f5f3ff">
+          <i class="fa-solid fa-th" style="color:#7c3aed"></i>
+        </div>
+        <div>
+          <strong>Nine Box Grid</strong>
+          <span>Ferramenta de mapeamento de talentos que cruza performance atual com potencial de crescimento</span>
+        </div>
+      </div>
+
+      <div class="sobre-feature-card">
+        <div class="sobre-feature-icon" style="background:#fff1f2">
+          <i class="fa-solid fa-rotate" style="color:#e11d48"></i>
+        </div>
+        <div>
+          <strong>Avaliação 180°</strong>
+          <span>Processo estruturado de avaliação bidirecional entre gestor e colaborador com competências personalizadas</span>
+        </div>
+      </div>
+
+      <div class="sobre-feature-card">
+        <div class="sobre-feature-icon" style="background:#ecfdf5">
+          <i class="fa-solid fa-clipboard-check" style="color:#059669"></i>
+        </div>
+        <div>
+          <strong>Gestão de Competências</strong>
+          <span>Criação e gerenciamento de competências com critérios de avaliação e escala de desempenho 1 a 4</span>
+        </div>
+      </div>
+
+      <div class="sobre-feature-card">
+        <div class="sobre-feature-icon" style="background:#eff6ff">
+          <i class="fa-solid fa-shield-halved" style="color:#1d4ed8"></i>
+        </div>
+        <div>
+          <strong>Controle de Acesso</strong>
+          <span>Permissões diferenciadas por perfil de usuário, garantindo que cada papel acesse apenas o que lhe é pertinente</span>
+        </div>
+      </div>
+
+      <div class="sobre-feature-card">
+        <div class="sobre-feature-icon" style="background:#fdf4ff">
+          <i class="fa-solid fa-chart-bar" style="color:#9333ea"></i>
+        </div>
+        <div>
+          <strong>Relatórios e Exportação</strong>
+          <span>Geração de relatórios consolidados com exportação em formato CSV para análise externa</span>
+        </div>
+      </div>
+
+      <div class="sobre-feature-card">
+        <div class="sobre-feature-icon" style="background:#f0f9ff">
+          <i class="fa-solid fa-database" style="color:#0284c7"></i>
+        </div>
+        <div>
+          <strong>Backup de Dados</strong>
+          <span>Exportação e importação de todos os dados do sistema em formato JSON para segurança e portabilidade</span>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- PERFIS DE ACESSO -->
+  <section class="sobre-section">
+    <h2 class="sobre-section-titulo">
+      <i class="fa-solid fa-user-shield"></i> Perfis de Acesso
+    </h2>
+    <div class="sobre-perfis-grid">
+
+      <div class="sobre-perfil-card">
+        <div class="sobre-perfil-header gestor">
+          <i class="fa-solid fa-user-tie"></i>
+          <strong>Gestor / Professor</strong>
+        </div>
+        <ul class="sobre-perfil-lista">
+          <li><i class="fa-solid fa-check"></i> Cadastrar e gerenciar usuários</li>
+          <li><i class="fa-solid fa-check"></i> Avaliar professores e estagiários</li>
+          <li><i class="fa-solid fa-check"></i> Criar avaliações 180° e competências</li>
+          <li><i class="fa-solid fa-check"></i> Posicionar no Nine Box Grid</li>
+          <li><i class="fa-solid fa-check"></i> Acessar relatórios completos</li>
+          <li><i class="fa-solid fa-check"></i> Exportar e importar dados</li>
+        </ul>
+      </div>
+
+      <div class="sobre-perfil-card">
+        <div class="sobre-perfil-header estagiario">
+          <i class="fa-solid fa-user-graduate"></i>
+          <strong>Estagiário</strong>
+        </div>
+        <ul class="sobre-perfil-lista">
+          <li><i class="fa-solid fa-check"></i> Avaliar professores orientadores</li>
+          <li><i class="fa-solid fa-check"></i> Responder avaliações 180°</li>
+          <li><i class="fa-solid fa-check"></i> Visualizar próprio histórico</li>
+          <li><i class="fa-solid fa-check"></i> Gerenciar perfil pessoal</li>
+          <li><i class="fa-solid fa-xmark" style="color:#dc2626"></i> Não acessa avaliações de professores</li>
+          <li><i class="fa-solid fa-xmark" style="color:#dc2626"></i> Não visualiza pontuações de outros</li>
+        </ul>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- GERENCIAR DADOS -->
+  <section class="sobre-section">
+    <h2 class="sobre-section-titulo">
+      <i class="fa-solid fa-database"></i> Gerenciar Dados
+    </h2>
+    <div class="sobre-dados-card">
+      <div class="sobre-dados-info">
+        <p>Realize o backup completo dos dados do sistema ou restaure a partir de um arquivo de backup. Os dados incluem: usuários, avaliações, Nine Box, competências e avaliações 180°.</p>
+        <div class="sobre-dados-stats" id="sobre-dados-stats"></div>
+      </div>
       <div class="sobre-dados-btns">
         <button class="sobre-btn-exportar" onclick="exportarDados()">
-          <i class="fa-solid fa-download"></i> Exportar dados
+          <i class="fa-solid fa-download"></i>
+          <div>
+            <span>Exportar Backup</span>
+            <small>Baixar arquivo .json</small>
+          </div>
         </button>
         <button class="sobre-btn-importar" onclick="importarDados()">
-          <i class="fa-solid fa-upload"></i> Importar dados
+          <i class="fa-solid fa-upload"></i>
+          <div>
+            <span>Importar Backup</span>
+            <small>Restaurar de arquivo .json</small>
+          </div>
         </button>
       </div>
     </div>
+  </section>
 
+  <!-- RODAPÉ -->
+  <div class="sobre-footer">
+    <p>Portal de Estágio — Sistema de Gestão e Avaliação de Programas de Estágio</p>
+    <p>Versão 2.0 &nbsp;|&nbsp; Todos os dados são armazenados localmente no navegador do usuário</p>
   </div>
+
 </main>
 
 <script src="../css/js/script.js"></script>
 <script src="../css/js/dados.js"></script>
 <script src="../css/js/navbar.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const container = document.getElementById('sobre-dados-stats');
+  if (!container) return;
+
+  const items = [
+    { label: 'Usuários', val: JSON.parse(localStorage.getItem('contatos') || '[]').length, icon: 'fa-users' },
+    { label: 'Avaliações', val: JSON.parse(localStorage.getItem('avaliacoes') || '[]').length, icon: 'fa-star' },
+    { label: 'Nine Box', val: JSON.parse(localStorage.getItem('nineBoxAvaliacoes') || '[]').length, icon: 'fa-th' },
+    { label: 'Competências', val: JSON.parse(localStorage.getItem('competencias') || '[]').length, icon: 'fa-clipboard-check' },
+    { label: 'Aval. 180°', val: JSON.parse(localStorage.getItem('avaliacoes180') || '[]').length, icon: 'fa-rotate' },
+  ];
+
+  container.innerHTML = items.map(i => `
+    <div class="sobre-dado-stat">
+      <i class="fa-solid ${i.icon}"></i>
+      <strong>${i.val}</strong>
+      <span>${i.label}</span>
+    </div>
+  `).join('');
+});
+</script>
 </body>
 </html>
+

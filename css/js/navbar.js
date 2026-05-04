@@ -29,6 +29,8 @@ document.addEventListener('click', (e) => {
 // ---- DARK MODE ----
 function aplicarDarkMode(ativo) {
   document.body.classList.toggle('dark-mode', ativo);
+  document.body.classList.toggle('light-mode', !ativo);
+
   const btn = document.getElementById('dark-mode-btn');
   if (btn) {
     btn.innerHTML = ativo
