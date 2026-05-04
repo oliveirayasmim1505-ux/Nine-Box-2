@@ -13,9 +13,33 @@
 
 <header>
   <h2>Meu Perfil</h2>
+  <!-- Busca global -->
+  <div class="busca-global-wrap" id="busca-global-wrap">
+    <i class="fa-solid fa-magnifying-glass busca-global-icon"></i>
+    <input type="text" class="busca-global-input" id="busca-global-input"
+           placeholder="Buscar pessoas, avaliações..."
+           autocomplete="off"
+           oninput="buscarGlobal(this.value)"
+           onfocus="buscarGlobal(this.value)">
+    <div class="busca-global-dropdown" id="busca-global-dropdown"></div>
+  </div>
   <button id="dark-mode-btn" onclick="toggleDarkMode()" title="Modo escuro"><i class="fa-solid fa-moon"></i></button>
-  <button id="dark-mode-btn" onclick="toggleDarkMode()" title="Modo escuro"><i class="fa-solid fa-moon"></i></button>
-  <a href="<a href="index.html">Voltar</a>" style="display:none">x</a>
+  <!-- Notificações -->
+  <div class="notif-wrap" id="notif-wrap">
+    <button id="notif-btn" onclick="toggleNotifDropdown()" title="Notificações">
+      <i class="fa-solid fa-bell"></i>
+      <span class="notif-badge" style="display:none">0</span>
+    </button>
+    <div class="notif-dropdown" id="notif-dropdown">
+      <div class="notif-dropdown-header">
+        <i class="fa-solid fa-bell"></i> Notificações
+      </div>
+      <div id="notif-lista">
+        <div class="notif-empty">Nenhuma notificação pendente.</div>
+      </div>
+    </div>
+  </div>
+  <a href="index.html" style="display:none">x</a>
 </header>
 
 <nav class="navbar">
@@ -196,6 +220,11 @@
 
       <!-- ABA: AVALIAÇÕES -->
       <div class="pf-tab-content" id="tab-avaliacoes" style="display:none">
+        <!-- Gráfico Radar -->
+        <div id="pf-grafico-wrap" style="display:none;text-align:center;margin-bottom:24px">
+          <p class="pf-grafico-titulo">Desempenho por Critério</p>
+          <canvas id="pf-radar-canvas" width="300" height="300" style="max-width:100%"></canvas>
+        </div>
         <div id="pf-avaliacoes-lista">
           <p class="pg-empty">Nenhuma avaliação recebida ainda.</p>
         </div>
@@ -208,6 +237,8 @@
 
 <script src="css/js/script.js"></script>
 <script src="css/js/dados.js"></script>
+<script src="css/js/grafico-perfil.js"></script>
+<script src="css/js/busca-global.js"></script>
 <script src="css/js/perfil.js"></script>
 <script src="css/js/navbar.js"></script>
 </body>

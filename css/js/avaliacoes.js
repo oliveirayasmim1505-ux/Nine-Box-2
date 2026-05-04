@@ -16,6 +16,9 @@ CRITERIOS.forEach(c => notas[c.key] = 0);
 let tipoAtual = 'professor';
 let filtroAtual = 'todos';
 let tipoSelecionado = null; // para a tela de seleção
+let paginaAtual = 1;
+let paginaAtualFull = 1;
+const ITENS_POR_PAGINA = 5;
 
 // =============================================
 // ETAPA 1 — SELEÇÃO DO TIPO
@@ -78,10 +81,16 @@ function renderHistoricoFull() {
 
   if (avaliacoes.length === 0) {
     container.innerHTML = '<p class="av-empty">Nenhuma avaliação registrada.</p>';
+    renderPaginacao('paginacao-full', 0, 0, 'full');
     return;
   }
 
-  container.innerHTML = avaliacoes.map(a => {
+  const totalPaginas = Math.ceil(avaliacoes.length / ITENS_POR_PAGINA);
+  if (paginaAtualFull > totalPaginas) paginaAtualFull = totalPaginas;
+  const inicio = (paginaAtualFull - 1) * ITENS_POR_PAGINA;
+  const pagina = avaliacoes.slice(inicio, inicio + ITENS_POR_PAGINA);
+
+  container.innerHTML = pagina.map(a => {
     const tipoLabel = a.tipo === 'professor' ? 'Professor' : 'Estagiário';
 
     if (a.tipo === 'estagiario' && a.tipoAvaliacao === 'comentario') {
@@ -116,6 +125,8 @@ function renderHistoricoFull() {
         ${a.comentario ? `<p class="av-item-comentario">"${a.comentario}"</p>` : ''}
       </div>`;
   }).join('');
+
+  renderPaginacao('paginacao-full', paginaAtualFull, totalPaginas, 'full');
 }
 
 // =============================================
@@ -384,6 +395,7 @@ function salvarDireto(tipo) {
 // =============================================
 function filtrar(tipo) {
   filtroAtual = tipo;
+  paginaAtual = 1; // reset ao filtrar
   document.querySelectorAll('.av-filtro').forEach(btn => {
     btn.classList.toggle('active', btn.dataset.filtro === tipo);
   });
@@ -411,10 +423,16 @@ function renderHistorico() {
 
   if (avaliacoes.length === 0) {
     container.innerHTML = '<p class="av-empty">Nenhuma avaliação encontrada.</p>';
+    renderPaginacao('paginacao-historico', 0, 0, 'historico');
     return;
   }
 
-  container.innerHTML = avaliacoes.map(a => {
+  const totalPaginas = Math.ceil(avaliacoes.length / ITENS_POR_PAGINA);
+  if (paginaAtual > totalPaginas) paginaAtual = totalPaginas;
+  const inicio = (paginaAtual - 1) * ITENS_POR_PAGINA;
+  const pagina = avaliacoes.slice(inicio, inicio + ITENS_POR_PAGINA);
+
+  container.innerHTML = pagina.map(a => {
     const tipoLabel = a.tipo === 'professor' ? 'Professor' : 'Estagiário';
 
     if (a.tipo === 'estagiario' && a.tipoAvaliacao === 'comentario') {
@@ -456,6 +474,58 @@ function renderHistorico() {
         ${a.comentario ? `<p class="av-item-comentario">"${a.comentario}"</p>` : ''}
       </div>`;
   }).join('');
+
+  renderPaginacao('paginacao-historico', paginaAtual, totalPaginas, 'historico');
+}
+
+// =============================================
+// PAGINAÇÃO
+// =============================================
+function renderPaginacao(containerId, paginaAtualLocal, totalPaginas, tipo) {
+  // Garante que o container existe; se não, cria após o historico-lista correspondente
+  let pag = document.getElementById(containerId);
+  if (!pag) {
+    pag = document.createElement('div');
+    pag.id = containerId;
+    pag.className = 'av-paginacao';
+    // Tenta inserir após o container de lista correspondente
+    const listaId = tipo === 'full' ? 'historico-lista-full' : 'historico-lista';
+    const lista = document.getElementById(listaId);
+    if (lista && lista.parentNode) {
+      lista.parentNode.insertBefore(pag, lista.nextSibling);
+    }
+  }
+  if (!pag) return;
+
+  if (totalPaginas <= 1) {
+    pag.innerHTML = '';
+    pag.style.display = 'none';
+    return;
+  }
+
+  const fnAnterior = tipo === 'full' ? 'irPaginaFull' : 'irPagina';
+  pag.style.display = 'flex';
+  pag.innerHTML = `
+    <button class="av-pag-btn" ${paginaAtualLocal <= 1 ? 'disabled' : ''}
+            onclick="${fnAnterior}(${paginaAtualLocal - 1})">
+      <i class="fa-solid fa-chevron-left"></i> Anterior
+    </button>
+    <span class="av-pag-info">Página ${paginaAtualLocal} de ${totalPaginas}</span>
+    <button class="av-pag-btn" ${paginaAtualLocal >= totalPaginas ? 'disabled' : ''}
+            onclick="${fnAnterior}(${paginaAtualLocal + 1})">
+      Próximo <i class="fa-solid fa-chevron-right"></i>
+    </button>
+  `;
+}
+
+function irPagina(p) {
+  paginaAtual = p;
+  renderHistorico();
+}
+
+function irPaginaFull(p) {
+  paginaAtualFull = p;
+  renderHistoricoFull();
 }
 
 // =============================================

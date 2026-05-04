@@ -38,6 +38,16 @@ function aplicarDarkMode(ativo) {
       : '<i class="fa-solid fa-moon"></i>';
     btn.title = ativo ? 'Modo claro' : 'Modo escuro';
   }
+
+  // Re-renderizar gráfico radar se disponível
+  if (typeof renderGraficoRadar === 'function') {
+    const sessao = JSON.parse(localStorage.getItem('perfilLogado') || 'null');
+    if (sessao) {
+      const contatos = JSON.parse(localStorage.getItem('contatos') || '[]');
+      const pessoa = contatos.find(c => c.id === sessao.id);
+      if (pessoa) renderGraficoRadar(pessoa);
+    }
+  }
 }
 
 function toggleDarkMode() {
@@ -45,6 +55,82 @@ function toggleDarkMode() {
   localStorage.setItem('darkMode', ativo ? '1' : '0');
   aplicarDarkMode(ativo);
 }
+
+// ---- NOTIFICAÇÕES DE PRAZO (AVALIAÇÕES 180°) ----
+function verificarNotificacoes180() {
+  const btn = document.getElementById('notif-btn');
+  const lista = document.getElementById('notif-lista');
+  if (!btn || !lista) return;
+
+  const avaliacoes = JSON.parse(localStorage.getItem('avaliacoes180') || '[]');
+  const hoje = new Date();
+  hoje.setHours(0, 0, 0, 0);
+
+  const notifs = [];
+
+  avaliacoes.forEach(av => {
+    if (!av.fim) return;
+    const fim = new Date(av.fim);
+    fim.setHours(0, 0, 0, 0);
+    const diffMs = fim - hoje;
+    const diffDias = Math.ceil(diffMs / (1000 * 60 * 60 * 24));
+
+    if (diffDias >= 0 && diffDias <= 7) {
+      notifs.push({ av, diffDias });
+    }
+  });
+
+  // Badge
+  const badge = btn.querySelector('.notif-badge');
+  if (notifs.length > 0) {
+    if (badge) {
+      badge.textContent = notifs.length;
+      badge.style.display = 'flex';
+    }
+  } else {
+    if (badge) badge.style.display = 'none';
+  }
+
+  // Dropdown
+  if (notifs.length === 0) {
+    lista.innerHTML = '<div class="notif-empty">Nenhuma notificação pendente.</div>';
+  } else {
+    lista.innerHTML = notifs.map(({ av, diffDias }) => {
+      const textoData = diffDias === 0
+        ? 'Vence hoje!'
+        : diffDias === 1
+          ? 'Vence amanhã'
+          : `Vence em ${diffDias} dias`;
+      return `
+        <div class="notif-item" onclick="window.location.href='${window.location.pathname.includes('/pages/') ? '' : 'pages/'}avaliacao-180.html'">
+          <i class="fa-solid fa-rotate notif-item-icon"></i>
+          <div class="notif-item-body">
+            <div class="notif-item-titulo">${av.nome}</div>
+            <div class="notif-item-data">${textoData} — ${av.fim}</div>
+          </div>
+        </div>`;
+    }).join('');
+  }
+}
+
+function toggleNotifDropdown() {
+  const dropdown = document.getElementById('notif-dropdown');
+  if (!dropdown) return;
+  const isOpen = dropdown.classList.contains('open');
+  // Fechar user-dropdown se aberto
+  const userDropdown = document.getElementById('user-dropdown');
+  if (userDropdown) userDropdown.classList.remove('open');
+  dropdown.classList.toggle('open', !isOpen);
+}
+
+// Fechar notif dropdown ao clicar fora
+document.addEventListener('click', (e) => {
+  const wrap = document.getElementById('notif-wrap');
+  if (wrap && !wrap.contains(e.target)) {
+    const dropdown = document.getElementById('notif-dropdown');
+    if (dropdown) dropdown.classList.remove('open');
+  }
+});
 
 // ---- INIT ----
 document.addEventListener('DOMContentLoaded', () => {
@@ -113,4 +199,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const prefereEscuro = window.matchMedia('(prefers-color-scheme: dark)').matches;
     aplicarDarkMode(prefereEscuro);
   }
+
+  // Verificar notificações de prazo
+  verificarNotificacoes180();
 });

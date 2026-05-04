@@ -172,6 +172,11 @@ function renderAvaliacoesPerfil(pessoa) {
   const container = document.getElementById('pf-avaliacoes-lista');
   if (!container) return;
 
+  // Renderiza gráfico radar (se a função estiver disponível)
+  if (typeof renderGraficoRadar === 'function') {
+    renderGraficoRadar(pessoa);
+  }
+
   // Filtra apenas avaliações recebidas por esta pessoa
   const avaliacoes = getAvaliacoes()
     .filter(a => a.avaliado.toLowerCase() === pessoa.nome.toLowerCase())
