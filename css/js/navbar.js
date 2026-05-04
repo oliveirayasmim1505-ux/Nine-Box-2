@@ -190,15 +190,14 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   } catch (e) {}
 
-  // Aplicar dark mode salvo
+  // Aplicar dark mode salvo — ANTES do render para evitar flash
   const darkSalvo = localStorage.getItem('darkMode');
-  if (darkSalvo === '1') {
-    aplicarDarkMode(true);
-  } else if (darkSalvo === null) {
-    // Respeitar preferência do sistema se não houver preferência salva
-    const prefereEscuro = window.matchMedia('(prefers-color-scheme: dark)').matches;
-    aplicarDarkMode(prefereEscuro);
-  }
+  const prefereEscuro = window.matchMedia('(prefers-color-scheme: dark)').matches;
+  const deveAtivar = darkSalvo === '1' || (darkSalvo === null && prefereEscuro);
+
+  // Remove a classe temporária do html e aplica no body
+  document.documentElement.classList.remove('dark-mode-early');
+  aplicarDarkMode(deveAtivar);
 
   // Verificar notificações de prazo
   verificarNotificacoes180();

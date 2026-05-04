@@ -891,6 +891,21 @@ button:active {
 }
 
 /* =============================================
+   DARK MODE EARLY — evita flash branco ao navegar
+   ============================================= */
+html.dark-mode-early,
+html.dark-mode-early body {
+  background: #0f172a !important;
+  color: #f1f5f9 !important;
+}
+
+html.dark-mode-early header,
+html.dark-mode-early .navbar {
+  background: #1e293b !important;
+  border-color: #334155 !important;
+}
+
+/* =============================================
    DARK MODE TOGGLE BUTTON
    ============================================= */
 #dark-mode-btn {
