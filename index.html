@@ -10,7 +10,7 @@
   <link rel="stylesheet" href="css/style.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <script>if(localStorage.getItem('darkMode')==='1')document.documentElement.classList.add('dark-mode-early');</script>
-  <link rel="stylesheet" href="css/nova-avaliacao.css">`n</head>
+  <link rel="stylesheet" href="css/nova-avaliacao.css">`n  <link rel="stylesheet" href="css/enhancements.css">`n</head>
 
 <body>
 
@@ -62,7 +62,7 @@
       <a href="perfil.html" class="user-dropdown-item">
         <i class="fa-solid fa-user-pen"></i> Meu Perfil
       </a>
-      <button class="user-dropdown-item user-dropdown-sair" id="btn-sair-header" onclick="sairDaConta()" style="display:none">
+      <button class="user-dropdown-item user-dropdown-sair" id="btn-sair-header" onclick="abrirConfirmacaoLogout()" style="display:none">
         <i class="fa-solid fa-right-from-bracket"></i> Sair da conta
       </button>
     </div>
@@ -132,6 +132,21 @@
 <main class="wrapper">
   <!-- DASHBOARD STATS -->
   <div class="dashboard">
+    <!-- HERO SECTION -->
+    <div class="dash-hero" id="dash-hero" style="display:none">
+      <div class="dash-hero-icon">
+        <i class="fa-solid fa-graduation-cap" aria-hidden="true"></i>
+      </div>
+      <div class="dash-hero-text">
+        <p class="dash-hero-greeting" id="dash-hero-greeting">Bem-vindo ao</p>
+        <h1 class="dash-hero-title" id="dash-hero-title">Portal de Estágio</h1>
+        <p class="dash-hero-sub" id="dash-hero-sub">Gerencie avaliações, competências e talentos em um só lugar.</p>
+        <a href="pages/avaliacoes.html" class="dash-hero-cta">
+          <i class="fa-solid fa-star" aria-hidden="true"></i> Nova Avaliação
+        </a>
+      </div>
+    </div>
+
     <div class="dash-stats" id="dash-stats"></div>
     <nav class="container" aria-label="Menu principal">
 
@@ -196,12 +211,39 @@ function sairDaConta() {
 document.addEventListener('DOMContentLoaded', () => {
   const contatos = getContatos();
   const avaliacoes = getAvaliacoes();
-  const nineBox = JSON.parse(localStorage.getItem('nineBoxAvaliacoes') || '[]');
+  const nineBox = (() => { try { return JSON.parse(localStorage.getItem('nineBoxAvaliacoes') || '[]'); } catch(e) { return []; } })();
 
   const professores = contatos.filter(c => c.tipo === 'professor').length;
   const estagiarios = contatos.filter(c => c.tipo === 'estagiario').length;
   const totalAv = avaliacoes.length;
   const totalNB = nineBox.length;
+
+  // ---- HERO SECTION ----
+  const sessao = (() => { try { return JSON.parse(localStorage.getItem('perfilLogado') || 'null'); } catch(e) { return null; } })();
+  const heroEl = document.getElementById('dash-hero');
+  const heroGreeting = document.getElementById('dash-hero-greeting');
+  const heroTitle = document.getElementById('dash-hero-title');
+  const heroSub = document.getElementById('dash-hero-sub');
+
+  if (heroEl) {
+    heroEl.style.display = 'flex';
+    const hora = new Date().getHours();
+    const saudacao = hora < 12 ? 'Bom dia' : hora < 18 ? 'Boa tarde' : 'Boa noite';
+
+    if (sessao) {
+      const pessoa = contatos.find(c => c.id === sessao.id);
+      if (pessoa) {
+        const primeiroNome = pessoa.nome.split(' ')[0];
+        if (heroGreeting) heroGreeting.textContent = saudacao + ',';
+        if (heroTitle) heroTitle.textContent = primeiroNome + '! 👋';
+        if (heroSub) heroSub.textContent = `Você tem ${totalAv} avaliação${totalAv !== 1 ? 'ões' : ''} registrada${totalAv !== 1 ? 's' : ''} e ${totalNB} pessoa${totalNB !== 1 ? 's' : ''} no Nine Box.`;
+      }
+    } else {
+      if (heroGreeting) heroGreeting.textContent = 'Bem-vindo ao';
+      if (heroTitle) heroTitle.textContent = 'Portal de Estágio';
+      if (heroSub) heroSub.textContent = 'Gerencie avaliações, competências e talentos em um só lugar.';
+    }
+  }
 
   const container = document.getElementById('dash-stats');
   if (container) {
@@ -210,8 +252,8 @@ document.addEventListener('DOMContentLoaded', () => {
       container.innerHTML = `
         <div class="dash-welcome">
           <i class="fa-solid fa-graduation-cap"></i>
-          <h3>Bem-vindo ao Portal de Estágio!</h3>
-          <p>Comece cadastrando professores e estagiários para usar o sistema.</p>
+          <h3>Comece agora!</h3>
+          <p>Cadastre professores e estagiários para usar todas as funcionalidades do sistema.</p>
           <a href="pages/cadastrar.html" class="dash-welcome-btn">
             <i class="fa-solid fa-user-plus"></i> Cadastrar primeira pessoa
           </a>
@@ -239,7 +281,6 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // Preencher info do usuário logado no dropdown
-  const sessao = JSON.parse(localStorage.getItem('perfilLogado') || 'null');
   const nomeEl = document.getElementById('user-dropdown-nome');
   const tipoEl = document.getElementById('user-dropdown-tipo');
   const avatarEl = document.getElementById('user-dropdown-avatar');
@@ -254,7 +295,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
       if (avatarEl) {
         if (pessoa.foto) {
-          avatarEl.innerHTML = `<img src="${pessoa.foto}" alt="${pessoa.nome}">`;
+          avatarEl.innerHTML = `<img src="${pessoa.foto}" alt="${pessoa.nome}" loading="lazy">`;
         } else {
           const iniciais = pessoa.nome.split(' ').slice(0, 2).map(p => p[0]).join('').toUpperCase();
           avatarEl.innerHTML = iniciais;
@@ -267,5 +308,8 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 });
 </script>
-</body>
+<script src="js/enhancements.js"></script>`n</body>
 </html>
+
+
+

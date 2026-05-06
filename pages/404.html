@@ -1,0 +1,209 @@
+﻿<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Página não encontrada — Portal de Estágio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <script>if(localStorage.getItem('darkMode')==='1')document.documentElement.classList.add('dark-mode-early');</script>
+  <style>
+    .notfound-wrap {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 20px;
+      background: #eef4ff;
+    }
+    body.dark-mode .notfound-wrap { background: #0f172a; }
+
+    .notfound-card {
+      background: var(--surface);
+      border-radius: var(--radius);
+      padding: 52px 40px;
+      max-width: 480px;
+      width: 100%;
+      text-align: center;
+      box-shadow: var(--shadow-lg);
+      border: 1.5px solid var(--border);
+      animation: fadeInUp 0.45s ease both;
+    }
+
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .notfound-number {
+      font-size: 96px;
+      font-weight: 800;
+      line-height: 1;
+      background: linear-gradient(135deg, var(--primary), var(--primary-light));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 8px;
+    }
+
+    .notfound-icon {
+      font-size: 48px;
+      margin-bottom: 16px;
+      display: block;
+    }
+
+    .notfound-card h2 {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--primary);
+      margin: 0 0 10px;
+    }
+
+    .notfound-card p {
+      font-size: 14px;
+      color: var(--text-muted);
+      margin: 0 0 28px;
+      line-height: 1.6;
+    }
+
+    .notfound-btns {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .notfound-btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 24px;
+      background: var(--primary);
+      color: white;
+      border-radius: var(--radius-sm);
+      font-size: 14px;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.2s;
+    }
+
+    .notfound-btn-primary:hover {
+      background: #1d4ed8;
+      transform: translateY(-1px);
+      box-shadow: 0 6px 20px rgba(30,58,138,0.25);
+    }
+
+    .notfound-btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 24px;
+      background: transparent;
+      color: var(--text-muted);
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius-sm);
+      font-size: 14px;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.2s;
+    }
+
+    .notfound-btn-secondary:hover {
+      background: #f0f9ff;
+      color: var(--primary);
+      border-color: var(--primary-light);
+    }
+
+    body.dark-mode .notfound-btn-secondary:hover {
+      background: #0f172a;
+    }
+
+    .notfound-links {
+      margin-top: 28px;
+      padding-top: 20px;
+      border-top: 1px solid var(--border);
+    }
+
+    .notfound-links p {
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-bottom: 12px;
+    }
+
+    .notfound-links-grid {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .notfound-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 14px;
+      background: #f1f5f9;
+      color: var(--text-muted);
+      border-radius: 100px;
+      font-size: 12px;
+      font-weight: 500;
+      text-decoration: none;
+      transition: all 0.15s;
+    }
+
+    .notfound-link:hover {
+      background: #dbeafe;
+      color: var(--primary);
+    }
+
+    body.dark-mode .notfound-link {
+      background: #0f172a;
+      color: #94a3b8;
+    }
+
+    body.dark-mode .notfound-link:hover {
+      background: #1e3a5f;
+      color: #93c5fd;
+    }
+  </style>
+  <link rel="stylesheet" href="../css/enhancements.css">`n</head>
+<body>
+
+<div class="notfound-wrap">
+  <div class="notfound-card">
+    <span class="notfound-icon">🎓</span>
+    <div class="notfound-number">404</div>
+    <h2>Página não encontrada</h2>
+    <p>A página que você está procurando não existe ou foi movida. Verifique o endereço ou volte para o início.</p>
+
+    <div class="notfound-btns">
+      <a href="../index.html" class="notfound-btn-primary">
+        <i class="fa-solid fa-home" aria-hidden="true"></i> Ir para o início
+      </a>
+      <a href="javascript:history.back()" class="notfound-btn-secondary">
+        <i class="fa-solid fa-arrow-left" aria-hidden="true"></i> Voltar
+      </a>
+    </div>
+
+    <div class="notfound-links">
+      <p>Ou acesse diretamente:</p>
+      <div class="notfound-links-grid">
+        <a href="cadastrar.html" class="notfound-link"><i class="fa-solid fa-user-plus" aria-hidden="true"></i> Cadastrar</a>
+        <a href="consultar.html" class="notfound-link"><i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i> Consultar</a>
+        <a href="avaliacoes.html" class="notfound-link"><i class="fa-solid fa-star" aria-hidden="true"></i> Avaliações</a>
+        <a href="nine-box.html" class="notfound-link"><i class="fa-solid fa-th" aria-hidden="true"></i> Nine Box</a>
+        <a href="relatorios.html" class="notfound-link"><i class="fa-solid fa-chart-bar" aria-hidden="true"></i> Relatórios</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="../js/script.js"></script>
+<script src="../js/navbar.js"></script>
+<script src="../js/enhancements.js"></script>`n</body>
+</html>
+
+

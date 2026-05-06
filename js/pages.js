@@ -222,7 +222,7 @@ function renderPessoas() {
       : (c.ra ? `RA: ${c.ra}` : c.email);
 
     const tipoLabel = c.tipo === 'admin' ? 'Admin' : c.tipo === 'professor' ? 'Gestor' : 'Estagiário';
-    const avatarContent = c.foto ? `<img src="${c.foto}" alt="${c.nome}">` : iniciais;
+    const avatarContent = c.foto ? `<img src="${c.foto}" alt="${c.nome}" loading="lazy">` : iniciais;
 
     return `
       <div class="pg-pessoa-item">
