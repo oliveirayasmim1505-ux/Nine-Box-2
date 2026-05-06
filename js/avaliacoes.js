@@ -1,7 +1,10 @@
-// =============================================
-// AVALIAÇÕES — LÓGICA COMPLETA
-// =============================================
+// ====================================================================
+// avaliacoes.js — Sistema de Avaliações
+// Gerencia avaliações de professores (por estrelas) e estagiários
+// (por comentário), com histórico paginado e controle de permissões.
+// ====================================================================
 
+// Critérios de avaliação usados no formulário de estrelas (professor)
 const CRITERIOS = [
   { key: 'pontualidade',  label: 'Pontualidade' },
   { key: 'comunicacao',   label: 'Comunicação' },
@@ -10,22 +13,29 @@ const CRITERIOS = [
   { key: 'equipe',        label: 'Trabalho em Equipe' },
 ];
 
+// Objeto que armazena as notas atuais de cada critério (0 = sem nota)
 const notas = {};
 CRITERIOS.forEach(c => notas[c.key] = 0);
 
-let tipoAtual = 'professor';
-let filtroAtual = 'todos';
-let tipoSelecionado = null; // para a tela de seleção
-let paginaAtual = 1;
-let paginaAtualFull = 1;
-const ITENS_POR_PAGINA = 5;
+let tipoAtual = 'professor';   // Tipo de avaliação ativo no formulário
+let filtroAtual = 'todos';     // Filtro aplicado no histórico
+let tipoSelecionado = null;    // Tipo escolhido na tela de seleção inicial
+let paginaAtual = 1;           // Página atual do histórico lateral
+let paginaAtualFull = 1;       // Página atual do histórico completo
+const ITENS_POR_PAGINA = 5;    // Quantidade de itens exibidos por página
 
-// =============================================
-// ETAPA 1 — SELEÇÃO DO TIPO
-// =============================================
+// ====================================================================
+// ETAPA 1 — SELEÇÃO DO TIPO DE AVALIAÇÃO
+// ====================================================================
+
+/**
+ * Marca o card de tipo selecionado e habilita o botão "Próximo".
+ * @param {string} tipo - 'professor', 'estagiario' ou 'historico'
+ */
 function selecionarTipo(tipo) {
   tipoSelecionado = tipo;
 
+  // Destaca visualmente o card escolhido
   document.querySelectorAll('.av-tipo-card').forEach(card => {
     card.classList.toggle('selected', card.dataset.tipo === tipo);
   });
@@ -34,9 +44,14 @@ function selecionarTipo(tipo) {
   if (btnProximo) btnProximo.disabled = false;
 }
 
+/**
+ * Avança da tela de seleção para o formulário ou para o histórico completo,
+ * dependendo do tipo escolhido.
+ */
 function irParaFormulario() {
   if (!tipoSelecionado) return;
 
+  // Caso especial: exibe o histórico completo em vez do formulário
   if (tipoSelecionado === 'historico') {
     document.getElementById('step-tipo').style.display = 'none';
     document.getElementById('step-historico').style.display = 'flex';
@@ -45,6 +60,7 @@ function irParaFormulario() {
     return;
   }
 
+  // Exibe o formulário de avaliação
   document.getElementById('step-tipo').style.display = 'none';
   document.getElementById('step-form').style.display = 'block';
   document.getElementById('av-header-title').textContent =
@@ -56,6 +72,9 @@ function irParaFormulario() {
   renderHistorico();
 }
 
+/**
+ * Retorna à tela de seleção de tipo, limpando o estado anterior.
+ */
 function voltarParaTipo() {
   document.getElementById('step-form').style.display = 'none';
   document.getElementById('step-historico').style.display = 'none';
@@ -63,21 +82,27 @@ function voltarParaTipo() {
   document.getElementById('av-header-title').textContent = 'Avaliações';
   tipoSelecionado = null;
 
-  // Reset seleção visual
+  // Remove destaque visual dos cards
   document.querySelectorAll('.av-tipo-card').forEach(c => c.classList.remove('selected'));
   const btnProximo = document.getElementById('btn-proximo');
   if (btnProximo) btnProximo.disabled = true;
 }
 
+/**
+ * Renderiza o histórico completo de avaliações (tela dedicada),
+ * com paginação e filtro por permissão do usuário logado.
+ */
 function renderHistoricoFull() {
   const container = document.getElementById('historico-lista-full');
   if (!container) return;
 
   let avaliacoes = getAvaliacoes();
+
+  // Estagiários não visualizam avaliações de professores
   if (!isGestor()) {
     avaliacoes = avaliacoes.filter(a => a.tipo !== 'professor');
   }
-  avaliacoes = avaliacoes.slice().reverse();
+  avaliacoes = avaliacoes.slice().reverse(); // Mais recentes primeiro
 
   if (avaliacoes.length === 0) {
     container.innerHTML = '<p class="av-empty">Nenhuma avaliação registrada.</p>';
@@ -85,6 +110,7 @@ function renderHistoricoFull() {
     return;
   }
 
+  // Calcula a fatia da página atual
   const totalPaginas = Math.ceil(avaliacoes.length / ITENS_POR_PAGINA);
   if (paginaAtualFull > totalPaginas) paginaAtualFull = totalPaginas;
   const inicio = (paginaAtualFull - 1) * ITENS_POR_PAGINA;
@@ -93,6 +119,7 @@ function renderHistoricoFull() {
   container.innerHTML = pagina.map(a => {
     const tipoLabel = a.tipo === 'professor' ? 'Professor' : 'Estagiário';
 
+    // Avaliação de estagiário por comentário (sem estrelas)
     if (a.tipo === 'estagiario' && a.tipoAvaliacao === 'comentario') {
       return `
         <div class="av-item av-item-comentario-only">
@@ -107,6 +134,7 @@ function renderHistoricoFull() {
         </div>`;
     }
 
+    // Avaliação com estrelas: gera badges por critério
     const criteriosBadges = CRITERIOS
       .filter(c => a.criterios && a.criterios[c.key] > 0)
       .map(c => `<span class="av-criterio-badge">${c.label}<span class="mini-stars">${'★'.repeat(a.criterios[c.key])}</span></span>`).join('');
@@ -129,26 +157,49 @@ function renderHistoricoFull() {
   renderPaginacao('paginacao-full', paginaAtualFull, totalPaginas, 'full');
 }
 
-// =============================================
-// PERMISSÕES — só gestor/professor avalia estagiário
-// =============================================
+// ====================================================================
+// PERMISSÕES — Controle de acesso por tipo de usuário
+// ====================================================================
+
+/**
+ * Retorna o objeto do usuário logado buscando pelo ID salvo na sessão,
+ * ou null se não houver sessão ativa.
+ * @returns {object|null}
+ */
 function getUsuarioLogado() {
   const sessao = JSON.parse(localStorage.getItem('perfilLogado') || 'null');
   if (!sessao) return null;
   return getContatos().find(c => c.id === sessao.id) || null;
 }
 
+/**
+ * Verifica se o usuário tem permissão de gestor (pode avaliar estagiários).
+ * Sem login, professor, gestor e admin têm acesso total.
+ * @returns {boolean}
+ */
 function isGestor() {
   const user = getUsuarioLogado();
-  // Sem login = acesso total; professor ou gestor = pode avaliar estagiário
-  return !user || user.tipo === 'professor' || user.tipo === 'gestor';
+  return !user || user.tipo === 'professor' || user.tipo === 'gestor' || user.tipo === 'admin';
 }
 
+/**
+ * Verifica se o usuário é administrador.
+ * @returns {boolean}
+ */
+function isAdmin() {
+  const user = getUsuarioLogado();
+  return !user || user.tipo === 'admin';
+}
+
+/**
+ * Aplica restrições visuais na interface com base no tipo do usuário logado.
+ * Estagiários não veem o botão de avaliar professor nem o filtro correspondente.
+ */
 function aplicarPermissoes() {
-  // Ocultar botão de avaliar estagiário no toggle (formulário antigo)
   const btnEstagiario = document.querySelector('.av-type-btn[data-type="estagiario"]');
   if (btnEstagiario) {
     if (!isGestor()) {
+      // Oculta opção de avaliar estagiário para quem não é gestor
       btnEstagiario.style.display = 'none';
       setTipo('professor');
       const filtroProfessor = document.querySelector('.av-filtro[data-filtro="professor"]');
@@ -164,16 +215,22 @@ function aplicarPermissoes() {
     }
   }
 
-  // Ocultar card de estagiário na tela de seleção
+  // Oculta o card de estagiário na tela de seleção para não-gestores
   const cardEstagiario = document.getElementById('card-estagiario');
   if (cardEstagiario && !isGestor()) {
     cardEstagiario.style.display = 'none';
   }
 }
 
-// =============================================
-// TIPO (professor / estagiário)
-// =============================================
+// ====================================================================
+// TIPO — Alternância entre formulário de professor e estagiário
+// ====================================================================
+
+/**
+ * Alterna o formulário entre o modo professor (estrelas) e estagiário (comentário).
+ * Atualiza labels, visibilidade de seções e o select de avaliados.
+ * @param {string} tipo - 'professor' ou 'estagiario'
+ */
 function setTipo(tipo) {
   tipoAtual = tipo;
 
@@ -192,6 +249,7 @@ function setTipo(tipo) {
   const btnText = document.getElementById('btn-text');
 
   if (tipo === 'estagiario') {
+    // Modo estagiário: oculta estrelas, exibe campo de comentário obrigatório
     if (criteriosProfessor) criteriosProfessor.style.display = 'none';
     if (criteriosEstagiario) criteriosEstagiario.style.display = 'block';
     if (mediaBox) mediaBox.style.display = 'none';
@@ -202,6 +260,7 @@ function setTipo(tipo) {
     }
     if (btnText) btnText.textContent = 'Enviar Comentário';
   } else {
+    // Modo professor: exibe estrelas e campo de comentário opcional
     if (criteriosProfessor) criteriosProfessor.style.display = 'block';
     if (criteriosEstagiario) criteriosEstagiario.style.display = 'none';
     if (mediaBox) mediaBox.style.display = 'flex';
@@ -216,9 +275,14 @@ function setTipo(tipo) {
   popularSelect();
 }
 
-// =============================================
-// POPULAR SELECT
-// =============================================
+// ====================================================================
+// SELECT — Popula o dropdown de avaliados
+// ====================================================================
+
+/**
+ * Preenche o select de avaliados com os contatos do tipo atual
+ * (professor ou estagiário).
+ */
 function popularSelect() {
   const select = document.getElementById('avaliado');
   if (!select) return;
@@ -235,33 +299,68 @@ function popularSelect() {
     filtrados.map(c => `<option value="${c.id}">${c.nome}</option>`).join('');
 }
 
-// =============================================
-// STARS
-// =============================================
+// ====================================================================
+// ESTRELAS — Interação e renderização
+// ====================================================================
+
+/**
+ * Inicializa todos os grupos de estrelas do formulário.
+ * Clona os elementos para evitar listeners duplicados ao reinicializar.
+ */
 function initAllStars() {
   document.querySelectorAll('.stars').forEach(group => {
     const criterio = group.dataset.criterio;
-    const spans = group.querySelectorAll('span');
 
-    spans.forEach((star, i) => {
-      star.addEventListener('mouseover', () => highlightGroup(spans, i));
-      star.addEventListener('mouseout', () => highlightGroup(spans, notas[criterio] - 1));
+    // Clona o grupo para remover listeners antigos
+    const newGroup = group.cloneNode(true);
+    group.parentNode.replaceChild(newGroup, group);
+    const freshSpans = Array.from(newGroup.querySelectorAll('span'));
+
+    freshSpans.forEach((star, i) => {
       star.addEventListener('click', () => {
-        notas[criterio] = i + 1;
-        highlightGroup(spans, i);
+        // Clique na mesma nota já selecionada limpa a seleção (toggle)
+        if (notas[criterio] === i + 1) {
+          notas[criterio] = 0;
+        } else {
+          notas[criterio] = i + 1;
+        }
+        renderStars(freshSpans, notas[criterio]);
         atualizarMedia();
       });
     });
+
+    renderStars(freshSpans, notas[criterio] || 0);
   });
 }
 
+/**
+ * Atualiza o estado visual das estrelas de um grupo.
+ * @param {HTMLElement[]} spans - Array de elementos de estrela
+ * @param {number} valor - Quantidade de estrelas ativas (0–5)
+ */
+function renderStars(spans, valor) {
+  spans.forEach((s, i) => {
+    s.classList.toggle('active', i < valor);
+  });
+}
+
+/**
+ * Destaca estrelas até o índice informado (usado em hover).
+ * @param {HTMLElement[]} spans - Array de elementos de estrela
+ * @param {number} upTo - Índice até onde destacar
+ */
 function highlightGroup(spans, upTo) {
   spans.forEach((s, i) => s.classList.toggle('active', i <= upTo));
 }
 
-// =============================================
-// MÉDIA GERAL
-// =============================================
+// ====================================================================
+// MÉDIA — Cálculo e exibição
+// ====================================================================
+
+/**
+ * Recalcula e exibe a média geral das notas preenchidas.
+ * Exibe "—" se nenhum critério foi avaliado.
+ */
 function atualizarMedia() {
   const valores = CRITERIOS.map(c => notas[c.key]).filter(v => v > 0);
   const mediaEl = document.getElementById('media-geral');
@@ -273,9 +372,14 @@ function atualizarMedia() {
   mediaEl.textContent = media.toFixed(1) + ' ★';
 }
 
-// =============================================
-// SALVAR ESTAGIÁRIO — só comentário
-// =============================================
+// ====================================================================
+// SALVAR — Estagiário (somente comentário)
+// ====================================================================
+
+/**
+ * Valida e salva uma avaliação de estagiário baseada em comentário textual.
+ * Exige comentário com no mínimo 20 caracteres.
+ */
 function salvarEstagiario() {
   const select = document.getElementById('avaliado');
   const comentario = document.getElementById('comentario');
@@ -308,19 +412,26 @@ function salvarEstagiario() {
     media: null,
     comentario: texto,
     data: new Date().toLocaleDateString('pt-BR'),
-    tipoAvaliacao: 'comentario',
+    tipoAvaliacao: 'comentario', // Distingue do tipo com estrelas
   });
   saveAvaliacoes(avaliacoes);
 
+  // Limpa o formulário após salvar
   comentario.value = '';
   select.value = '';
   showToast('Comentário enviado com sucesso!');
   renderHistorico();
 }
 
-// =============================================
-// SALVAR PROFESSOR — com estrelas
-// =============================================
+// ====================================================================
+// SALVAR — Professor (com estrelas)
+// ====================================================================
+
+/**
+ * Valida e salva uma avaliação de professor com notas por critério.
+ * Exige pelo menos um critério avaliado.
+ * @param {string} tipo - Tipo do avaliado ('professor' ou outro)
+ */
 function _salvar(tipo) {
   const select = document.getElementById('avaliado');
   const comentario = document.getElementById('comentario');
@@ -340,9 +451,11 @@ function _salvar(tipo) {
   const contatos = getContatos();
   const avaliado = contatos.find(c => c.id == select.value);
 
+  // Copia as notas atuais para o registro (snapshot)
   const criteriosSnapshot = {};
   CRITERIOS.forEach(c => criteriosSnapshot[c.key] = notas[c.key]);
 
+  // Calcula a média apenas dos critérios preenchidos
   const notasPreenchidas = CRITERIOS.map(c => notas[c.key]).filter(v => v > 0);
   const media = notasPreenchidas.reduce((a, b) => a + b, 0) / notasPreenchidas.length;
 
@@ -358,10 +471,11 @@ function _salvar(tipo) {
   });
   saveAvaliacoes(avaliacoes);
 
+  // Reseta todas as estrelas e campos do formulário
   CRITERIOS.forEach(c => {
     notas[c.key] = 0;
     const group = document.querySelector(`.stars[data-criterio="${c.key}"]`);
-    if (group) highlightGroup(group.querySelectorAll('span'), -1);
+    if (group) renderStars(Array.from(group.querySelectorAll('span')), 0);
   });
   comentario.value = '';
   select.value = '';
@@ -372,9 +486,14 @@ function _salvar(tipo) {
   renderHistorico();
 }
 
-// =============================================
-// SALVAR UNIFICADO
-// =============================================
+// ====================================================================
+// SALVAR — Unificado (decide qual fluxo usar)
+// ====================================================================
+
+/**
+ * Ponto de entrada unificado para salvar avaliação.
+ * Delega para salvarEstagiario() ou _salvar() conforme o tipo atual.
+ */
 function salvarAvaliacaoUnificada() {
   if (tipoAtual === 'estagiario') {
     salvarEstagiario();
@@ -383,28 +502,43 @@ function salvarAvaliacaoUnificada() {
   }
 }
 
+// Aliases para compatibilidade com chamadas diretas do HTML
 function salvarAvaliacao() { salvarAvaliacaoUnificada(); }
 
+/**
+ * Salva diretamente para um tipo específico (sem passar pela seleção).
+ * @param {string} tipo - 'professor' ou 'estagiario'
+ */
 function salvarDireto(tipo) {
   tipoAtual = tipo;
   _salvar(tipo);
 }
 
-// =============================================
-// FILTRO
-// =============================================
+// ====================================================================
+// FILTRO — Histórico lateral
+// ====================================================================
+
+/**
+ * Aplica filtro por tipo no histórico lateral e reseta para a primeira página.
+ * @param {string} tipo - 'todos', 'professor' ou 'estagiario'
+ */
 function filtrar(tipo) {
   filtroAtual = tipo;
-  paginaAtual = 1; // reset ao filtrar
+  paginaAtual = 1;
   document.querySelectorAll('.av-filtro').forEach(btn => {
     btn.classList.toggle('active', btn.dataset.filtro === tipo);
   });
   renderHistorico();
 }
 
-// =============================================
-// RENDERIZAR HISTÓRICO
-// =============================================
+// ====================================================================
+// HISTÓRICO — Renderização lateral (dentro do formulário)
+// ====================================================================
+
+/**
+ * Renderiza o histórico de avaliações no painel lateral do formulário,
+ * aplicando filtro de permissão e paginação.
+ */
 function renderHistorico() {
   const container = document.getElementById('historico-lista');
   if (!container) return;
@@ -435,6 +569,7 @@ function renderHistorico() {
   container.innerHTML = pagina.map(a => {
     const tipoLabel = a.tipo === 'professor' ? 'Professor' : 'Estagiário';
 
+    // Avaliação de estagiário por comentário
     if (a.tipo === 'estagiario' && a.tipoAvaliacao === 'comentario') {
       return `
         <div class="av-item av-item-comentario-only">
@@ -452,6 +587,7 @@ function renderHistorico() {
         </div>`;
     }
 
+    // Avaliação com estrelas: gera badges por critério
     const criteriosBadges = CRITERIOS
       .filter(c => a.criterios && a.criterios[c.key] > 0)
       .map(c => `
@@ -478,17 +614,26 @@ function renderHistorico() {
   renderPaginacao('paginacao-historico', paginaAtual, totalPaginas, 'historico');
 }
 
-// =============================================
+// ====================================================================
 // PAGINAÇÃO
-// =============================================
+// ====================================================================
+
+/**
+ * Renderiza os controles de paginação abaixo de uma lista de histórico.
+ * Cria o container dinamicamente se ele não existir no DOM.
+ * @param {string} containerId - ID do elemento de paginação
+ * @param {number} paginaAtualLocal - Página atualmente exibida
+ * @param {number} totalPaginas - Total de páginas disponíveis
+ * @param {string} tipo - 'full' ou 'historico' (define qual função de navegação usar)
+ */
 function renderPaginacao(containerId, paginaAtualLocal, totalPaginas, tipo) {
-  // Garante que o container existe; se não, cria após o historico-lista correspondente
   let pag = document.getElementById(containerId);
+
+  // Cria o container de paginação se ainda não existir no DOM
   if (!pag) {
     pag = document.createElement('div');
     pag.id = containerId;
     pag.className = 'av-paginacao';
-    // Tenta inserir após o container de lista correspondente
     const listaId = tipo === 'full' ? 'historico-lista-full' : 'historico-lista';
     const lista = document.getElementById(listaId);
     if (lista && lista.parentNode) {
@@ -503,6 +648,7 @@ function renderPaginacao(containerId, paginaAtualLocal, totalPaginas, tipo) {
     return;
   }
 
+  // Usa função de navegação diferente para o histórico completo vs. lateral
   const fnAnterior = tipo === 'full' ? 'irPaginaFull' : 'irPagina';
   pag.style.display = 'flex';
   pag.innerHTML = `
@@ -518,24 +664,27 @@ function renderPaginacao(containerId, paginaAtualLocal, totalPaginas, tipo) {
   `;
 }
 
+/** Navega para uma página específica no histórico lateral. */
 function irPagina(p) {
   paginaAtual = p;
   renderHistorico();
 }
 
+/** Navega para uma página específica no histórico completo. */
 function irPaginaFull(p) {
   paginaAtualFull = p;
   renderHistoricoFull();
 }
 
-// =============================================
-// INIT
-// =============================================
+// ====================================================================
+// INICIALIZAÇÃO
+// ====================================================================
+
 document.addEventListener('DOMContentLoaded', () => {
-  // Aplicar permissões na tela de seleção
+  // Aplica restrições visuais conforme o tipo do usuário logado
   aplicarPermissoes();
 
-  // Se não tem tela de seleção (páginas antigas), inicializa direto
+  // Compatibilidade com páginas que não usam a tela de seleção (step-tipo)
   if (!document.getElementById('step-tipo')) {
     if (!document.querySelector('.av-type-btn')) {
       popularSelect();

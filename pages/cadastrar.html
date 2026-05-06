@@ -8,7 +8,7 @@
   <link rel="stylesheet" href="../css/pages.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <script>if(localStorage.getItem('darkMode')==='1')document.documentElement.classList.add('dark-mode-early');</script>
-</head>
+  <link rel="stylesheet" href="../css/nova-avaliacao.css">`n</head>
 <body>
 
 <header>
@@ -78,6 +78,12 @@
       </a>
     </li>
     <li class="navbar-item">
+      <a href="contatos.html" class="navbar-link">
+        <i class="fa-solid fa-address-book"></i>
+        <span>Contatos</span>
+      </a>
+    </li>
+    <li class="navbar-item">
       <a href="sobre.html" class="navbar-link">
         <i class="fa-solid fa-circle-info"></i>
         <span>Sobre</span>
@@ -95,7 +101,10 @@
         <i class="fa-solid fa-user-tie"></i> Estagiário
       </button>
       <button class="pg-type-btn" data-tipo="professor" onclick="setTipoCad('professor')">
-        <i class="fa-solid fa-chalkboard-user"></i> Professor
+        <i class="fa-solid fa-user-shield"></i> Gestor
+      </button>
+      <button class="pg-type-btn" data-tipo="admin" onclick="setTipoCad('admin')">
+        <i class="fa-solid fa-crown"></i> Admin
       </button>
     </div>
 
@@ -123,9 +132,14 @@
       <input type="password" id="cad-senha" placeholder="Crie uma senha" autocomplete="new-password">
     </div>
 
+    <div class="pg-field" id="campo-ra">
+      <label for="cad-ra">RA (Registro Acadêmico)</label>
+      <input type="text" id="cad-ra" placeholder="Ex: 2021001234">
+    </div>
+
     <div class="pg-field" id="campo-disciplina" style="display:none">
-      <label for="cad-disciplina">Disciplina</label>
-      <input type="text" id="cad-disciplina" placeholder="Ex: Engenharia de Software">
+      <label for="cad-disciplina">Departamento / Área</label>
+      <input type="text" id="cad-disciplina" placeholder="Ex: Tecnologia da Informação">
     </div>
 
     <button class="pg-btn" onclick="cadastrarPessoa()">
@@ -135,10 +149,10 @@
   </div>
 </main>
 
-<script src="../css/js/script.js"></script>
-<script src="../css/js/pages.js"></script>
-<script src="../css/js/busca-global.js"></script>
-<script src="../css/js/navbar.js"></script>
+<script src="../js/script.js"></script>
+<script src="../js/pages.js"></script>
+<script src="../js/busca-global.js"></script>
+<script src="../js/navbar.js"></script>`n<script src="../js/nova-avaliacao.js"></script>
 </body>
 </html>
 

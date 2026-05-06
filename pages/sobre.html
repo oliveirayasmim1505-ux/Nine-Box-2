@@ -11,7 +11,7 @@
   <link rel="stylesheet" href="../css/pages.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <script>if(localStorage.getItem('darkMode')==='1')document.documentElement.classList.add('dark-mode-early');</script>
-</head>
+  <link rel="stylesheet" href="../css/nova-avaliacao.css">`n</head>
 <body>
 
 <header>
@@ -54,6 +54,7 @@
     </li>
     <li class="navbar-item"><a href="relatorios.html" class="navbar-link"><i class="fa-solid fa-chart-bar"></i><span>Relatórios</span></a></li>
     <li class="navbar-item"><a href="../perfil.html" class="navbar-link"><i class="fa-solid fa-user"></i><span>Perfil</span></a></li>
+    <li class="navbar-item"><a href="contatos.html" class="navbar-link"><i class="fa-solid fa-address-book"></i><span>Contatos</span></a></li>
     <li class="navbar-item"><a href="sobre.html" class="navbar-link active"><i class="fa-solid fa-circle-info"></i><span>Sobre</span></a></li>
   </ul>
 </nav>
@@ -235,35 +236,6 @@
     </div>
   </section>
 
-  <!-- GERENCIAR DADOS -->
-  <section class="sobre-section">
-    <h2 class="sobre-section-titulo">
-      <i class="fa-solid fa-database"></i> Gerenciar Dados
-    </h2>
-    <div class="sobre-dados-card">
-      <div class="sobre-dados-info">
-        <p>Realize o backup completo dos dados do sistema ou restaure a partir de um arquivo de backup. Os dados incluem: usuários, avaliações, Nine Box, competências e avaliações 180°.</p>
-        <div class="sobre-dados-stats" id="sobre-dados-stats"></div>
-      </div>
-      <div class="sobre-dados-btns">
-        <button class="sobre-btn-exportar" onclick="exportarDados()">
-          <i class="fa-solid fa-download"></i>
-          <div>
-            <span>Exportar Backup</span>
-            <small>Baixar arquivo .json</small>
-          </div>
-        </button>
-        <button class="sobre-btn-importar" onclick="importarDados()">
-          <i class="fa-solid fa-upload"></i>
-          <div>
-            <span>Importar Backup</span>
-            <small>Restaurar de arquivo .json</small>
-          </div>
-        </button>
-      </div>
-    </div>
-  </section>
-
   <!-- RODAPÉ -->
   <div class="sobre-footer">
     <p>Portal de Estágio — Sistema de Gestão e Avaliação de Programas de Estágio</p>
@@ -272,32 +244,10 @@
 
 </main>
 
-<script src="../css/js/script.js"></script>
-<script src="../css/js/dados.js"></script>
-<script src="../css/js/busca-global.js"></script>
-<script src="../css/js/navbar.js"></script>
-<script>
-document.addEventListener('DOMContentLoaded', () => {
-  const container = document.getElementById('sobre-dados-stats');
-  if (!container) return;
+<script src="../js/script.js"></script>
+<script src="../js/dados.js"></script>
+<script src="../js/busca-global.js"></script>
+<script src="../js/navbar.js"></script>`n<script src="../js/nova-avaliacao.js"></script>
 
-  const items = [
-    { label: 'Usuários', val: JSON.parse(localStorage.getItem('contatos') || '[]').length, icon: 'fa-users' },
-    { label: 'Avaliações', val: JSON.parse(localStorage.getItem('avaliacoes') || '[]').length, icon: 'fa-star' },
-    { label: 'Nine Box', val: JSON.parse(localStorage.getItem('nineBoxAvaliacoes') || '[]').length, icon: 'fa-th' },
-    { label: 'Competências', val: JSON.parse(localStorage.getItem('competencias') || '[]').length, icon: 'fa-clipboard-check' },
-    { label: 'Aval. 180°', val: JSON.parse(localStorage.getItem('avaliacoes180') || '[]').length, icon: 'fa-rotate' },
-  ];
-
-  container.innerHTML = items.map(i => `
-    <div class="sobre-dado-stat">
-      <i class="fa-solid ${i.icon}"></i>
-      <strong>${i.val}</strong>
-      <span>${i.label}</span>
-    </div>
-  `).join('');
-});
-</script>
 </body>
 </html>
-

@@ -688,18 +688,113 @@ button:active {
 .stars span {
   font-size: 28px;
   cursor: pointer;
-  color: var(--border);
-  transition: color 0.15s, transform 0.15s;
+  color: #d1d5db;
+  transition: color 0.12s, transform 0.12s;
   user-select: none;
+  line-height: 1;
 }
 
+/* estrela selecionada (clicada) */
 .stars span.active {
   color: #3b82f6;
-  text-shadow: 0 0 8px rgba(59, 130, 246, 0.3);
+  text-shadow: 0 0 8px rgba(59, 130, 246, 0.35);
 }
 
-.stars span:hover {
-  transform: scale(1.15);
+/* hover: preenche a estrela sob o cursor */
+.stars:not(.no-hover) span:hover {
+  color: #60a5fa;
+  transform: scale(1.2);
+}
+
+/* hover: preenche todas as estrelas anteriores à que está sob o cursor */
+.stars:not(.no-hover) span:hover ~ span {
+  color: #d1d5db;
+  transform: scale(1);
+}
+
+/* quando o grupo está em hover, preenche todas até a que está sob o cursor */
+.stars:not(.no-hover):hover span {
+  color: #60a5fa;
+}
+
+.stars:not(.no-hover):hover span:hover ~ span {
+  color: #d1d5db;
+}
+
+/* =============================================
+   VALIDAÇÃO INLINE
+   ============================================= */
+
+/* Estado de erro */
+input.field-error,
+select.field-error,
+textarea.field-error {
+  border-color: #dc2626 !important;
+  background-color: #fff5f5 !important;
+  box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.1) !important;
+}
+
+/* Estado válido (após corrigir) */
+input.field-ok,
+select.field-ok,
+textarea.field-ok {
+  border-color: #059669 !important;
+  box-shadow: 0 0 0 3px rgba(5, 150, 105, 0.08) !important;
+}
+
+/* Mensagem de erro abaixo do campo */
+.field-error-msg {
+  display: none;
+  font-size: 11px;
+  font-weight: 600;
+  color: #dc2626;
+  margin-top: 5px;
+  padding-left: 2px;
+  line-height: 1.4;
+  animation: fieldErrIn 0.15s ease;
+}
+
+.field-error-msg::before {
+  content: '⚠ ';
+  font-size: 10px;
+}
+
+@keyframes fieldErrIn {
+  from { opacity: 0; transform: translateY(-4px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Shake no campo com erro ao tentar submeter */
+@keyframes fieldShake {
+  0%, 100% { transform: translateX(0); }
+  20%       { transform: translateX(-5px); }
+  40%       { transform: translateX(5px); }
+  60%       { transform: translateX(-4px); }
+  80%       { transform: translateX(4px); }
+}
+
+.field-shake {
+  animation: fieldShake 0.35s ease;
+}
+
+/* Dark mode */
+body.dark-mode input.field-error,
+body.dark-mode select.field-error,
+body.dark-mode textarea.field-error {
+  background-color: #450a0a !important;
+  border-color: #f87171 !important;
+  box-shadow: 0 0 0 3px rgba(248, 113, 113, 0.15) !important;
+}
+
+body.dark-mode input.field-ok,
+body.dark-mode select.field-ok,
+body.dark-mode textarea.field-ok {
+  border-color: #34d399 !important;
+  box-shadow: 0 0 0 3px rgba(52, 211, 153, 0.1) !important;
+}
+
+body.dark-mode .field-error-msg {
+  color: #f87171;
 }
 
 /* =============================================
@@ -1229,14 +1324,14 @@ body.dark-mode .nb-box {
   border-color: #334155;
 }
 
-body.dark-mode .nb-box-3-3 { background: linear-gradient(135deg, #064e3b, #065f46); }
-body.dark-mode .nb-box-2-3 { background: linear-gradient(135deg, #1e3a5f, #1e40af); }
-body.dark-mode .nb-box-1-3 { background: linear-gradient(135deg, #431407, #7c2d12); }
-body.dark-mode .nb-box-3-2 { background: linear-gradient(135deg, #3b0764, #4c1d95); }
+body.dark-mode .nb-box-3-3 { background: linear-gradient(135deg, #14532d, #166534); }
+body.dark-mode .nb-box-2-3 { background: linear-gradient(135deg, #064e3b, #065f46); }
+body.dark-mode .nb-box-1-3 { background: linear-gradient(135deg, #78350f, #92400e); }
+body.dark-mode .nb-box-3-2 { background: linear-gradient(135deg, #1e3a5f, #1e40af); }
 body.dark-mode .nb-box-2-2 { background: linear-gradient(135deg, #1e293b, #334155); }
-body.dark-mode .nb-box-1-2 { background: linear-gradient(135deg, #451a03, #78350f); }
-body.dark-mode .nb-box-3-1 { background: linear-gradient(135deg, #022c22, #064e3b); }
-body.dark-mode .nb-box-2-1 { background: linear-gradient(135deg, #4a044e, #701a75); }
+body.dark-mode .nb-box-1-2 { background: linear-gradient(135deg, #7f1d1d, #991b1b); }
+body.dark-mode .nb-box-3-1 { background: linear-gradient(135deg, #3b0764, #4c1d95); }
+body.dark-mode .nb-box-2-1 { background: linear-gradient(135deg, #431407, #7c2d12); }
 body.dark-mode .nb-box-1-1 { background: linear-gradient(135deg, #450a0a, #7f1d1d); }
 
 body.dark-mode .nb-modal {

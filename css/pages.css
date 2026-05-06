@@ -328,6 +328,18 @@
   color: #1e40af;
 }
 
+/* alias para compatibilidade */
+.pg-badge.gestor {
+  background: #dbeafe;
+  color: #1e40af;
+}
+
+.pg-badge.admin {
+  background: linear-gradient(135deg, #fef3c7, #fde68a);
+  color: #92400e;
+  border: 1px solid #fbbf24;
+}
+
 .pg-empty {
   text-align: center;
   color: var(--text-muted);

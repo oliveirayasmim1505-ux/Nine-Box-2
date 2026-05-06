@@ -9,6 +9,7 @@
   <link rel="stylesheet" href="css/perfil.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <script>if(localStorage.getItem('darkMode')==='1')document.documentElement.classList.add('dark-mode-early');</script>
+  <link rel="stylesheet" href="css/nova-avaliacao.css">
 </head>
 <body>
 
@@ -86,6 +87,12 @@
       <a href="perfil.html" class="navbar-link active">
         <i class="fa-solid fa-user"></i>
         <span>Perfil</span>
+      </a>
+    </li>
+    <li class="navbar-item">
+      <a href="pages/contatos.html" class="navbar-link">
+        <i class="fa-solid fa-address-book"></i>
+        <span>Contatos</span>
       </a>
     </li>
     <li class="navbar-item">
@@ -185,6 +192,11 @@
           <input type="password" id="pf-senha" placeholder="Digite nova senha" autocomplete="new-password">
         </div>
 
+        <div class="pg-field" id="pf-campo-ra" style="display:none">
+          <label for="pf-ra">RA (Registro Acadêmico)</label>
+          <input type="text" id="pf-ra" placeholder="Ex: 2021001234">
+        </div>
+
         <div class="pg-field" id="pf-campo-disciplina" style="display:none">
           <label for="pf-disciplina">Disciplina</label>
           <input type="text" id="pf-disciplina" placeholder="Ex: Engenharia de Software">
@@ -236,12 +248,12 @@
 
 </main>
 
-<script src="css/js/script.js"></script>
-<script src="css/js/dados.js"></script>
-<script src="css/js/grafico-perfil.js"></script>
-<script src="css/js/busca-global.js"></script>
-<script src="css/js/perfil.js"></script>
-<script src="css/js/navbar.js"></script>
+<script src="js/script.js"></script>
+<script src="js/dados.js"></script>
+<script src="js/grafico-perfil.js"></script>
+<script src="js/busca-global.js"></script>
+<script src="js/perfil.js"></script>
+<script src="js/navbar.js"></script>
 </body>
 </html>
 

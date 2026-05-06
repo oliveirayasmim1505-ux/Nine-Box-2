@@ -1,29 +1,48 @@
-// =============================================
-// AVALIAÇÃO 180° — LÓGICA
-// =============================================
+// ====================================================================
+// avaliacao-180.js — Avaliação 180°
+// Gerencia o ciclo completo de avaliações 180°: formulário de criação/edição,
+// modal de seleção de avaliados (estagiários) com checkboxes, modal de edição
+// de dados do avaliado e modal de vinculação de competências.
+// ====================================================================
 
+// ID da avaliação sendo editada (null = criação nova)
 let r180EditandoId = null;
-let r180Avaliados = [];
-let r180Competencias = [];
+let r180Avaliados = [];    // Lista de avaliados vinculados à avaliação em edição
+let r180Competencias = []; // Lista de competências vinculadas à avaliação em edição
 
+// ====================================================================
+// STORAGE — Persistência no localStorage
+// ====================================================================
+
+/** Retorna todas as avaliações 180° salvas. */
 function getAvaliacoes180() {
   return JSON.parse(localStorage.getItem('avaliacoes180') || '[]');
 }
 
+/** Persiste a lista de avaliações 180° no localStorage. */
 function saveAvaliacoes180(data) {
   localStorage.setItem('avaliacoes180', JSON.stringify(data));
 }
 
-// ---- ABRIR FORMULÁRIO ----
+// ====================================================================
+// FORMULÁRIO — Criação e edição de avaliação 180°
+// ====================================================================
+
+/**
+ * Abre o formulário de criação ou edição de avaliação 180°.
+ * Se um ID for fornecido, preenche os campos com os dados existentes.
+ * @param {number|null} id - ID da avaliação a editar, ou null para nova
+ */
 function abrirFormulario(id = null) {
   r180EditandoId = id;
   r180Avaliados = [];
   r180Competencias = [];
 
+  // Alterna visibilidade entre lista e formulário
   document.getElementById('tela-lista').style.display = 'none';
   document.getElementById('tela-form').style.display = 'block';
 
-  // Limpar campos
+  // Limpa todos os campos do formulário
   document.getElementById('r180-nome').value = '';
   document.getElementById('r180-tipo').value = '180';
   document.getElementById('r180-empresa').value = '';
@@ -35,6 +54,7 @@ function abrirFormulario(id = null) {
   popularSelectGestor();
 
   if (id) {
+    // Modo edição: carrega dados da avaliação existente
     const av = getAvaliacoes180().find(a => a.id === id);
     if (av) {
       document.getElementById('r180-nome').value = av.nome || '';
@@ -57,15 +77,21 @@ function abrirFormulario(id = null) {
   renderCompetenciasVinculadas();
 }
 
-// ---- FECHAR FORMULÁRIO ----
+/**
+ * Fecha o formulário e retorna à lista de avaliações,
+ * limpando erros de validação e o estado de edição.
+ */
 function fecharFormulario() {
   document.getElementById('tela-form').style.display = 'none';
   document.getElementById('tela-lista').style.display = 'block';
+  clearAllErrors('tela-form');
   r180EditandoId = null;
   renderLista180();
 }
 
-// ---- POPULAR SELECT GESTOR ----
+/**
+ * Preenche o select de gestor responsável com os professores cadastrados.
+ */
 function popularSelectGestor() {
   const select = document.getElementById('r180-gestor');
   if (!select) return;
@@ -74,19 +100,54 @@ function popularSelectGestor() {
     professores.map(p => `<option value="${p.id}">${p.nome}</option>`).join('');
 }
 
-// ---- SALVAR AVALIAÇÃO ----
+// ====================================================================
+// SALVAR — Criação e atualização de avaliação 180°
+// ====================================================================
+
+/**
+ * Valida os campos do formulário e salva (cria ou atualiza) a avaliação 180°.
+ * Campos obrigatórios: nome e empresa. Data de fim deve ser posterior ao início.
+ */
 function salvarAvaliacao180() {
-  const nome = document.getElementById('r180-nome').value.trim();
-  const tipo = document.getElementById('r180-tipo').value;
-  const empresa = document.getElementById('r180-empresa').value.trim();
+  const nome     = document.getElementById('r180-nome').value.trim();
+  const tipo     = document.getElementById('r180-tipo').value;
+  const empresa  = document.getElementById('r180-empresa').value.trim();
   const gestorId = document.getElementById('r180-gestor').value;
-  const setor = document.getElementById('r180-setor').value.trim();
-  const inicio = document.getElementById('r180-inicio').value;
-  const fim = document.getElementById('r180-fim').value;
+  const setor    = document.getElementById('r180-setor').value.trim();
+  const inicio   = document.getElementById('r180-inicio').value;
+  const fim      = document.getElementById('r180-fim').value;
   const descricao = document.getElementById('r180-descricao').value.trim();
 
-  if (!nome) { showToast('Digite o nome da avaliação.', 'error'); return; }
-  if (!empresa) { showToast('Digite o nome da empresa.', 'error'); return; }
+  let valido = true;
+
+  if (!nome) {
+    setFieldError('r180-nome', 'O nome da avaliação é obrigatório.');
+    valido = false;
+  } else {
+    clearFieldError('r180-nome');
+  }
+
+  if (!empresa) {
+    setFieldError('r180-empresa', 'O nome da empresa é obrigatório.');
+    valido = false;
+  } else {
+    clearFieldError('r180-empresa');
+  }
+
+  // Valida que a data de fim não é anterior à de início
+  if (inicio && fim && fim < inicio) {
+    setFieldError('r180-fim', 'A data de fim deve ser posterior à data de início.');
+    valido = false;
+  } else {
+    clearFieldError('r180-fim');
+  }
+
+  if (!valido) {
+    // Foca e anima o primeiro campo com erro
+    const primeiro = document.querySelector('#tela-form .field-error');
+    if (primeiro) { primeiro.classList.add('field-shake'); primeiro.focus(); setTimeout(() => primeiro.classList.remove('field-shake'), 400); }
+    return;
+  }
 
   const contatos = getContatos();
   const gestor = contatos.find(c => c.id == gestorId);
@@ -120,7 +181,10 @@ function salvarAvaliacao180() {
   fecharFormulario();
 }
 
-// ---- REMOVER AVALIAÇÃO ----
+/**
+ * Remove uma avaliação 180° após confirmação do usuário.
+ * @param {number} id - ID da avaliação a remover
+ */
 function removerAvaliacao180(id) {
   if (!confirm('Remover esta avaliação 180°?')) return;
   const data = getAvaliacoes180().filter(a => a.id !== id);
@@ -129,7 +193,14 @@ function removerAvaliacao180(id) {
   showToast('Avaliação removida.');
 }
 
-// ---- RENDERIZAR LISTA ----
+// ====================================================================
+// LISTA — Renderização dos cards de avaliações 180°
+// ====================================================================
+
+/**
+ * Renderiza a lista de avaliações 180° cadastradas.
+ * Exibe estado vazio com botão de criação quando não há registros.
+ */
 function renderLista180() {
   const container = document.getElementById('r180-lista-container');
   if (!container) return;
@@ -179,11 +250,16 @@ function renderLista180() {
     </div>`).join('');
 }
 
-// =============================================
-// AVALIADOS — MODAL COM CHECKBOXES
-// =============================================
+// ====================================================================
+// MODAL DE AVALIADOS — Seleção por checkboxes
+// ====================================================================
+
+/**
+ * Abre o modal de seleção de avaliados.
+ * Atualiza o título com o nome do gestor selecionado e inicia na etapa 1 (checkboxes).
+ */
 function abrirModalAvaliado() {
-  // Atualizar título com nome do gestor
+  // Atualiza título com nome do gestor
   const gestorSelect = document.getElementById('r180-gestor');
   const gestorNome = gestorSelect.options[gestorSelect.selectedIndex]?.text || '';
   const titulo = document.getElementById('modal-avaliado-titulo');
@@ -191,11 +267,11 @@ function abrirModalAvaliado() {
     ? `Avaliados — Gestor(a) ${gestorNome}`
     : 'Avaliados';
 
-  // Resetar checkbox "Selecionar Todos"
+  // Reseta o checkbox "Selecionar Todos"
   const checkTodos = document.getElementById('check-todos');
   if (checkTodos) checkTodos.checked = false;
 
-  // Sempre começa na etapa 1
+  // Sempre começa na etapa 1 (lista de checkboxes)
   const etapa1 = document.getElementById('modal-etapa-selecao');
   const etapa2 = document.getElementById('modal-etapa-lista');
   if (etapa1) etapa1.style.display = 'block';
@@ -205,12 +281,21 @@ function abrirModalAvaliado() {
   document.getElementById('modal-avaliado').classList.add('open');
 }
 
+/**
+ * Fecha o modal de avaliados ao clicar no overlay ou chamar diretamente.
+ * @param {Event|null} e - Evento de clique (opcional)
+ */
 function fecharModalAvaliado(e) {
   if (!e || e.target === document.getElementById('modal-avaliado')) {
     document.getElementById('modal-avaliado').classList.remove('open');
   }
 }
 
+/**
+ * Renderiza a lista de estagiários com checkboxes no modal de seleção.
+ * Marca como selecionados os que já estão em r180Avaliados.
+ * Exibe tags de empresa, gestor e setor conforme preenchidos no formulário.
+ */
 function renderCheckLista() {
   const container = document.getElementById('modal-check-lista');
   if (!container) return;
@@ -249,18 +334,27 @@ function renderCheckLista() {
   }).join('');
 }
 
+/**
+ * Alterna o estado de seleção de um item de checkbox no modal.
+ * Atualiza também o estado do checkbox "Selecionar Todos".
+ * @param {HTMLElement} label - Elemento label clicado
+ */
 function toggleCheckItem(label) {
   const cb = label.querySelector('input[type="checkbox"]');
   cb.checked = !cb.checked;
   label.classList.toggle('selecionado', cb.checked);
 
-  // Atualizar "Selecionar Todos"
+  // Sincroniza o estado do "Selecionar Todos" com a seleção atual
   const todos = document.querySelectorAll('#modal-check-lista input[type="checkbox"]');
   const marcados = document.querySelectorAll('#modal-check-lista input[type="checkbox"]:checked');
   const checkTodos = document.getElementById('check-todos');
   if (checkTodos) checkTodos.checked = todos.length > 0 && todos.length === marcados.length;
 }
 
+/**
+ * Marca ou desmarca todos os checkboxes da lista de avaliados.
+ * @param {HTMLInputElement} cb - Checkbox "Selecionar Todos"
+ */
 function toggleSelecionarTodos(cb) {
   document.querySelectorAll('#modal-check-lista .r180-check-item').forEach(item => {
     const input = item.querySelector('input[type="checkbox"]');
@@ -269,6 +363,10 @@ function toggleSelecionarTodos(cb) {
   });
 }
 
+/**
+ * Confirma a seleção de avaliados marcados, adiciona à lista r180Avaliados
+ * (evitando duplicatas) e avança para a etapa 2 (lista de confirmados).
+ */
 function confirmarAvaliados() {
   const empresa = document.getElementById('r180-empresa').value.trim();
   const gestorSelect = document.getElementById('r180-gestor');
@@ -279,7 +377,7 @@ function confirmarAvaliados() {
 
   selecionados.forEach(cb => {
     const id = parseInt(cb.value);
-    if (r180Avaliados.find(a => a.id == id)) return;
+    if (r180Avaliados.find(a => a.id == id)) return; // Evita duplicata
 
     const pessoa = getContatos().find(c => c.id == id);
     if (!pessoa) return;
@@ -296,7 +394,7 @@ function confirmarAvaliados() {
 
   renderAvaliados();
 
-  // Ir para etapa 2 (lista de confirmados)
+  // Avança para etapa 2: lista de confirmados
   document.getElementById('modal-etapa-selecao').style.display = 'none';
   document.getElementById('modal-etapa-lista').style.display = 'block';
   renderListaConfirmados();
@@ -305,12 +403,17 @@ function confirmarAvaliados() {
   if (qtd > 0) showToast(`${qtd} avaliado${qtd > 1 ? 's' : ''} adicionado${qtd > 1 ? 's' : ''}!`);
 }
 
+/** Retorna da etapa 2 (confirmados) para a etapa 1 (checkboxes). */
 function voltarParaSelecao() {
   document.getElementById('modal-etapa-lista').style.display = 'none';
   document.getElementById('modal-etapa-selecao').style.display = 'block';
   renderCheckLista();
 }
 
+/**
+ * Renderiza a lista de avaliados já confirmados na etapa 2 do modal.
+ * Exibe botões de editar e remover para cada item.
+ */
 function renderListaConfirmados() {
   const container = document.getElementById('modal-lista-confirmados');
   if (!container) return;
@@ -345,6 +448,11 @@ function renderListaConfirmados() {
     </div>`).join('');
 }
 
+/**
+ * Remove um avaliado da lista r180Avaliados pelo ID.
+ * Atualiza a lista confirmada e o painel do formulário.
+ * @param {number} id - ID do avaliado a remover
+ */
 function removerAvaliadoModal(id) {
   r180Avaliados = r180Avaliados.filter(a => a.id != id);
   renderListaConfirmados();
@@ -352,21 +460,31 @@ function removerAvaliadoModal(id) {
   showToast('Avaliado removido.');
 }
 
+/** Abre o modal de confirmação antes de salvar edição de avaliado. */
 function pedirConfirmacaoEdicao() {
   document.getElementById('modal-confirmar-edicao').classList.add('open');
 }
 
+/**
+ * Fecha o modal de confirmação de edição ao clicar no overlay ou chamar diretamente.
+ * @param {Event|null} e
+ */
 function fecharConfirmacaoEdicao(e) {
   if (!e || e.target === document.getElementById('modal-confirmar-edicao')) {
     document.getElementById('modal-confirmar-edicao').classList.remove('open');
   }
 }
 
+/**
+ * Aplica as alterações feitas no modal de edição ao objeto do avaliado em r180Avaliados.
+ * Fecha ambos os modais (edição e confirmação) e atualiza as listas.
+ */
 function salvarEdicaoAvaliado() {
   const id = parseInt(document.getElementById('edit-av-id').value);
   const av = r180Avaliados.find(a => a.id == id);
   if (!av) return;
 
+  // Atualiza todos os campos editáveis do avaliado
   av.nome       = document.getElementById('edit-av-nome').value.trim();
   av.ra         = document.getElementById('edit-av-ra').value.trim();
   av.cpf        = document.getElementById('edit-av-cpf').value.trim();
@@ -378,7 +496,7 @@ function salvarEdicaoAvaliado() {
   av.empresa    = document.getElementById('edit-av-empresa').value.trim();
   av.gestor     = document.getElementById('edit-av-gestor').value;
 
-  // Fechar ambos os modais
+  // Fecha ambos os modais
   document.getElementById('modal-confirmar-edicao').classList.remove('open');
   document.getElementById('modal-editar-avaliado').classList.remove('open');
 
@@ -387,17 +505,26 @@ function salvarEdicaoAvaliado() {
   showToast('Avaliado atualizado com sucesso!');
 }
 
+/**
+ * Fecha o modal de edição de avaliado ao clicar no overlay ou chamar diretamente.
+ * @param {Event|null} e
+ */
 function fecharModalEditarAvaliado(e) {
   if (!e || e.target === document.getElementById('modal-editar-avaliado')) {
     document.getElementById('modal-editar-avaliado').classList.remove('open');
   }
 }
 
+/**
+ * Abre o modal de edição de um avaliado específico, preenchendo todos os campos
+ * com os dados atuais e populando o select de gestores.
+ * @param {number} id - ID do avaliado a editar
+ */
 function editarAvaliado(id) {
   const av = r180Avaliados.find(a => a.id == id);
   if (!av) return;
 
-  // Preencher o modal de edição
+  // Preenche o modal com os dados atuais do avaliado
   document.getElementById('edit-av-id').value = id;
   document.getElementById('edit-av-nome').value = av.nome || '';
   document.getElementById('edit-av-ra').value = av.ra || '';
@@ -409,7 +536,7 @@ function editarAvaliado(id) {
   document.getElementById('edit-av-departamento').value = av.setor || '';
   document.getElementById('edit-av-empresa').value = av.empresa || '';
 
-  // Popular select de gestor
+  // Popula o select de gestor e pré-seleciona o atual
   const gestorSelect = document.getElementById('edit-av-gestor');
   const professores = getContatos().filter(c => c.tipo === 'professor');
   gestorSelect.innerHTML = '<option value="">Selecione...</option>' +
@@ -418,16 +545,27 @@ function editarAvaliado(id) {
   document.getElementById('modal-editar-avaliado').classList.add('open');
 }
 
+/**
+ * Fecha o modal de avaliados e abre a página de cadastro em nova aba.
+ * Permite criar um novo estagiário sem perder o formulário atual.
+ */
 function abrirCriarAvaliado() {
   fecharModalAvaliado();
   window.open('cadastrar.html', '_blank');
 }
 
+/**
+ * Remove um avaliado diretamente do painel do formulário (fora do modal).
+ * @param {number} id - ID do avaliado a remover
+ */
 function removerAvaliado(id) {
   r180Avaliados = r180Avaliados.filter(a => a.id != id);
   renderAvaliados();
 }
 
+/**
+ * Renderiza a lista de avaliados vinculados no painel do formulário principal.
+ */
 function renderAvaliados() {
   const container = document.getElementById('r180-avaliados-lista');
   if (!container) return;
@@ -457,25 +595,42 @@ function renderAvaliados() {
     </div>`).join('');
 }
 
-// =============================================
-// COMPETÊNCIAS VINCULADAS
-// =============================================
+// ====================================================================
+// COMPETÊNCIAS VINCULADAS — Modal de seleção
+// ====================================================================
+
+/**
+ * Abre o modal de seleção de competências, limpando a busca e renderizando a lista.
+ */
 function abrirModalCompetencia() {
   document.getElementById('modal-comp-busca').value = '';
   renderCompetenciasModal('');
   document.getElementById('modal-competencia').classList.add('open');
 }
 
+/**
+ * Fecha o modal de competências ao clicar no overlay ou chamar diretamente.
+ * @param {Event|null} e
+ */
 function fecharModalCompetencia(e) {
   if (!e || e.target === document.getElementById('modal-competencia')) {
     document.getElementById('modal-competencia').classList.remove('open');
   }
 }
 
+/**
+ * Filtra a lista de competências no modal conforme o texto digitado.
+ * @param {string} busca - Texto de busca digitado pelo usuário
+ */
 function filtrarCompetenciasModal(busca) {
   renderCompetenciasModal(busca.toLowerCase());
 }
 
+/**
+ * Renderiza a lista de competências disponíveis no modal com checkboxes.
+ * Marca como selecionadas as que já estão em r180Competencias.
+ * @param {string} busca - Texto de filtro (já em minúsculas)
+ */
 function renderCompetenciasModal(busca) {
   const container = document.getElementById('modal-comp-lista');
   if (!container) return;
@@ -522,18 +677,26 @@ function renderCompetenciasModal(busca) {
   }).join('');
 }
 
+/**
+ * Alterna o estado de seleção de um item de competência no modal.
+ * @param {HTMLElement} label - Elemento label clicado
+ */
 function toggleCompCheck(label) {
   const cb = label.querySelector('input[type="checkbox"]');
   cb.checked = !cb.checked;
   label.classList.toggle('selecionado', cb.checked);
 }
 
+/**
+ * Confirma as competências selecionadas no modal, adicionando-as a r180Competencias
+ * (sem duplicatas), e fecha o modal.
+ */
 function confirmarCompetencias() {
   const selecionados = document.querySelectorAll('#modal-comp-lista input[type="checkbox"]:checked');
 
   selecionados.forEach(cb => {
     const id = parseInt(cb.value);
-    if (r180Competencias.find(c => c.id == id)) return;
+    if (r180Competencias.find(c => c.id == id)) return; // Evita duplicata
 
     const comp = getCompetencias().find(c => c.id == id);
     if (!comp) return;
@@ -548,16 +711,27 @@ function confirmarCompetencias() {
   if (qtd > 0) showToast(`${qtd} competência${qtd > 1 ? 's' : ''} adicionada${qtd > 1 ? 's' : ''}!`);
 }
 
+/**
+ * Fecha o modal de competências e abre a página de competências em nova aba.
+ * Permite criar novas competências sem perder o formulário atual.
+ */
 function irParaCriarCompetencia() {
   fecharModalCompetencia();
   window.open('competencias.html', '_blank');
 }
 
+/**
+ * Remove uma competência vinculada pelo ID e atualiza o painel do formulário.
+ * @param {number} id - ID da competência a remover
+ */
 function removerCompetenciaVinculada(id) {
   r180Competencias = r180Competencias.filter(c => c.id != id);
   renderCompetenciasVinculadas();
 }
 
+/**
+ * Renderiza a lista de competências vinculadas no painel do formulário principal.
+ */
 function renderCompetenciasVinculadas() {
   const container = document.getElementById('r180-competencias-lista');
   if (!container) return;
@@ -585,7 +759,11 @@ function renderCompetenciasVinculadas() {
     </div>`).join('');
 }
 
-// ---- FECHAR MODAIS COM ESC ----
+// ====================================================================
+// EVENTOS GLOBAIS E INICIALIZAÇÃO
+// ====================================================================
+
+// Fecha modais abertos ao pressionar ESC
 document.addEventListener('keydown', e => {
   if (e.key === 'Escape') {
     fecharModalAvaliado();
@@ -593,7 +771,9 @@ document.addEventListener('keydown', e => {
   }
 });
 
-// ---- INIT ----
+// Inicializa a lista e configura validação ao carregar a página
 document.addEventListener('DOMContentLoaded', () => {
   renderLista180();
+  addLiveValidation('r180-nome',    v => v.trim().length > 0, 'O nome da avaliação é obrigatório.');
+  addLiveValidation('r180-empresa', v => v.trim().length > 0, 'O nome da empresa é obrigatório.');
 });
