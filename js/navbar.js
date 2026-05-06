@@ -38,6 +38,15 @@ document.addEventListener('click', (e) => {
   }
 });
 
+// Fecha submenus ao pressionar ESC
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') {
+    document.querySelectorAll('.navbar-item-dropdown.open').forEach(el => {
+      el.classList.remove('open');
+    });
+  }
+});
+
 // ====================================================================
 // DARK MODE — Alternância e persistência
 // ====================================================================
@@ -102,10 +111,12 @@ function verificarNotificacoes180() {
 
   avaliacoes.forEach(av => {
     if (!av.fim) return;
-    const fim = new Date(av.fim);
+    // Usa split para evitar problemas de fuso horário com new Date(string)
+    const partes = av.fim.split('-');
+    const fim = new Date(parseInt(partes[0]), parseInt(partes[1]) - 1, parseInt(partes[2]));
     fim.setHours(0, 0, 0, 0);
-    const diffMs = fim - hoje;
-    const diffDias = Math.ceil(diffMs / (1000 * 60 * 60 * 24));
+    const diffMs   = fim - hoje;
+    const diffDias = Math.round(diffMs / (1000 * 60 * 60 * 24));
 
     // Inclui apenas avaliações que vencem hoje ou nos próximos 7 dias
     if (diffDias >= 0 && diffDias <= 7) {
@@ -135,8 +146,9 @@ function verificarNotificacoes180() {
         : diffDias === 1
           ? 'Vence amanhã'
           : `Vence em ${diffDias} dias`;
+      const destino = window.location.pathname.includes('/pages/') ? '' : 'pages/';
       return `
-        <div class="notif-item" onclick="window.location.href='${window.location.pathname.includes('/pages/') ? '' : 'pages/'}avaliacao-180.html'">
+        <div class="notif-item" onclick="document.getElementById('notif-dropdown').classList.remove('open'); window.location.href='${destino}avaliacao-180.html'">
           <i class="fa-solid fa-rotate notif-item-icon"></i>
           <div class="notif-item-body">
             <div class="notif-item-titulo">${av.nome}</div>

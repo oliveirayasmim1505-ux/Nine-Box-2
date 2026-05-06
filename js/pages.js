@@ -287,9 +287,9 @@ function renderResumo() {
   if (!container) return;
 
   const avaliacoes    = getAvaliacoes();
-  const nineBox       = JSON.parse(localStorage.getItem('nineBoxAvaliacoes') || '[]');
-  const avaliacoes180 = JSON.parse(localStorage.getItem('avaliacoes180')     || '[]');
-  const respostas180  = JSON.parse(localStorage.getItem('respostas180')      || '[]');
+  const nineBox       = (() => { try { return JSON.parse(localStorage.getItem('nineBoxAvaliacoes') || '[]'); } catch(e) { return []; } })();
+  const avaliacoes180 = (() => { try { return JSON.parse(localStorage.getItem('avaliacoes180')     || '[]'); } catch(e) { return []; } })();
+  const respostas180  = (() => { try { return JSON.parse(localStorage.getItem('respostas180')      || '[]'); } catch(e) { return []; } })();
 
   const totalProf = avaliacoes.filter(a => a.tipo === 'professor').length;
   const totalEst  = avaliacoes.filter(a => a.tipo === 'estagiario').length;
@@ -424,7 +424,7 @@ function renderTabela180(busca) {
     tableWrap.after(secao180);
   }
 
-  const respostas180 = JSON.parse(localStorage.getItem('respostas180') || '[]');
+  const respostas180  = (() => { try { return JSON.parse(localStorage.getItem('respostas180') || '[]'); } catch(e) { return []; } })();
   let lista = respostas180.slice().reverse();
 
   if (busca) {

@@ -178,6 +178,11 @@ function salvarAvaliacao180() {
   }
 
   saveAvaliacoes180(data);
+
+  // Feedback visual: desabilita o botão brevemente para evitar duplo clique
+  const btn180 = document.querySelector('[onclick="salvarAvaliacao180()"]');
+  if (btn180) { btn180.disabled = true; setTimeout(() => btn180.disabled = false, 800); }
+
   fecharFormulario();
 }
 

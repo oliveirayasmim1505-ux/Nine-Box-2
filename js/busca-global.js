@@ -7,6 +7,20 @@
 (function () {
 
   /**
+   * Escapa caracteres HTML para prevenir XSS ao inserir texto no DOM.
+   * @param {string} str
+   * @returns {string}
+   */
+  function escapeHtml(str) {
+    return String(str || '')
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;');
+  }
+
+  /**
    * Detecta se a página atual está dentro da pasta /pages/
    * para montar os links relativos corretamente.
    * @returns {string} '../' se estiver em /pages/, '' se estiver na raiz
@@ -15,12 +29,20 @@
     return window.location.pathname.includes('/pages/') ? '../' : '';
   }
 
+  // Timer do debounce para evitar múltiplos JSON.parse por keystroke
+  let debounceTimer = null;
+
   /**
-   * Executa a busca global e exibe os resultados no dropdown.
+   * Executa a busca global com debounce de 250ms.
    * Chamada pelo atributo oninput do campo de busca no HTML.
    * @param {string} termo - Texto digitado pelo usuário
    */
   function buscarGlobal(termo) {
+    clearTimeout(debounceTimer);
+    debounceTimer = setTimeout(() => _executarBusca(termo), 250);
+  }
+
+  function _executarBusca(termo) {
     const dropdown = document.getElementById('busca-global-dropdown');
     if (!dropdown) return;
 
@@ -48,8 +70,8 @@
           grupo: 'Pessoas',
           icon:  'fa-solid fa-users',
           itens: pessoas.slice(0, 5).map(c => ({
-            texto: c.nome,
-            sub:   c.email || (c.tipo === 'professor' ? 'Professor' : 'Estagiário'),
+            texto: escapeHtml(c.nome),
+            sub:   escapeHtml(c.email || (c.tipo === 'professor' ? 'Professor' : 'Estagiário')),
             url:   base + 'pages/consultar.html',
             icon:  c.tipo === 'professor' ? 'fa-solid fa-chalkboard-user' : 'fa-solid fa-user-tie',
           })),
@@ -68,8 +90,8 @@
           grupo: 'Avaliações',
           icon:  'fa-solid fa-star',
           itens: avs.slice(0, 5).map(a => ({
-            texto: a.avaliado,
-            sub:   `Média: ${a.media || '—'} ★ — ${a.data || ''}`,
+            texto: escapeHtml(a.avaliado),
+            sub:   escapeHtml(`Média: ${a.media || '—'} ★ — ${a.data || ''}`),
             url:   base + 'pages/avaliacoes.html',
             icon:  'fa-solid fa-star',
           })),
@@ -88,8 +110,8 @@
           grupo: 'Competências',
           icon:  'fa-solid fa-clipboard-check',
           itens: comps.slice(0, 5).map(c => ({
-            texto: c.nome,
-            sub:   c.tipo || 'Competência',
+            texto: escapeHtml(c.nome),
+            sub:   escapeHtml(c.tipo || 'Competência'),
             url:   base + 'pages/competencias.html',
             icon:  'fa-solid fa-clipboard-check',
           })),
@@ -110,8 +132,8 @@
           grupo: 'Avaliações 180°',
           icon:  'fa-solid fa-rotate',
           itens: avs180.slice(0, 5).map(a => ({
-            texto: a.nome,
-            sub:   a.empresa || a.gestor || '180°',
+            texto: escapeHtml(a.nome),
+            sub:   escapeHtml(a.empresa || a.gestor || '180°'),
             url:   base + 'pages/avaliacao-180.html',
             icon:  'fa-solid fa-rotate',
           })),

@@ -9,7 +9,9 @@
 
 /** Retorna a lista de contatos/usuários cadastrados */
 function getContatos() {
-  return JSON.parse(localStorage.getItem('contatos') || '[]');
+  try {
+    return JSON.parse(localStorage.getItem('contatos') || '[]');
+  } catch (e) { return []; }
 }
 
 /** Salva a lista de contatos no localStorage */
@@ -19,7 +21,9 @@ function saveContatos(contatos) {
 
 /** Retorna a lista de avaliações (professor/estagiário) */
 function getAvaliacoes() {
-  return JSON.parse(localStorage.getItem('avaliacoes') || '[]');
+  try {
+    return JSON.parse(localStorage.getItem('avaliacoes') || '[]');
+  } catch (e) { return []; }
 }
 
 /** Salva a lista de avaliações no localStorage */
@@ -135,10 +139,11 @@ function validateField(campo, validador, mensagem) {
 // ============================================================
 
 /**
- * Valida e-mails de instituições acadêmicas brasileiras.
- * Aceita domínios como .edu.br, usp.br, unicamp.br, ifsp.edu.br, etc.
+ * Valida e-mails acadêmicos/institucionais.
+ * Aceita qualquer e-mail com domínio .edu, .edu.br, .ac.br,
+ * ou qualquer domínio .br (cobre todas as instituições brasileiras).
  */
-const REGEX_EMAIL_ACADEMICO = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.(edu|edu\.br|ac\.br|ifsp\.edu\.br|usp\.br|unicamp\.br|unesp\.br|ufmg\.br|ufsc\.br|ufrj\.br|unb\.br|ufpr\.br|ufba\.br|ufpe\.br|ufc\.br|ufam\.br|ufpa\.br|ufes\.br|ufg\.br|ufms\.br|ufmt\.br|ufpb\.br|ufrn\.br|ufal\.br|ufpi\.br|ufrr\.br|ufro\.br|ufac\.br|ufap\.br|uft\.br|furg\.br|ufpel\.br|ufsm\.br|ufcspa\.br|utfpr\.br|cefet|fatec|etec|senai|senac|fiap|fei|mackenzie|puc|unifesp|unifei|unifal|unifap|unir|unirio|ufop|ufv|ufjf|ufsj|ufla|uftm|unimontes|uemg|ufob|ufca|ufnt|ufr|ufcat|ufopa|unifesspa|unipampa|uffs|ufcspa)(\.[a-zA-Z]{2,})?$/i;
+const REGEX_EMAIL_ACADEMICO = /^[^\s@]+@[^\s@]+\.(edu|edu\.br|ac\.br|[a-z]+\.br|[a-z]+\.edu)$/i;
 
 /** Valida qualquer e-mail no formato básico usuario@dominio.ext */
 const REGEX_EMAIL_SIMPLES = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;

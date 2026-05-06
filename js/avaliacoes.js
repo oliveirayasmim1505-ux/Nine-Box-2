@@ -412,11 +412,14 @@ function salvarEstagiario() {
     media: null,
     comentario: texto,
     data: new Date().toLocaleDateString('pt-BR'),
-    tipoAvaliacao: 'comentario', // Distingue do tipo com estrelas
+    tipoAvaliacao: 'comentario',
   });
   saveAvaliacoes(avaliacoes);
 
-  // Limpa o formulário após salvar
+  // Desabilita o botão brevemente para evitar duplo envio
+  const btn = document.querySelector('[onclick="salvarAvaliacaoUnificada()"], [onclick="salvarAvaliacao()"]');
+  if (btn) { btn.disabled = true; setTimeout(() => btn.disabled = false, 1000); }
+
   comentario.value = '';
   select.value = '';
   showToast('Comentário enviado com sucesso!');
@@ -470,6 +473,10 @@ function _salvar(tipo) {
     data: new Date().toLocaleDateString('pt-BR'),
   });
   saveAvaliacoes(avaliacoes);
+
+  // Desabilita o botão brevemente para evitar duplo envio
+  const btnSalvar = document.querySelector('[onclick="salvarAvaliacaoUnificada()"], [onclick="salvarAvaliacao()"]');
+  if (btnSalvar) { btnSalvar.disabled = true; setTimeout(() => btnSalvar.disabled = false, 1000); }
 
   // Reseta todas as estrelas e campos do formulário
   CRITERIOS.forEach(c => {

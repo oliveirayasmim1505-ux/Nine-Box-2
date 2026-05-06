@@ -169,7 +169,7 @@ function renderFormulario(avaliacao, respondente) {
 function enviarRespostas() {
   const params = new URLSearchParams(window.location.search);
   const id = parseInt(params.get('id'));
-  const avaliacoes180 = JSON.parse(localStorage.getItem('avaliacoes180') || '[]');
+  const avaliacoes180 = (() => { try { return JSON.parse(localStorage.getItem('avaliacoes180') || '[]'); } catch(e) { return []; } })();
   const avaliacao = avaliacoes180.find(a => a.id === id);
 
   if (!avaliacao) {
@@ -178,8 +178,8 @@ function enviarRespostas() {
   }
 
   const competencias = avaliacao.competencias || [];
-  const sessao = JSON.parse(localStorage.getItem('perfilLogado') || 'null');
-  const contatos = JSON.parse(localStorage.getItem('contatos') || '[]');
+  const sessao = (() => { try { return JSON.parse(localStorage.getItem('perfilLogado') || 'null'); } catch(e) { return null; } })();
+  const contatos = (() => { try { return JSON.parse(localStorage.getItem('contatos') || '[]'); } catch(e) { return []; } })();
   const respondente = sessao ? contatos.find(c => c.id === sessao.id) : null;
 
   // Montar respostas por competência
@@ -232,6 +232,10 @@ function enviarRespostas() {
   respostas.push(registro);
   saveRespostas180(respostas);
 
+  // Desabilita o botão de envio para evitar duplo clique
+  const btnEnviar = document.querySelector('.resp180-btn-enviar');
+  if (btnEnviar) btnEnviar.disabled = true;
+
   // Mostrar tela de sucesso
   const container = document.getElementById('resp180-container');
   if (container) {
@@ -260,11 +264,11 @@ document.addEventListener('DOMContentLoaded', () => {
   const params = new URLSearchParams(window.location.search);
   const id = parseInt(params.get('id'));
 
-  const avaliacoes180 = JSON.parse(localStorage.getItem('avaliacoes180') || '[]');
+  const avaliacoes180 = (() => { try { return JSON.parse(localStorage.getItem('avaliacoes180') || '[]'); } catch(e) { return []; } })();
   const avaliacao = avaliacoes180.find(a => a.id === id) || null;
 
-  const sessao = JSON.parse(localStorage.getItem('perfilLogado') || 'null');
-  const contatos = JSON.parse(localStorage.getItem('contatos') || '[]');
+  const sessao = (() => { try { return JSON.parse(localStorage.getItem('perfilLogado') || 'null'); } catch(e) { return null; } })();
+  const contatos = (() => { try { return JSON.parse(localStorage.getItem('contatos') || '[]'); } catch(e) { return []; } })();
   const respondente = sessao ? contatos.find(c => c.id === sessao.id) : null;
 
   renderFormulario(avaliacao, respondente);

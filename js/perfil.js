@@ -20,7 +20,9 @@ const CRITERIOS_LABEL = {
 
 /** Retorna os dados da sessão ativa (apenas o ID do usuário). */
 function getPerfil() {
-  return JSON.parse(localStorage.getItem('perfilLogado') || 'null');
+  try {
+    return JSON.parse(localStorage.getItem('perfilLogado') || 'null');
+  } catch (e) { return null; }
 }
 
 /** Persiste os dados da sessão no localStorage. */
@@ -282,8 +284,8 @@ function renderAvaliacoesPerfil(pessoa) {
 // ====================================================================
 
 /**
- * Lê o arquivo de imagem selecionado, atualiza o avatar visualmente
- * e salva a nova foto no contato correspondente.
+ * Lê o arquivo de imagem selecionado, atualiza o avatar visualmente,
+ * salva a nova foto no contato e atualiza o avatar no header.
  * @param {HTMLInputElement} input - Input de arquivo de imagem
  */
 function trocarFoto(input) {
@@ -311,6 +313,11 @@ function trocarFoto(input) {
     if (idx !== -1) {
       contatos[idx].foto = novaFoto;
       saveContatos(contatos);
+
+      // Atualiza o avatar no header/navbar se existir
+      const navAvatar = document.querySelector('.user-avatar-img');
+      if (navAvatar) navAvatar.src = novaFoto;
+
       showToast('Foto atualizada!');
     }
   };
@@ -353,6 +360,18 @@ function salvarPerfil() {
     const primeiro = document.querySelector('#tab-dados .field-error');
     if (primeiro) { primeiro.classList.add('field-shake'); primeiro.focus(); setTimeout(() => primeiro.classList.remove('field-shake'), 400); }
     return;
+  }
+
+  // Feedback visual no botão durante o salvamento
+  const btn = document.querySelector('[onclick="salvarPerfil()"]');
+  if (btn) {
+    btn.disabled = true;
+    const textoOriginal = btn.innerHTML;
+    btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Salvando...';
+    setTimeout(() => {
+      btn.disabled = false;
+      btn.innerHTML = textoOriginal;
+    }, 800);
   }
 
   const contatos = getContatos();

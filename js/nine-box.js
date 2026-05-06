@@ -243,6 +243,10 @@ function salvarNB() {
 
   saveNBData(data);
 
+  // Feedback visual: desabilita o botão brevemente para evitar duplo clique
+  const btnNB = document.querySelector('[onclick="salvarNB()"]');
+  if (btnNB) { btnNB.disabled = true; setTimeout(() => btnNB.disabled = false, 800); }
+
   // Reseta o formulário após salvar
   select.value = '';
   if (comentario) comentario.value = '';
