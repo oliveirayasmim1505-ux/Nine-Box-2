@@ -52,13 +52,13 @@
    ============================================= */
 .dash-hero {
   width: 100%;
-  max-width: 700px;
+  max-width: 780px;
   background: linear-gradient(135deg, var(--primary) 0%, #1d4ed8 60%, #3b82f6 100%);
   border-radius: var(--radius);
-  padding: 32px 36px;
+  padding: 40px 44px;
   display: flex;
   align-items: center;
-  gap: 24px;
+  gap: 28px;
   color: white;
   box-shadow: 0 12px 40px rgba(30, 58, 138, 0.3);
   animation: scaleIn 0.45s ease both;
@@ -71,8 +71,8 @@
   position: absolute;
   top: -40px;
   right: -40px;
-  width: 200px;
-  height: 200px;
+  width: 220px;
+  height: 220px;
   background: rgba(255,255,255,0.06);
   border-radius: 50%;
 }
@@ -82,21 +82,21 @@
   position: absolute;
   bottom: -60px;
   right: 60px;
-  width: 150px;
-  height: 150px;
+  width: 160px;
+  height: 160px;
   background: rgba(255,255,255,0.04);
   border-radius: 50%;
 }
 
 .dash-hero-icon {
-  width: 64px;
-  height: 64px;
+  width: 72px;
+  height: 72px;
   background: rgba(255,255,255,0.15);
-  border-radius: 16px;
+  border-radius: 18px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 28px;
+  font-size: 32px;
   flex-shrink: 0;
   backdrop-filter: blur(4px);
   border: 1px solid rgba(255,255,255,0.2);
@@ -109,7 +109,7 @@
 }
 
 .dash-hero-greeting {
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 500;
   opacity: 0.8;
   margin-bottom: 4px;
@@ -117,25 +117,31 @@
 }
 
 .dash-hero-title {
-  font-size: 22px;
+  font-size: 26px;
   font-weight: 700;
-  margin: 0 0 6px;
+  margin: 0 0 8px;
   line-height: 1.2;
 }
 
 .dash-hero-sub {
-  font-size: 13px;
-  opacity: 0.75;
+  font-size: 14px;
+  opacity: 0.78;
   margin: 0;
   line-height: 1.5;
+}
+
+.dash-hero-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 18px;
+  flex-wrap: wrap;
 }
 
 .dash-hero-cta {
   display: inline-flex;
   align-items: center;
   gap: 7px;
-  margin-top: 14px;
-  padding: 9px 18px;
+  padding: 10px 20px;
   background: rgba(255,255,255,0.18);
   border: 1px solid rgba(255,255,255,0.3);
   border-radius: 100px;
@@ -150,6 +156,17 @@
 .dash-hero-cta:hover {
   background: rgba(255,255,255,0.28);
   transform: translateY(-1px);
+}
+
+.dash-hero-cta-outline {
+  background: transparent;
+  border-color: rgba(255,255,255,0.4);
+  opacity: 0.85;
+}
+
+.dash-hero-cta-outline:hover {
+  background: rgba(255,255,255,0.12);
+  opacity: 1;
 }
 
 /* Dark mode hero */
@@ -473,12 +490,12 @@ img[loading="lazy"].loaded {
   .dash-hero {
     flex-direction: column;
     text-align: center;
-    padding: 24px 20px;
+    padding: 28px 22px;
     gap: 16px;
   }
 
-  .dash-hero-cta {
-    align-self: center;
+  .dash-hero-actions {
+    justify-content: center;
   }
 
   .breadcrumb {
