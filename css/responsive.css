@@ -1,0 +1,514 @@
+/* =============================================
+   RESPONSIVE.CSS — Responsividade completa
+   Breakpoints: 1024px | 768px | 600px | 480px | 360px
+   ============================================= */
+
+/* =============================================
+   TABLET LARGO (≤ 1024px)
+   ============================================= */
+@media (max-width: 1024px) {
+
+  /* Header */
+  header { padding: 0 24px; }
+
+  /* Dashboard hero */
+  .dash-hero {
+    max-width: 100%;
+    padding: 32px 28px;
+  }
+
+  /* Grid de cards */
+  .container {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    width: 100%;
+    max-width: 640px;
+  }
+
+  /* Nine Box */
+  .nb-panel { width: 260px; }
+
+  /* Contatos grid */
+  .ct-grid {
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  }
+
+  /* Relatórios */
+  .pg-card-wide { max-width: 100%; }
+}
+
+/* =============================================
+   TABLET (≤ 768px)
+   ============================================= */
+@media (max-width: 768px) {
+
+  /* ---- HEADER ---- */
+  header {
+    padding: 0 16px;
+    height: 56px;
+  }
+
+  header h2 {
+    font-size: 15px;
+    max-width: 120px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  /* Busca global menor */
+  .busca-global-input {
+    width: 140px;
+    font-size: 12px;
+  }
+
+  /* ---- NAVBAR ---- */
+  .navbar { padding: 0; overflow-x: auto; }
+  .navbar::-webkit-scrollbar { display: none; }
+  .navbar-nav { justify-content: flex-start; min-width: max-content; }
+  .navbar-link { padding: 12px 12px; font-size: 12px; gap: 5px; }
+  .navbar-link i { font-size: 13px; }
+
+  /* Breadcrumb */
+  .breadcrumb { padding: 8px 16px; font-size: 11px; }
+
+  /* ---- DASHBOARD ---- */
+  .wrapper { padding: 20px 16px; }
+
+  .dash-hero {
+    padding: 24px 20px;
+    gap: 16px;
+    border-radius: 14px;
+  }
+
+  .dash-hero-icon {
+    width: 56px;
+    height: 56px;
+    font-size: 24px;
+    border-radius: 14px;
+  }
+
+  .dash-hero-title { font-size: 20px; }
+  .dash-hero-greeting { font-size: 12px; }
+  .dash-hero-sub { font-size: 12px; }
+
+  .dash-hero-actions { gap: 8px; margin-top: 14px; }
+  .dash-hero-cta { padding: 8px 14px; font-size: 12px; }
+
+  .dash-stats { gap: 8px; }
+  .dash-stat { min-width: 110px; padding: 12px 14px; }
+  .dash-stat-val { font-size: 18px; }
+  .dash-stat-label { font-size: 10px; }
+
+  /* Grid de cards */
+  .container {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    max-width: 100%;
+  }
+
+  .card { height: 120px; gap: 10px; border-radius: 14px; }
+  .card i { font-size: 24px; }
+  .card p { font-size: 12px; }
+
+  /* ---- FORMULÁRIOS ---- */
+  .form-box { padding: 24px 20px; }
+  .pg-wrapper { padding: 20px 16px; }
+  .pg-card { padding: 20px 16px; max-width: 100%; }
+  .pg-card-wide { padding: 20px 16px; }
+
+  /* ---- AVALIAÇÕES ---- */
+  .av-wrapper { padding: 20px 16px; gap: 16px; }
+  .av-form-card,
+  .av-historico-card {
+    padding: 20px 16px;
+    min-width: 0;
+    max-width: 100%;
+  }
+
+  .av-step-box { padding: 24px 20px; }
+  .av-tipo-cards { gap: 12px; }
+  .av-tipo-card { max-width: 100%; padding: 18px 12px; }
+  .av-tipo-icon { width: 56px; height: 56px; font-size: 22px; }
+
+  .stars span { font-size: 22px; }
+  .av-criterio .stars span { font-size: 20px; }
+
+  /* ---- NINE BOX ---- */
+  .nb-page {
+    flex-direction: column;
+    height: auto;
+    overflow: visible;
+  }
+
+  .nb-panel {
+    width: 100%;
+    border-right: none;
+    border-bottom: 1px solid var(--border);
+    max-height: none;
+  }
+
+  .nb-grid-area { padding: 16px; min-height: 480px; }
+  .nb-grid-controls { flex-wrap: wrap; gap: 8px; }
+  .nb-box { padding: 8px; border-radius: 8px; }
+  .nb-box-name { font-size: 9px; }
+  .nb-chip { font-size: 9px; padding: 3px 6px; }
+
+  /* ---- COMPETÊNCIAS ---- */
+  .comp-main { padding: 20px 16px; }
+  .comp-form-card { padding: 20px 16px; }
+  .comp-lista-header h3 { font-size: 16px; }
+  .comp-form-header h3 { font-size: 17px; }
+
+  /* ---- PERFIL ---- */
+  .pf-login-card { padding: 28px 20px; }
+  .pf-login-icon { width: 56px; height: 56px; }
+  .pf-login-icon i { font-size: 22px; }
+
+  /* ---- CONTATOS ---- */
+  .ct-main { padding: 20px 16px; }
+  .ct-page-header-left h3 { font-size: 17px; }
+  .ct-grid { grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 12px; }
+  .ct-card { padding: 18px 14px 14px; }
+  .ct-card-avatar { width: 60px; height: 60px; font-size: 20px; }
+
+  /* ---- RELATÓRIOS ---- */
+  .rel-resumo { gap: 8px; }
+  .rel-stat { padding: 12px 14px; }
+  .rel-table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  .rel-table { min-width: 560px; font-size: 12px; }
+  .rel-table th,
+  .rel-table td { white-space: normal; padding: 8px 10px; }
+
+  /* ---- MODAL NOVA AVALIAÇÃO ---- */
+  .na-modal { max-width: 100%; border-radius: 14px; }
+  .na-modal-header { padding: 16px 18px 14px; }
+  .na-etapa { padding: 16px 18px; }
+  .na-tipo-card { padding: 16px 10px; }
+  .na-tipo-icon { width: 52px; height: 52px; font-size: 20px; }
+  .na-stars span { font-size: 18px; }
+
+  /* ---- SCROLL TOP ---- */
+  #scroll-top-btn { bottom: 16px; right: 16px; width: 40px; height: 40px; font-size: 14px; }
+
+  /* ---- USER DROPDOWN ---- */
+  .user-dropdown { min-width: 200px; right: -8px; }
+}
+
+/* =============================================
+   MOBILE (≤ 600px)
+   ============================================= */
+@media (max-width: 600px) {
+
+  /* ---- HEADER ---- */
+  header h2 { font-size: 14px; max-width: 100px; }
+
+  /* Oculta texto da busca em mobile pequeno */
+  .busca-global-input::placeholder { font-size: 11px; }
+
+  /* ---- NAVBAR — só ícones ---- */
+  .navbar-link span { display: none; }
+  .navbar-link { padding: 12px 14px; }
+  .navbar-link i { font-size: 15px; }
+
+  /* ---- HERO ---- */
+  .dash-hero {
+    flex-direction: column;
+    text-align: center;
+    padding: 22px 18px;
+    gap: 14px;
+  }
+
+  .dash-hero::before,
+  .dash-hero::after { display: none; }
+
+  .dash-hero-icon { width: 52px; height: 52px; font-size: 22px; }
+  .dash-hero-title { font-size: 18px; }
+  .dash-hero-sub { font-size: 12px; }
+  .dash-hero-actions { justify-content: center; flex-wrap: wrap; }
+  .dash-hero-cta { font-size: 12px; padding: 8px 14px; }
+
+  /* ---- STATS ---- */
+  .dash-stats { flex-wrap: wrap; justify-content: center; gap: 8px; }
+  .dash-stat { min-width: 100px; flex: 1; }
+
+  /* ---- CARDS ---- */
+  .container { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+  .card { height: 110px; border-radius: 12px; }
+  .card i { font-size: 22px; }
+  .card p { font-size: 11px; }
+
+  /* ---- AVALIAÇÕES ---- */
+  .av-step-box { padding: 20px 16px; }
+  .av-tipo-cards { flex-direction: column; align-items: center; }
+  .av-tipo-card { width: 100%; max-width: 280px; flex-direction: row; gap: 14px; padding: 14px 16px; }
+  .av-tipo-icon { width: 44px; height: 44px; font-size: 18px; flex-shrink: 0; }
+  .av-step-actions { flex-direction: column; gap: 8px; }
+  .av-btn-voltar,
+  .av-btn-proximo { width: 100%; text-align: center; justify-content: center; }
+
+  .stars span { font-size: 20px; }
+  .av-criterio { flex-direction: column; gap: 6px; }
+  .av-criterio .stars { margin-top: 0; }
+
+  /* ---- NINE BOX ---- */
+  .nb-grid-area { padding: 12px; min-height: 360px; }
+  .nb-axis-y { width: 36px; }
+  .nb-axis-title { font-size: 8px; letter-spacing: 1px; }
+  .nb-axis-ticks span { font-size: 8px; }
+  .nb-axis-ticks-x span { font-size: 8px; }
+  .nb-box { padding: 6px; border-radius: 6px; }
+  .nb-box-name { font-size: 8px; }
+  .nb-chip { font-size: 8px; padding: 2px 5px; }
+  .nb-chip-dot { width: 4px; height: 4px; }
+  .nb-filtros { flex-wrap: wrap; gap: 4px; }
+  .nb-filtro { font-size: 11px; padding: 5px 10px; }
+  .nb-legend { gap: 8px; }
+  .nb-legend-item { font-size: 11px; }
+  .nb-modal { width: calc(100vw - 32px); }
+
+  /* ---- COMPETÊNCIAS ---- */
+  .comp-main { padding: 16px 12px; }
+  .comp-form-card { padding: 16px 14px; }
+  .comp-lista-header { flex-direction: column; align-items: flex-start; }
+  .comp-lista-header h3 { font-size: 15px; }
+  .comp-btn-novo { width: 100%; justify-content: center; }
+  .comp-card { padding: 14px 16px; }
+  .comp-card-actions { flex-direction: row; gap: 6px; }
+  .comp-form-header { flex-direction: column; gap: 10px; }
+  .comp-form-header h3 { font-size: 16px; }
+  .comp-btn-cancelar { align-self: flex-start; }
+  .comp-row { flex-direction: column; }
+  .comp-form-actions { flex-direction: column; gap: 8px; }
+  .comp-btn-voltar,
+  .comp-btn-salvar { width: 100%; justify-content: center; }
+
+  /* ---- PERFIL ---- */
+  .pf-login-card { padding: 24px 16px; max-width: 100%; }
+  .pf-login-card h3 { font-size: 1rem; }
+  .pf-login-icon { width: 52px; height: 52px; }
+  .pf-login-icon i { font-size: 20px; }
+
+  /* ---- CONTATOS ---- */
+  .ct-main { padding: 16px 12px; }
+  .ct-page-header { flex-direction: column; }
+  .ct-btn-novo { width: 100%; justify-content: center; }
+  .ct-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+  .ct-card { padding: 14px 12px 12px; }
+  .ct-card-avatar { width: 52px; height: 52px; font-size: 18px; }
+  .ct-card-nome { font-size: 13px; }
+  .ct-stats { flex-wrap: wrap; gap: 8px; }
+  .ct-stat { padding: 10px 12px; }
+  .ct-filtros { flex-wrap: wrap; gap: 4px; }
+  .ct-modal-body { padding: 16px; }
+  .ct-ver-topo { flex-direction: column; align-items: center; text-align: center; }
+  .ct-ver-avatar { width: 60px; height: 60px; }
+  .ct-ver-info h3 { font-size: 16px; }
+  .ct-form-grid { grid-template-columns: 1fr; }
+  .ct-foto-preview { width: 70px; height: 70px; }
+
+  /* ---- RELATÓRIOS ---- */
+  .pg-wrapper { padding: 16px 12px; }
+  .pg-card { padding: 16px 14px; }
+  .pg-toolbar { flex-direction: column; gap: 10px; align-items: stretch; }
+  .pg-filtros { flex-wrap: wrap; gap: 4px; }
+  .pg-filtro { font-size: 11px; padding: 6px 10px; }
+  .pg-search-wrap { width: 100%; }
+  .pg-search-wrap input { width: 100%; }
+  .rel-resumo { grid-template-columns: repeat(2, 1fr); gap: 8px; }
+  .rel-stat { padding: 10px 12px; }
+  .rel-stat-label { font-size: 10px; }
+  .rel-stat-valor { font-size: 20px; }
+
+  /* ---- MODAL NOVA AVALIAÇÃO ---- */
+  .na-modal-overlay { padding: 12px; }
+  .na-modal { border-radius: 12px; max-height: 95vh; }
+  .na-modal-header { padding: 14px 16px 12px; }
+  .na-modal-header-text h4 { font-size: 15px; }
+  .na-etapa { padding: 14px 16px; }
+  .na-tipo-cards { flex-direction: column; gap: 10px; }
+  .na-tipo-card { flex-direction: row; gap: 12px; padding: 12px 14px; text-align: left; }
+  .na-tipo-icon { width: 44px; height: 44px; font-size: 18px; flex-shrink: 0; }
+  .na-tipo-nome { font-size: 13px; }
+  .na-tipo-desc { font-size: 11px; }
+  .na-etapa-footer { flex-direction: column; gap: 8px; }
+  .na-btn-cancelar,
+  .na-btn-avancar,
+  .na-btn-salvar { width: 100%; justify-content: center; }
+  .na-stars span { font-size: 17px; }
+  .na-fab { bottom: 16px; right: 16px; padding: 10px 16px; font-size: 13px; }
+  .na-fab span { display: none; }
+
+  /* ---- LOGOUT CONFIRM ---- */
+  .logout-confirm-card { padding: 24px 18px; width: calc(100vw - 32px); }
+  .logout-confirm-card h4 { font-size: 15px; }
+  .logout-confirm-card p { font-size: 12px; }
+
+  /* ---- SOBRE ---- */
+  .sobre-hero { padding: 24px 18px; flex-direction: column; text-align: center; gap: 14px; }
+  .sobre-hero-titulo { font-size: 20px; }
+  .sobre-hero-desc { font-size: 13px; }
+  .sobre-features-grid { grid-template-columns: 1fr; }
+  .sobre-perfis-grid { grid-template-columns: 1fr; }
+  .sobre-dados-btns { flex-direction: column; }
+  .sobre-btn-exportar,
+  .sobre-btn-importar { width: 100%; }
+  .sobre-section-titulo { font-size: 15px; }
+
+  /* ---- BREADCRUMB ---- */
+  .breadcrumb { padding: 7px 12px; font-size: 10px; gap: 4px; }
+  .breadcrumb-sep { font-size: 9px; }
+}
+
+/* =============================================
+   MOBILE PEQUENO (≤ 480px)
+   ============================================= */
+@media (max-width: 480px) {
+
+  /* Header ainda mais compacto */
+  header { padding: 0 12px; height: 52px; }
+  header h2 { font-size: 13px; max-width: 90px; }
+
+  /* Busca: só ícone */
+  .busca-global-input { width: 0; padding: 0; border: none; background: transparent; }
+  .busca-global-wrap:focus-within .busca-global-input {
+    width: 140px;
+    padding: 8px 12px;
+    border: 1.5px solid var(--border);
+    background: #f8fafc;
+    transition: width 0.25s ease;
+  }
+
+  /* Cards 2 colunas menores */
+  .container { gap: 8px; }
+  .card { height: 100px; gap: 8px; border-radius: 10px; }
+  .card i { font-size: 20px; }
+  .card p { font-size: 10px; }
+
+  /* Stats em 2 colunas */
+  .dash-stats { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; width: 100%; }
+  .dash-stat { min-width: 0; }
+
+  /* Hero */
+  .dash-hero { padding: 18px 14px; border-radius: 12px; }
+  .dash-hero-title { font-size: 16px; }
+  .dash-hero-icon { width: 46px; height: 46px; font-size: 20px; border-radius: 12px; }
+
+  /* Nine Box ainda menor */
+  .nb-grid-area { padding: 8px; min-height: 300px; }
+  .nb-axis-y { width: 28px; }
+  .nb-box { padding: 4px; border-radius: 4px; }
+  .nb-box-name { display: none; }
+  .nb-chip-name { display: none; }
+  .nb-chip { padding: 2px 4px; }
+
+  /* Contatos: 1 coluna */
+  .ct-grid { grid-template-columns: 1fr; }
+
+  /* Relatórios: 1 coluna */
+  .rel-resumo { grid-template-columns: 1fr; }
+
+  /* Perfil */
+  .pf-layout { flex-direction: column; }
+  .pf-card-left { width: 100%; }
+  .pf-stats { flex-direction: row; flex-wrap: wrap; }
+  .pf-stat { flex: 1; min-width: 80px; }
+
+  /* Avaliações tipo cards: 1 coluna */
+  .av-tipo-card { max-width: 100%; }
+
+  /* Competências */
+  .comp-criterios-grid { grid-template-columns: 1fr; }
+  .comp-escala-grid { grid-template-columns: 1fr; }
+
+  /* Toolbar */
+  .pg-toolbar { gap: 8px; }
+
+  /* Botões de ação em coluna */
+  .nb-modal-actions { flex-direction: column; }
+  .nb-modal-btn { width: 100%; }
+}
+
+/* =============================================
+   MOBILE MUITO PEQUENO (≤ 360px)
+   ============================================= */
+@media (max-width: 360px) {
+
+  header { padding: 0 10px; }
+  header h2 { display: none; }
+
+  .navbar-link { padding: 10px 10px; }
+  .navbar-link i { font-size: 14px; }
+
+  .container { grid-template-columns: repeat(2, 1fr); gap: 6px; }
+  .card { height: 90px; }
+  .card i { font-size: 18px; }
+  .card p { font-size: 10px; }
+
+  .dash-hero { padding: 14px 12px; }
+  .dash-hero-title { font-size: 15px; }
+  .dash-hero-sub { display: none; }
+
+  .pg-card { padding: 14px 12px; }
+  .comp-main { padding: 12px 10px; }
+  .ct-main { padding: 12px 10px; }
+  .av-wrapper { padding: 12px 10px; }
+}
+
+/* =============================================
+   LANDSCAPE MOBILE (altura < 500px)
+   ============================================= */
+@media (max-height: 500px) and (orientation: landscape) {
+
+  header { height: 48px; }
+  .navbar { display: none; }
+
+  .nb-page { flex-direction: row; height: calc(100vh - 48px); }
+  .nb-panel { width: 220px; overflow-y: auto; }
+  .nb-grid-area { min-height: 0; }
+
+  .dash-hero { padding: 14px 18px; }
+  .dash-hero-icon { display: none; }
+  .dash-hero-sub { display: none; }
+
+  .wrapper { padding: 12px 16px; }
+}
+
+/* =============================================
+   TOUCH — Aumenta área de toque
+   ============================================= */
+@media (hover: none) and (pointer: coarse) {
+
+  .navbar-link { min-height: 44px; }
+  .nb-axis-btn { min-height: 44px; }
+  .pg-filtro,
+  .av-filtro,
+  .nb-filtro,
+  .ct-filtro { min-height: 36px; }
+
+  .nb-chip { min-height: 28px; padding: 4px 8px; }
+
+  /* Estrelas maiores para toque */
+  .stars span { font-size: 32px; padding: 2px; }
+  .na-stars span { font-size: 26px; padding: 2px; }
+  .av-criterio .stars span { font-size: 28px; }
+
+  /* Botões de ação maiores */
+  .ct-action-btn { width: 36px; height: 36px; }
+  .comp-btn-del,
+  .comp-btn-edit { min-height: 36px; }
+}
+
+/* =============================================
+   PRINT — Remove elementos desnecessários
+   ============================================= */
+@media print {
+  header, .navbar, .breadcrumb,
+  #scroll-top-btn, .na-fab,
+  .notif-wrap, .user-menu,
+  #dark-mode-btn { display: none !important; }
+
+  body { background: white; }
+  .wrapper { padding: 0; }
+  .pg-card, .av-form-card, .comp-form-card { box-shadow: none; border: 1px solid #ccc; }
+}
