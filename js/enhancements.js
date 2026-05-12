@@ -135,13 +135,14 @@
       try { return JSON.parse(localStorage.getItem('contatos') || '[]'); } catch(e) { return []; }
     })();
 
-    const nomeEl      = document.getElementById('user-dropdown-nome');
-    const tipoEl      = document.getElementById('user-dropdown-tipo');
-    const avatarEl    = document.getElementById('user-dropdown-avatar');
-    const btnSair     = document.getElementById('btn-sair-header');
-    const btnLogin    = document.getElementById('btn-login-header');
-    const btnPerfil   = document.getElementById('btn-meu-perfil');
-    const btnEditar   = document.getElementById('btn-editar-perfil');
+    const nomeEl   = document.getElementById('user-dropdown-nome');
+    const tipoEl   = document.getElementById('user-dropdown-tipo');
+    const avatarEl = document.getElementById('user-dropdown-avatar');
+    const acoesEl  = document.getElementById('user-dropdown-acoes');
+
+    // Determina o href correto para perfil
+    const isInPages = window.location.pathname.includes('/pages/');
+    const perfilHref = isInPages ? '../perfil.html' : 'perfil.html';
 
     if (sessao) {
       const pessoa = contatos.find(c => c.id === sessao.id);
@@ -149,40 +150,43 @@
         if (nomeEl) nomeEl.textContent = pessoa.nome;
         if (tipoEl) tipoEl.textContent = pessoa.tipo === 'professor' ? 'Professor' : pessoa.tipo === 'admin' ? 'Admin' : 'Estagiário';
 
-        // Foto ou iniciais no avatar
         if (avatarEl) {
           if (pessoa.foto) {
-            avatarEl.innerHTML = `<img src="${pessoa.foto}" alt="${pessoa.nome}" loading="lazy" style="width:100%;height:100%;object-fit:cover;border-radius:50%">`;
+            avatarEl.innerHTML = `<img src="${pessoa.foto}" alt="${pessoa.nome}" style="width:100%;height:100%;object-fit:cover;border-radius:50%">`;
           } else {
-            const iniciais = pessoa.nome.split(' ').slice(0, 2).map(p => p[0]).join('').toUpperCase();
-            avatarEl.innerHTML = iniciais;
+            avatarEl.innerHTML = pessoa.nome.split(' ').slice(0, 2).map(p => p[0]).join('').toUpperCase();
             avatarEl.style.fontSize = '14px';
           }
         }
 
-        // Atualiza o bonequinho do header com a foto
         const userBtn = document.getElementById('user-btn');
-        if (userBtn && pessoa.foto) {
-          userBtn.innerHTML = `<img src="${pessoa.foto}" alt="${pessoa.nome}" loading="lazy" style="width:100%;height:100%;object-fit:cover;border-radius:50%">`;
+        if (userBtn) {
+          if (pessoa.foto) {
+            userBtn.innerHTML = `<img src="${pessoa.foto}" alt="${pessoa.nome}" style="width:100%;height:100%;object-fit:cover;border-radius:50%">`;
+          } else {
+            userBtn.innerHTML = `<i class="fa-solid fa-user" aria-hidden="true"></i>`;
+          }
         }
 
-        // Logado: mostra Editar Perfil + Sair, oculta tudo mais
-        if (btnSair)   btnSair.style.display   = 'flex';
-        if (btnEditar) btnEditar.style.display = 'flex';
-        if (btnLogin)  btnLogin.style.display  = 'none';
-        if (btnPerfil) btnPerfil.style.display = 'none';
+        if (acoesEl) acoesEl.innerHTML = `
+          <a href="${perfilHref}" class="user-dropdown-item">
+            <i class="fa-solid fa-user-pen"></i> Editar Perfil
+          </a>
+          <button class="user-dropdown-item user-dropdown-sair" onclick="abrirConfirmacaoLogout()">
+            <i class="fa-solid fa-right-from-bracket"></i> Sair da conta
+          </button>`;
         return;
       }
     }
 
-    // Sem sessão: mostra Meu Perfil + Fazer login, oculta Sair e Editar
-    if (nomeEl)    nomeEl.textContent  = 'Visitante';
-    if (tipoEl)    tipoEl.textContent  = 'Não identificado';
-    if (avatarEl)  avatarEl.innerHTML  = '<i class="fa-solid fa-user"></i>';
-    if (btnSair)   btnSair.style.display   = 'none';
-    if (btnEditar) btnEditar.style.display = 'none';
-    if (btnLogin)  btnLogin.style.display  = 'flex';
-    if (btnPerfil) btnPerfil.style.display = 'flex';
+    if (nomeEl)   nomeEl.textContent = 'Visitante';
+    if (tipoEl)   tipoEl.textContent = 'Não identificado';
+    if (avatarEl) avatarEl.innerHTML = '<i class="fa-solid fa-user"></i>';
+
+    if (acoesEl) acoesEl.innerHTML = `
+      <a href="${perfilHref}" class="user-dropdown-item">
+        <i class="fa-solid fa-right-to-bracket"></i> Fazer login
+      </a>`;
   }
 
   // ====================================================================
