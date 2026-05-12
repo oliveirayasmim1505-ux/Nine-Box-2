@@ -151,6 +151,10 @@ function cadastrarPessoa() {
   });
   saveContatos(contatos);
 
+  // Faz login automático com o usuário recém-cadastrado
+  const novoUsuario = contatos[contatos.length - 1];
+  localStorage.setItem('perfilLogado', JSON.stringify({ id: novoUsuario.id }));
+
   // Limpa o formulário após cadastro bem-sucedido
   document.getElementById('cad-nome').value  = '';
   document.getElementById('cad-email').value = '';
@@ -164,7 +168,13 @@ function cadastrarPessoa() {
   if (preview) preview.innerHTML = `<i class="fa-solid fa-camera"></i><span>Adicionar foto</span>`;
   document.getElementById('cad-foto').value = '';
 
-  showToast('Cadastrado com sucesso!');
+  showToast(`${nome} cadastrado com sucesso! Você já está logado.`);
+
+  // Redireciona para a home após 1.5s
+  setTimeout(() => {
+    const isInPages = window.location.pathname.includes('/pages/');
+    window.location.href = isInPages ? '../index.html' : 'index.html';
+  }, 1500);
 }
 
 // ============================================================
