@@ -141,6 +141,7 @@
     const btnSair     = document.getElementById('btn-sair-header');
     const btnLogin    = document.getElementById('btn-login-header');
     const btnPerfil   = document.getElementById('btn-meu-perfil');
+    const btnEditar   = document.getElementById('btn-editar-perfil');
 
     if (sessao) {
       const pessoa = contatos.find(c => c.id === sessao.id);
@@ -159,27 +160,29 @@
           }
         }
 
-        // Também atualiza o bonequinho do header com a foto
+        // Atualiza o bonequinho do header com a foto
         const userBtn = document.getElementById('user-btn');
         if (userBtn && pessoa.foto) {
           userBtn.innerHTML = `<img src="${pessoa.foto}" alt="${pessoa.nome}" loading="lazy" style="width:100%;height:100%;object-fit:cover;border-radius:50%">`;
         }
 
-        // Logado: mostra Sair, oculta Login, oculta "Meu Perfil" (já tem Sair)
+        // Logado: mostra Editar Perfil + Sair, oculta tudo mais
         if (btnSair)   btnSair.style.display   = 'flex';
+        if (btnEditar) btnEditar.style.display = 'flex';
         if (btnLogin)  btnLogin.style.display  = 'none';
-        if (btnPerfil) btnPerfil.style.display = 'flex';
+        if (btnPerfil) btnPerfil.style.display = 'none';
         return;
       }
     }
 
-    // Sem sessão: mostra Login, oculta Sair
+    // Sem sessão: mostra Meu Perfil + Fazer login, oculta Sair e Editar
     if (nomeEl)    nomeEl.textContent  = 'Visitante';
     if (tipoEl)    tipoEl.textContent  = 'Não identificado';
     if (avatarEl)  avatarEl.innerHTML  = '<i class="fa-solid fa-user"></i>';
     if (btnSair)   btnSair.style.display   = 'none';
+    if (btnEditar) btnEditar.style.display = 'none';
     if (btnLogin)  btnLogin.style.display  = 'flex';
-    if (btnPerfil) btnPerfil.style.display = 'none';
+    if (btnPerfil) btnPerfil.style.display = 'flex';
   }
 
   // ====================================================================
