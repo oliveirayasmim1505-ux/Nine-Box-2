@@ -119,11 +119,52 @@
   };
 
   window.confirmarLogout = function () {
+    // Remove APENAS a sessão — todos os dados cadastrados ficam preservados
     localStorage.removeItem('perfilLogado');
     window.location.href = window.location.pathname.includes('/pages/')
       ? '../perfil.html'
       : 'perfil.html';
   };
+
+  // Mostra/oculta itens do dropdown conforme sessão ativa
+  function atualizarDropdownUsuario() {
+    const sessao = (() => {
+      try { return JSON.parse(localStorage.getItem('perfilLogado') || 'null'); } catch(e) { return null; }
+    })();
+    const contatos = (() => {
+      try { return JSON.parse(localStorage.getItem('contatos') || '[]'); } catch(e) { return []; }
+    })();
+
+    const nomeEl   = document.getElementById('user-dropdown-nome');
+    const tipoEl   = document.getElementById('user-dropdown-tipo');
+    const avatarEl = document.getElementById('user-dropdown-avatar');
+    const btnSair  = document.getElementById('btn-sair-header');
+    const btnLogin = document.getElementById('btn-login-header');
+
+    if (sessao) {
+      const pessoa = contatos.find(c => c.id === sessao.id);
+      if (pessoa) {
+        if (nomeEl)   nomeEl.textContent  = pessoa.nome;
+        if (tipoEl)   tipoEl.textContent  = pessoa.tipo === 'professor' ? 'Professor' : 'Estagiário';
+        if (btnSair)  btnSair.style.display  = 'flex';
+        if (btnLogin) btnLogin.style.display = 'none';
+        if (avatarEl) {
+          if (pessoa.foto) {
+            avatarEl.innerHTML = `<img src="${pessoa.foto}" alt="${pessoa.nome}" loading="lazy">`;
+          } else {
+            avatarEl.innerHTML = pessoa.nome.split(' ').slice(0, 2).map(p => p[0]).join('').toUpperCase();
+          }
+        }
+        return;
+      }
+    }
+
+    // Sem sessão
+    if (nomeEl)   nomeEl.textContent  = 'Visitante';
+    if (tipoEl)   tipoEl.textContent  = 'Não identificado';
+    if (btnSair)  btnSair.style.display  = 'none';
+    if (btnLogin) btnLogin.style.display = 'flex';
+  }
 
   // ====================================================================
   // LAZY LOAD DE IMAGENS
@@ -251,6 +292,7 @@
     injetarBreadcrumb();
     ativarLazyLoad();
     atualizarTitulo();
+    atualizarDropdownUsuario();
 
     // Pequeno delay para interceptar botões que podem ser criados dinamicamente
     setTimeout(interceptarBotoesSair, 300);
