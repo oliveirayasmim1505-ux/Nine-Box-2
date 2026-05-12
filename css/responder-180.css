@@ -1,13 +1,13 @@
 /* =============================================
-   RESPONDER 180° — FIEL AO PRINT
-   Card branco centralizado, critérios com
-   4 botões coloridos à direita, sem comentários.
+   RESPONDER 180° — MODELO DO PRINT
+   Critérios em grid 2x2, legenda colorida,
+   lista de avaliados com dropdowns por critério.
    ============================================= */
 
 .resp180-main {
   flex: 1;
-  padding: 32px 24px;
-  max-width: 720px;
+  padding: 28px 20px;
+  max-width: 780px;
   margin: 0 auto;
   width: 100%;
 }
@@ -21,11 +21,11 @@
   border-radius: 12px;
   box-shadow: var(--shadow-sm);
   overflow: hidden;
-  animation: r180FadeIn 0.28s ease both;
+  animation: r180In 0.28s ease both;
 }
 
-@keyframes r180FadeIn {
-  from { opacity: 0; transform: translateY(12px); }
+@keyframes r180In {
+  from { opacity: 0; transform: translateY(10px); }
   to   { opacity: 1; transform: translateY(0); }
 }
 
@@ -33,16 +33,15 @@
    CABEÇALHO DA COMPETÊNCIA
    ============================================= */
 .resp180-comp-header {
-  padding: 22px 24px 18px;
+  padding: 20px 24px 16px;
   border-bottom: 1px solid var(--border);
 }
 
 .resp180-comp-titulo {
-  font-size: 18px;
+  font-size: 17px;
   font-weight: 700;
   color: var(--primary);
-  margin: 0 0 6px;
-  line-height: 1.3;
+  margin: 0 0 5px;
 }
 
 .resp180-comp-desc {
@@ -65,10 +64,11 @@
 }
 
 /* =============================================
-   SEÇÃO DE CRITÉRIOS
+   SEÇÃO DE CRITÉRIOS — GRID 2x2
    ============================================= */
-.resp180-criterios-wrap {
-  padding: 16px 24px 8px;
+.resp180-criterios-section {
+  padding: 16px 24px 12px;
+  border-bottom: 1px solid var(--border);
 }
 
 .resp180-criterios-label {
@@ -78,146 +78,211 @@
   margin: 0 0 12px;
 }
 
-/* =============================================
-   CARD DE CRITÉRIO
-   ============================================= */
-.resp180-criterio-card {
+.resp180-criterios-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.resp180-criterio-grid-item {
   border: 1px solid var(--border);
   border-radius: 8px;
-  margin-bottom: 10px;
   overflow: hidden;
   background: #f8fafc;
-  transition: border-color 0.2s;
 }
 
-.resp180-criterio-card:focus-within {
-  border-color: var(--primary-light);
-}
-
-/* Topo do critério: "■ Critério N" + "Nota" */
-.resp180-criterio-top {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 7px 12px;
-  background: #f1f5f9;
-  border-bottom: 1px solid var(--border);
-}
-
-.resp180-criterio-tag {
+.resp180-criterio-grid-header {
   font-size: 11px;
   font-weight: 700;
   color: var(--primary);
+  padding: 7px 12px;
+  background: #f1f5f9;
+  border-bottom: 1px solid var(--border);
   display: flex;
   align-items: center;
   gap: 6px;
 }
 
-.resp180-criterio-tag i {
+.resp180-criterio-grid-header i {
   color: var(--primary-light);
-  font-size: 12px;
-}
-
-.resp180-nota-label {
   font-size: 11px;
-  font-weight: 600;
-  color: var(--text-muted);
-  text-transform: uppercase;
-  letter-spacing: 0.3px;
 }
 
-/* Corpo: texto à esquerda + botões à direita */
-.resp180-criterio-bottom {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  padding: 12px 12px 12px 14px;
-  background: white;
-}
-
-.resp180-criterio-texto {
-  flex: 1;
-  font-size: 13px;
+.resp180-criterio-grid-texto {
+  font-size: 12px;
   color: var(--text);
   margin: 0;
+  padding: 10px 12px;
   line-height: 1.5;
 }
 
 /* =============================================
-   GRUPO DE NOTAS — 4 botões coloridos
+   LEGENDA DAS NOTAS
    ============================================= */
-.resp180-nota-grupo {
-  display: flex;
-  gap: 6px;
-  flex-shrink: 0;
+.resp180-legenda-section {
+  padding: 14px 24px;
+  border-bottom: 1px solid var(--border);
 }
 
-.resp180-nota-btn {
-  width: 48px;
-  height: 48px;
-  margin: 0;
-  padding: 0;
-  border: none;
+.resp180-legenda-info {
+  font-size: 11px;
+  color: var(--text-muted);
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.resp180-legenda-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px;
+}
+
+.resp180-legenda-btn {
+  padding: 9px 14px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 700;
+  color: white;
+  text-align: center;
+}
+
+.resp180-legenda-btn.n1 { background: #ef4444; }
+.resp180-legenda-btn.n2 { background: #f59e0b; }
+.resp180-legenda-btn.n3 { background: #22c55e; }
+.resp180-legenda-btn.n4 { background: #3b82f6; }
+
+/* =============================================
+   SEÇÃO DE AVALIADOS
+   ============================================= */
+.resp180-avaliados-section {
+  padding: 14px 24px 8px;
+}
+
+.resp180-avaliados-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text);
+  margin: 0 0 10px;
+}
+
+.resp180-sem-avaliados {
+  font-size: 13px;
+  color: var(--text-muted);
+  text-align: center;
+  padding: 20px 0;
+}
+
+/* ---- CARD DE AVALIADO ---- */
+.resp180-avaliado-card {
+  border: 1px solid var(--border);
   border-radius: 8px;
-  font-size: 18px;
-  font-weight: 800;
-  cursor: pointer;
-  transition: all 0.15s ease;
+  margin-bottom: 10px;
+  overflow: hidden;
+  background: white;
+}
+
+/* Linha superior: avatar + nome + cargo */
+.resp180-avaliado-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 14px 8px;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.resp180-avaliado-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--primary), var(--primary-light));
+  color: white;
+  font-size: 13px;
+  font-weight: 700;
   display: flex;
   align-items: center;
   justify-content: center;
-  /* Não selecionado: cor pastel/opaca */
-  opacity: 0.28;
-  box-shadow: none;
+  flex-shrink: 0;
 }
 
-.resp180-nota-btn:hover {
-  opacity: 0.65;
-  transform: scale(1.08);
-  box-shadow: 0 3px 10px rgba(0,0,0,0.18);
+.resp180-avaliado-dados {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
 }
 
-/* Selecionado: cor sólida, destaque */
-.resp180-nota-btn.selected {
-  opacity: 1;
-  transform: scale(1.05);
+.resp180-avaliado-nome {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--primary);
 }
 
-/* Nota 1 — vermelho */
-.resp180-nota-btn.n1 {
-  background: #ef4444;
-  color: white;
-}
-.resp180-nota-btn.n1.selected {
-  box-shadow: 0 4px 14px rgba(239, 68, 68, 0.5);
+.resp180-avaliado-cargo {
+  font-size: 11px;
+  color: var(--text-muted);
 }
 
-/* Nota 2 — amarelo/laranja */
-.resp180-nota-btn.n2 {
-  background: #f59e0b;
-  color: white;
-}
-.resp180-nota-btn.n2.selected {
-  box-shadow: 0 4px 14px rgba(245, 158, 11, 0.5);
-}
-
-/* Nota 3 — verde */
-.resp180-nota-btn.n3 {
-  background: #22c55e;
-  color: white;
-}
-.resp180-nota-btn.n3.selected {
-  box-shadow: 0 4px 14px rgba(34, 197, 94, 0.5);
+/* Linha inferior: dropdowns por critério */
+.resp180-avaliado-dropdowns {
+  display: flex;
+  gap: 8px;
+  padding: 10px 14px;
+  flex-wrap: wrap;
+  align-items: flex-end;
 }
 
-/* Nota 4 — azul */
-.resp180-nota-btn.n4 {
-  background: #3b82f6;
-  color: white;
+.resp180-avaliado-criterio {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: 1;
+  min-width: 90px;
 }
-.resp180-nota-btn.n4.selected {
-  box-shadow: 0 4px 14px rgba(59, 130, 246, 0.5);
+
+.resp180-avaliado-criterio-label {
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  white-space: nowrap;
 }
+
+.resp180-tooltip-icon {
+  font-size: 9px;
+  color: var(--primary-light);
+  cursor: help;
+}
+
+/* ---- DROPDOWN DE NOTA ---- */
+.resp180-select-nota {
+  width: 100%;
+  padding: 6px 8px;
+  border: 1.5px solid var(--border);
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  font-family: inherit;
+  color: var(--text);
+  background: #f8fafc;
+  cursor: pointer;
+  transition: all 0.15s;
+  appearance: auto;
+}
+
+.resp180-select-nota:focus {
+  outline: none;
+  border-color: var(--primary-light);
+  box-shadow: 0 0 0 2px rgba(59,130,246,0.12);
+}
+
+/* Cores conforme nota selecionada */
+.resp180-select-nota.nota-1 { background: #ef4444; color: white; border-color: #ef4444; }
+.resp180-select-nota.nota-2 { background: #f59e0b; color: white; border-color: #f59e0b; }
+.resp180-select-nota.nota-3 { background: #22c55e; color: white; border-color: #22c55e; }
+.resp180-select-nota.nota-4 { background: #3b82f6; color: white; border-color: #3b82f6; }
 
 /* =============================================
    RODAPÉ: Voltar | paginação | Próximo
@@ -226,17 +291,16 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 16px 24px;
+  padding: 14px 24px;
   border-top: 1px solid var(--border);
-  gap: 12px;
   margin-top: 8px;
+  gap: 12px;
 }
 
-/* Botão Voltar — outline */
 .resp180-btn-voltar {
   margin: 0;
   width: auto;
-  padding: 9px 22px;
+  padding: 8px 20px;
   font-size: 13px;
   font-weight: 600;
   border-radius: 8px;
@@ -244,7 +308,7 @@
   background: white;
   color: var(--text-muted);
   cursor: pointer;
-  transition: all 0.18s;
+  transition: all 0.15s;
   box-shadow: none;
 }
 
@@ -256,11 +320,10 @@
   box-shadow: none;
 }
 
-/* Botão Próximo / Enviar — verde sólido */
 .resp180-btn-proximo {
   margin: 0;
   width: auto;
-  padding: 9px 28px;
+  padding: 8px 24px;
   font-size: 13px;
   font-weight: 700;
   border-radius: 8px;
@@ -268,19 +331,17 @@
   background: #16a34a;
   color: white;
   cursor: pointer;
-  transition: all 0.18s;
+  transition: all 0.15s;
   box-shadow: none;
 }
 
 .resp180-btn-proximo:hover {
   background: #15803d;
   transform: translateY(-1px);
-  box-shadow: 0 4px 14px rgba(22, 163, 74, 0.35);
+  box-shadow: 0 4px 12px rgba(22,163,74,0.3);
 }
 
-.resp180-btn-enviar {
-  background: #16a34a;
-}
+.resp180-btn-enviar { background: #16a34a; }
 
 .resp180-btn-enviar:disabled {
   opacity: 0.55;
@@ -289,10 +350,10 @@
   box-shadow: none;
 }
 
-/* Paginação numérica */
+/* Paginação */
 .resp180-paginacao {
   display: flex;
-  gap: 8px;
+  gap: 6px;
   align-items: center;
 }
 
@@ -303,7 +364,7 @@
   padding: 0;
   border-radius: 50%;
   font-size: 12px;
-  font-weight: 700;
+  font-weight: 600;
   cursor: pointer;
   border: none;
   background: transparent;
@@ -316,8 +377,8 @@
 }
 
 .resp180-pag-num:hover {
-  color: var(--primary);
   background: #eff6ff;
+  color: var(--primary);
   transform: none;
   box-shadow: none;
 }
@@ -336,66 +397,36 @@
    ============================================= */
 .resp180-erro {
   text-align: center;
-  padding: 60px 20px;
+  padding: 56px 20px;
   background: var(--surface);
   border-radius: 12px;
   border: 1px solid var(--border);
   color: var(--text-muted);
 }
 
-.resp180-erro i {
-  font-size: 44px;
-  color: var(--border);
-  display: block;
-  margin-bottom: 14px;
-}
-
-.resp180-erro h3 {
-  font-size: 17px;
-  color: var(--primary);
-  margin-bottom: 8px;
-}
-
-.resp180-erro a {
-  color: var(--primary-light);
-  font-weight: 600;
-}
+.resp180-erro i { font-size: 44px; color: var(--border); display: block; margin-bottom: 14px; }
+.resp180-erro h3 { font-size: 17px; color: var(--primary); margin-bottom: 8px; }
+.resp180-erro a { color: var(--primary-light); font-weight: 600; }
 
 .resp180-sucesso {
   text-align: center;
-  padding: 60px 20px;
+  padding: 56px 20px;
   background: var(--surface);
   border-radius: 12px;
   border: 1px solid var(--border);
   box-shadow: var(--shadow-sm);
-  animation: r180FadeIn 0.35s ease both;
+  animation: r180In 0.35s ease both;
 }
 
-.resp180-sucesso i {
-  font-size: 52px;
-  color: #16a34a;
-  display: block;
-  margin-bottom: 18px;
-}
-
-.resp180-sucesso h3 {
-  font-size: 20px;
-  font-weight: 700;
-  color: var(--primary);
-  margin-bottom: 8px;
-}
-
-.resp180-sucesso p {
-  font-size: 13px;
-  color: var(--text-muted);
-  margin-bottom: 22px;
-}
+.resp180-sucesso i { font-size: 52px; color: #16a34a; display: block; margin-bottom: 18px; }
+.resp180-sucesso h3 { font-size: 20px; font-weight: 700; color: var(--primary); margin-bottom: 8px; }
+.resp180-sucesso p { font-size: 13px; color: var(--text-muted); margin-bottom: 22px; }
 
 .resp180-sucesso-btn {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  padding: 11px 22px;
+  padding: 10px 22px;
   background: var(--primary);
   color: white;
   border-radius: 8px;
@@ -408,91 +439,51 @@
 .resp180-sucesso-btn:hover {
   background: #1d4ed8;
   transform: translateY(-1px);
-  box-shadow: 0 5px 16px rgba(30, 58, 138, 0.25);
+  box-shadow: 0 5px 16px rgba(30,58,138,0.25);
 }
 
 /* =============================================
    DARK MODE
    ============================================= */
-body.dark-mode .resp180-comp-page {
-  background: #1e293b;
-  border-color: #334155;
-}
-
-body.dark-mode .resp180-comp-header {
-  border-color: #334155;
-}
-
-body.dark-mode .resp180-criterio-card {
-  background: #0f172a;
-  border-color: #334155;
-}
-
-body.dark-mode .resp180-criterio-top {
-  background: #1e293b;
-  border-color: #334155;
-}
-
-body.dark-mode .resp180-criterio-bottom {
-  background: #0f172a;
-}
-
-body.dark-mode .resp180-criterio-texto {
-  color: #f1f5f9;
-}
-
-body.dark-mode .resp180-rodape {
-  border-color: #334155;
-}
-
-body.dark-mode .resp180-btn-voltar {
-  background: #0f172a;
-  border-color: #334155;
-  color: #94a3b8;
-}
-
-body.dark-mode .resp180-btn-voltar:hover {
-  background: #1e293b;
-  color: #93c5fd;
-  border-color: #60a5fa;
-}
-
-body.dark-mode .resp180-pag-num:hover {
-  background: #1e3a5f;
-  color: #93c5fd;
-}
-
-body.dark-mode .resp180-pag-num.active {
-  color: #93c5fd;
-}
-
+body.dark-mode .resp180-comp-page { background: #1e293b; border-color: #334155; }
+body.dark-mode .resp180-comp-header { border-color: #334155; }
+body.dark-mode .resp180-criterios-section { border-color: #334155; }
+body.dark-mode .resp180-criterio-grid-item { background: #0f172a; border-color: #334155; }
+body.dark-mode .resp180-criterio-grid-header { background: #1e293b; border-color: #334155; }
+body.dark-mode .resp180-criterio-grid-texto { color: #f1f5f9; }
+body.dark-mode .resp180-legenda-section { border-color: #334155; }
+body.dark-mode .resp180-avaliado-card { background: #0f172a; border-color: #334155; }
+body.dark-mode .resp180-avaliado-info { border-color: #1e293b; }
+body.dark-mode .resp180-avaliado-nome { color: #93c5fd; }
+body.dark-mode .resp180-select-nota { background: #1e293b; color: #f1f5f9; border-color: #334155; }
+body.dark-mode .resp180-rodape { border-color: #334155; }
+body.dark-mode .resp180-btn-voltar { background: #0f172a; border-color: #334155; color: #94a3b8; }
+body.dark-mode .resp180-btn-voltar:hover { background: #1e293b; color: #93c5fd; border-color: #60a5fa; }
+body.dark-mode .resp180-pag-num:hover { background: #1e3a5f; color: #93c5fd; }
+body.dark-mode .resp180-pag-num.active { color: #93c5fd; }
 body.dark-mode .resp180-erro,
-body.dark-mode .resp180-sucesso {
-  background: #1e293b;
-  border-color: #334155;
-}
+body.dark-mode .resp180-sucesso { background: #1e293b; border-color: #334155; }
 
 /* =============================================
    RESPONSIVE
    ============================================= */
 @media (max-width: 640px) {
   .resp180-main { padding: 14px 12px; }
-
-  .resp180-comp-header { padding: 18px 16px 14px; }
-  .resp180-comp-titulo { font-size: 16px; }
-
-  .resp180-criterios-wrap { padding: 12px 16px 6px; }
-
-  .resp180-criterio-bottom { flex-direction: column; align-items: flex-start; gap: 10px; }
-  .resp180-nota-grupo { width: 100%; justify-content: space-between; }
-  .resp180-nota-btn { flex: 1; height: 46px; font-size: 17px; border-radius: 10px; }
-
-  .resp180-rodape { padding: 14px 16px; flex-wrap: wrap; gap: 10px; }
+  .resp180-comp-header { padding: 16px 16px 12px; }
+  .resp180-comp-titulo { font-size: 15px; }
+  .resp180-criterios-section { padding: 12px 16px 10px; }
+  .resp180-criterios-grid { grid-template-columns: 1fr; }
+  .resp180-legenda-section { padding: 12px 16px; }
+  .resp180-legenda-grid { grid-template-columns: 1fr; }
+  .resp180-avaliados-section { padding: 12px 16px 6px; }
+  .resp180-avaliado-dropdowns { gap: 6px; }
+  .resp180-avaliado-criterio { min-width: 70px; }
+  .resp180-rodape { padding: 12px 16px; flex-wrap: wrap; gap: 8px; }
   .resp180-paginacao { order: -1; width: 100%; justify-content: center; }
-  .resp180-btn-voltar,
-  .resp180-btn-proximo { padding: 9px 18px; font-size: 13px; }
 }
 
-@media (max-width: 380px) {
-  .resp180-nota-btn { height: 42px; font-size: 16px; }
+@media (max-width: 420px) {
+  .resp180-avaliado-dropdowns { flex-direction: column; }
+  .resp180-avaliado-criterio { min-width: 0; width: 100%; }
+  .resp180-select-nota { width: 100%; }
 }
