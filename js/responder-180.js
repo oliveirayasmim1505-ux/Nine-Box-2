@@ -1,14 +1,11 @@
 // =============================================
 // RESPONDER-180.JS — Formulário de resposta
-// Modelo: uma competência por página, critérios
-// com botão de nota colorido (1-4) ao lado direito,
-// sem campo de comentário, paginação entre competências.
+// Modelo fiel ao print: uma competência por página,
+// cada critério tem 4 botões de nota (1-4) coloridos
+// à direita, sem comentários, paginação no rodapé.
 // =============================================
 
-// Notas selecionadas: { compId_criterioIdx: nota }
 const notasSelecionadas = {};
-
-// Página atual (índice da competência sendo exibida)
 let paginaAtual180 = 0;
 let competenciasGlobal = [];
 let avaliacaoGlobal = null;
@@ -16,7 +13,6 @@ let avaliacaoGlobal = null;
 function getRespostas180() {
   try { return JSON.parse(localStorage.getItem('respostas180') || '[]'); } catch(e) { return []; }
 }
-
 function saveRespostas180(data) {
   localStorage.setItem('respostas180', JSON.stringify(data));
 }
@@ -28,7 +24,7 @@ function selecionarNota(compId, criterioIdx, nota, btn) {
   const chave = `${compId}_${criterioIdx}`;
   notasSelecionadas[chave] = nota;
 
-  // Atualiza visual — desmarca irmãos, marca este
+  // Desmarca todos os botões do grupo e marca o clicado
   const grupo = btn.closest('.resp180-nota-grupo');
   if (grupo) {
     grupo.querySelectorAll('.resp180-nota-btn').forEach(b => {
@@ -50,7 +46,7 @@ function renderPagina(idx) {
   const container = document.getElementById('resp180-container');
   if (!container || !comp) return;
 
-  const criterios = comp.criterios && comp.criterios.length > 0
+  const criterios = (comp.criterios && comp.criterios.length > 0)
     ? comp.criterios
     : [
         'Demonstra conhecimento e aplicação prática',
@@ -59,37 +55,40 @@ function renderPagina(idx) {
         'Colabora com a equipe e busca melhorias',
       ];
 
+  // Monta cada linha de critério
   const criteriosHTML = criterios.map((criterio, cidx) => {
     const chave = `${comp.id}_${cidx}`;
     const notaAtual = notasSelecionadas[chave] || null;
 
     const notas = [
-      { n: 1, cor: 'n1', label: 'Não cumpre' },
-      { n: 2, cor: 'n2', label: 'Cumpre moderadamente' },
-      { n: 3, cor: 'n3', label: 'Cumpre sempre' },
-      { n: 4, cor: 'n4', label: 'Supera expectativas' },
+      { n: 1, cls: 'n1', title: 'Não cumpre' },
+      { n: 2, cls: 'n2', title: 'Cumpre moderadamente' },
+      { n: 3, cls: 'n3', title: 'Cumpre sempre' },
+      { n: 4, cls: 'n4', title: 'Supera expectativas' },
     ];
 
-    const botoesHTML = notas.map(({ n, cor, label }) => `
+    const botoesHTML = notas.map(({ n, cls, title }) => `
       <button
-        class="resp180-nota-btn ${cor} ${notaAtual === n ? 'selected' : ''}"
+        class="resp180-nota-btn ${cls}${notaAtual === n ? ' selected' : ''}"
         data-nota="${n}"
-        aria-label="Nota ${n}: ${label}"
-        aria-pressed="${notaAtual === n ? 'true' : 'false'}"
+        aria-label="Nota ${n}: ${title}"
+        aria-pressed="${notaAtual === n}"
         onclick="selecionarNota(${comp.id}, ${cidx}, ${n}, this)"
-        title="${label}"
+        title="${title}"
       >${n}</button>
     `).join('');
 
     return `
-      <div class="resp180-criterio-row">
-        <div class="resp180-criterio-header">
-          <span class="resp180-criterio-num">Critério ${cidx + 1}</span>
-          <span class="resp180-criterio-label-nota">Nota</span>
+      <div class="resp180-criterio-card">
+        <div class="resp180-criterio-top">
+          <span class="resp180-criterio-tag">
+            <i class="fa-solid fa-square-check" aria-hidden="true"></i> Critério ${cidx + 1}
+          </span>
+          <span class="resp180-nota-label">Nota</span>
         </div>
-        <div class="resp180-criterio-body">
+        <div class="resp180-criterio-bottom">
           <p class="resp180-criterio-texto">${criterio || `Critério ${cidx + 1}`}</p>
-          <div class="resp180-nota-grupo" role="group" aria-label="Selecione a nota para o critério ${cidx + 1}">
+          <div class="resp180-nota-grupo" role="group" aria-label="Nota para critério ${cidx + 1}">
             ${botoesHTML}
           </div>
         </div>
@@ -97,15 +96,15 @@ function renderPagina(idx) {
     `;
   }).join('');
 
-  // Paginação
+  // Paginação numérica
   const paginacaoHTML = `
-    <div class="resp180-paginacao">
+    <div class="resp180-paginacao" role="navigation" aria-label="Páginas de competências">
       ${Array.from({ length: total }, (_, i) => `
         <button
-          class="resp180-pag-dot ${i === idx ? 'active' : ''}"
+          class="resp180-pag-num${i === idx ? ' active' : ''}"
           onclick="irParaPagina(${i})"
-          aria-label="Competência ${i + 1}"
-          title="${competenciasGlobal[i].nome}"
+          aria-label="Competência ${i + 1}: ${competenciasGlobal[i].nome}"
+          aria-current="${i === idx ? 'page' : 'false'}"
         >${i + 1}</button>
       `).join('')}
     </div>
@@ -116,38 +115,40 @@ function renderPagina(idx) {
   container.innerHTML = `
     <div class="resp180-comp-page">
 
-      <!-- Título da competência -->
+      <!-- Cabeçalho: título + descrição da competência -->
       <div class="resp180-comp-header">
-        <div class="resp180-comp-header-left">
-          <h2 class="resp180-comp-titulo">${comp.nome}</h2>
-          ${comp.descricao ? `<p class="resp180-comp-subdesc"><i class="fa-solid fa-circle" style="font-size:7px;color:var(--success)"></i> ${comp.descricao}</p>` : ''}
-        </div>
-        <span class="resp180-comp-counter">${idx + 1} / ${total}</span>
+        <h2 class="resp180-comp-titulo">${comp.nome}</h2>
+        ${comp.descricao
+          ? `<p class="resp180-comp-desc">
+               <span class="resp180-desc-dot" aria-hidden="true"></span>
+               ${comp.descricao}
+             </p>`
+          : ''}
       </div>
 
-      <!-- Critérios de Avaliação -->
-      <div class="resp180-criterios-titulo">Critérios de Avaliação:</div>
-      <div class="resp180-criterios-lista">
+      <!-- Seção de critérios -->
+      <div class="resp180-criterios-wrap">
+        <p class="resp180-criterios-label">Critérios de Avaliação:</p>
         ${criteriosHTML}
       </div>
 
-      <!-- Navegação -->
-      <div class="resp180-nav">
+      <!-- Rodapé: Voltar | paginação | Próximo/Enviar -->
+      <div class="resp180-rodape">
         <button
-          class="resp180-nav-btn resp180-nav-voltar"
+          class="resp180-btn-voltar"
           onclick="${idx === 0 ? "window.location.href='avaliacao-180.html'" : `irParaPagina(${idx - 1})`}"
         >
-          <i class="fa-solid fa-arrow-left" aria-hidden="true"></i> Voltar
+          Voltar
         </button>
 
         ${paginacaoHTML}
 
         ${isUltima
-          ? `<button class="resp180-nav-btn resp180-nav-enviar" onclick="enviarRespostas()">
-               <i class="fa-solid fa-paper-plane" aria-hidden="true"></i> Enviar
+          ? `<button class="resp180-btn-proximo resp180-btn-enviar" onclick="enviarRespostas()">
+               Enviar
              </button>`
-          : `<button class="resp180-nav-btn resp180-nav-proximo" onclick="irParaPagina(${idx + 1})">
-               Próximo <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
+          : `<button class="resp180-btn-proximo" onclick="irParaPagina(${idx + 1})">
+               Próximo
              </button>`
         }
       </div>
@@ -175,7 +176,7 @@ function renderFormulario(avaliacao, respondente) {
   if (!avaliacao) {
     container.innerHTML = `
       <div class="resp180-erro">
-        <i class="fa-solid fa-circle-exclamation"></i>
+        <i class="fa-solid fa-circle-exclamation" aria-hidden="true"></i>
         <h3>Avaliação não encontrada</h3>
         <p>O ID informado não corresponde a nenhuma avaliação 180° cadastrada.</p>
         <a href="avaliacao-180.html">← Voltar para lista</a>
@@ -184,11 +185,10 @@ function renderFormulario(avaliacao, respondente) {
   }
 
   const competencias = avaliacao.competencias || [];
-
   if (competencias.length === 0) {
     container.innerHTML = `
       <div class="resp180-erro">
-        <i class="fa-solid fa-clipboard-list"></i>
+        <i class="fa-solid fa-clipboard-list" aria-hidden="true"></i>
         <h3>Sem competências</h3>
         <p>Esta avaliação não possui competências vinculadas.</p>
         <a href="avaliacao-180.html">← Voltar para lista</a>
@@ -198,7 +198,6 @@ function renderFormulario(avaliacao, respondente) {
 
   avaliacaoGlobal = avaliacao;
   competenciasGlobal = competencias;
-
   renderPagina(0);
 }
 
@@ -211,37 +210,25 @@ function enviarRespostas() {
   const avaliacoes180 = (() => { try { return JSON.parse(localStorage.getItem('avaliacoes180') || '[]'); } catch(e) { return []; } })();
   const avaliacao = avaliacoes180.find(a => a.id === id);
 
-  if (!avaliacao) {
-    showToast('Avaliação não encontrada.', 'error');
-    return;
-  }
+  if (!avaliacao) { showToast('Avaliação não encontrada.', 'error'); return; }
 
   const competencias = avaliacao.competencias || [];
   const sessao = (() => { try { return JSON.parse(localStorage.getItem('perfilLogado') || 'null'); } catch(e) { return null; } })();
   const contatos = (() => { try { return JSON.parse(localStorage.getItem('contatos') || '[]'); } catch(e) { return []; } })();
   const respondente = sessao ? contatos.find(c => c.id === sessao.id) : null;
 
-  // Montar respostas por competência
   const respostasComp = competencias.map(comp => {
     const criterios = comp.criterios || [];
-    const qtdCriterios = criterios.length > 0 ? criterios.length : 4;
-
-    const notas = [];
-    for (let i = 0; i < qtdCriterios; i++) {
-      notas.push(notasSelecionadas[`${comp.id}_${i}`] || null);
-    }
-
-    const notasValidas = notas.filter(n => n !== null);
-    const media = notasValidas.length > 0
-      ? (notasValidas.reduce((a, b) => a + b, 0) / notasValidas.length).toFixed(2)
+    const qtd = criterios.length > 0 ? criterios.length : 4;
+    const notas = Array.from({ length: qtd }, (_, i) => notasSelecionadas[`${comp.id}_${i}`] || null);
+    const validas = notas.filter(n => n !== null);
+    const media = validas.length > 0
+      ? (validas.reduce((a, b) => a + b, 0) / validas.length).toFixed(2)
       : null;
-
     return { compId: comp.id, compNome: comp.nome, notas, media, comentario: '' };
   });
 
-  // Verifica se pelo menos uma nota foi dada
-  const algumaNota = respostasComp.some(r => r.notas.some(n => n !== null));
-  if (!algumaNota) {
+  if (!respostasComp.some(r => r.notas.some(n => n !== null))) {
     showToast('Selecione pelo menos uma nota antes de enviar.', 'error');
     return;
   }
@@ -262,24 +249,21 @@ function enviarRespostas() {
   respostas.push(registro);
   saveRespostas180(respostas);
 
-  // Desabilita botão para evitar duplo clique
-  const btnEnviar = document.querySelector('.resp180-nav-enviar');
+  const btnEnviar = document.querySelector('.resp180-btn-enviar');
   if (btnEnviar) btnEnviar.disabled = true;
 
-  // Tela de sucesso
   const container = document.getElementById('resp180-container');
   if (container) {
     container.innerHTML = `
       <div class="resp180-sucesso">
-        <i class="fa-solid fa-circle-check"></i>
+        <i class="fa-solid fa-circle-check" aria-hidden="true"></i>
         <h3>Respostas enviadas com sucesso!</h3>
-        <p>Suas respostas para a avaliação <strong>${avaliacao.nome}</strong> foram registradas.</p>
+        <p>Suas respostas para <strong>${avaliacao.nome}</strong> foram registradas.</p>
         <a href="avaliacao-180.html" class="resp180-sucesso-btn">
-          <i class="fa-solid fa-arrow-left"></i> Voltar para Avaliações 180°
+          <i class="fa-solid fa-arrow-left" aria-hidden="true"></i> Voltar para Avaliações 180°
         </a>
       </div>`;
   }
-
   showToast('Respostas enviadas!');
 }
 
@@ -289,13 +273,10 @@ function enviarRespostas() {
 document.addEventListener('DOMContentLoaded', () => {
   const params = new URLSearchParams(window.location.search);
   const id = parseInt(params.get('id'));
-
   const avaliacoes180 = (() => { try { return JSON.parse(localStorage.getItem('avaliacoes180') || '[]'); } catch(e) { return []; } })();
   const avaliacao = avaliacoes180.find(a => a.id === id) || null;
-
   const sessao = (() => { try { return JSON.parse(localStorage.getItem('perfilLogado') || 'null'); } catch(e) { return null; } })();
   const contatos = (() => { try { return JSON.parse(localStorage.getItem('contatos') || '[]'); } catch(e) { return []; } })();
   const respondente = sessao ? contatos.find(c => c.id === sessao.id) : null;
-
   renderFormulario(avaliacao, respondente);
 });
