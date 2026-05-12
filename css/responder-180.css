@@ -1,13 +1,13 @@
 /* =============================================
-   RESPONDER 180° — MODELO DO PRINT
-   Critérios em grid 2x2, legenda colorida,
-   lista de avaliados com dropdowns por critério.
+   RESPONDER 180°
+   Dois modos: estagiário (botão colorido grande)
+               gestor (dropdowns por avaliado)
    ============================================= */
 
 .resp180-main {
   flex: 1;
   padding: 28px 20px;
-  max-width: 780px;
+  max-width: 760px;
   margin: 0 auto;
   width: 100%;
 }
@@ -20,7 +20,7 @@
   border: 1px solid var(--border);
   border-radius: 12px;
   box-shadow: var(--shadow-sm);
-  overflow: hidden;
+  overflow: visible;
   animation: r180In 0.28s ease both;
 }
 
@@ -30,7 +30,7 @@
 }
 
 /* =============================================
-   CABEÇALHO DA COMPETÊNCIA
+   CABEÇALHO
    ============================================= */
 .resp180-comp-header {
   padding: 20px 24px 16px;
@@ -64,20 +64,220 @@
 }
 
 /* =============================================
-   SEÇÃO DE CRITÉRIOS — GRID 2x2
+   SEÇÃO DE CRITÉRIOS — MODO ESTAGIÁRIO
    ============================================= */
 .resp180-criterios-section {
   padding: 16px 24px 12px;
-  border-bottom: 1px solid var(--border);
 }
 
-.resp180-criterios-label {
+.resp180-criterios-label,
+.resp180-avaliados-label {
   font-size: 13px;
   font-weight: 600;
   color: var(--text);
   margin: 0 0 12px;
 }
 
+/* ---- CARD DE CRITÉRIO ---- */
+.resp180-criterio-card {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  margin-bottom: 10px;
+  overflow: visible;
+  background: #f8fafc;
+}
+
+.resp180-criterio-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 7px 12px;
+  background: #f1f5f9;
+  border-bottom: 1px solid var(--border);
+  border-radius: 8px 8px 0 0;
+}
+
+.resp180-criterio-tag {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--primary);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.resp180-criterio-tag i { color: var(--primary-light); font-size: 11px; }
+
+.resp180-nota-label-topo {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+
+/* Corpo: texto + botão de nota */
+.resp180-criterio-bottom {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 12px 12px 12px 14px;
+  background: white;
+  border-radius: 0 0 8px 8px;
+}
+
+.resp180-criterio-texto {
+  flex: 1;
+  font-size: 13px;
+  color: var(--text);
+  margin: 0;
+  line-height: 1.5;
+}
+
+/* =============================================
+   BOTÃO DE NOTA COLORIDO + DROPDOWN
+   ============================================= */
+.resp180-nota-wrap {
+  position: relative;
+  flex-shrink: 0;
+}
+
+/* Botão principal colorido */
+.resp180-nota-display-btn {
+  width: 64px;
+  height: 52px;
+  margin: 0;
+  padding: 0 8px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 4px;
+  transition: all 0.15s;
+  background: #e2e8f0;
+  box-shadow: none;
+}
+
+.resp180-nota-display-btn:hover {
+  transform: none;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+}
+
+/* Número da nota */
+.resp180-nota-display {
+  font-size: 22px;
+  font-weight: 800;
+  color: #94a3b8;
+  line-height: 1;
+}
+
+/* Chevron */
+.resp180-nota-chevron {
+  font-size: 10px;
+  color: #94a3b8;
+  transition: transform 0.15s;
+}
+
+/* Cores quando nota selecionada */
+.resp180-nota-display-btn.n1 { background: #ef4444; }
+.resp180-nota-display-btn.n2 { background: #f59e0b; }
+.resp180-nota-display-btn.n3 { background: #22c55e; }
+.resp180-nota-display-btn.n4 { background: #3b82f6; }
+
+.resp180-nota-display-btn.n1 .resp180-nota-display,
+.resp180-nota-display-btn.n2 .resp180-nota-display,
+.resp180-nota-display-btn.n3 .resp180-nota-display,
+.resp180-nota-display-btn.n4 .resp180-nota-display { color: white; }
+
+.resp180-nota-display-btn.n1 .resp180-nota-chevron,
+.resp180-nota-display-btn.n2 .resp180-nota-chevron,
+.resp180-nota-display-btn.n3 .resp180-nota-chevron,
+.resp180-nota-display-btn.n4 .resp180-nota-chevron { color: rgba(255,255,255,0.8); }
+
+/* Dropdown de opções */
+.resp180-nota-dropdown {
+  display: none;
+  position: absolute;
+  right: 0;
+  top: calc(100% + 6px);
+  background: var(--surface);
+  border: 1.5px solid var(--border);
+  border-radius: 10px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+  z-index: 100;
+  min-width: 220px;
+  overflow: hidden;
+  animation: dropIn 0.15s ease;
+}
+
+.resp180-nota-dropdown.open { display: block; }
+
+@keyframes dropIn {
+  from { opacity: 0; transform: translateY(-6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Opção de nota no dropdown */
+.resp180-nota-opcao {
+  width: 100%;
+  margin: 0;
+  padding: 10px 14px;
+  border: none;
+  border-radius: 0;
+  background: transparent;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-align: left;
+  transition: background 0.12s;
+  box-shadow: none;
+  border-bottom: 1px solid var(--border);
+}
+
+.resp180-nota-opcao:last-child { border-bottom: none; }
+
+.resp180-nota-opcao:hover { transform: none; box-shadow: none; }
+
+.resp180-nota-opcao.n1:hover { background: #fee2e2; }
+.resp180-nota-opcao.n2:hover { background: #fef3c7; }
+.resp180-nota-opcao.n3:hover { background: #dcfce7; }
+.resp180-nota-opcao.n4:hover { background: #dbeafe; }
+
+.resp180-nota-opcao.selected.n1 { background: #fee2e2; }
+.resp180-nota-opcao.selected.n2 { background: #fef3c7; }
+.resp180-nota-opcao.selected.n3 { background: #dcfce7; }
+.resp180-nota-opcao.selected.n4 { background: #dbeafe; }
+
+.resp180-nota-opcao-num {
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 800;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.resp180-nota-opcao.n1 .resp180-nota-opcao-num { background: #ef4444; }
+.resp180-nota-opcao.n2 .resp180-nota-opcao-num { background: #f59e0b; }
+.resp180-nota-opcao.n3 .resp180-nota-opcao-num { background: #22c55e; }
+.resp180-nota-opcao.n4 .resp180-nota-opcao-num { background: #3b82f6; }
+
+.resp180-nota-opcao-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text);
+}
+
+/* =============================================
+   MODO GESTOR — grid 2x2 + avaliados
+   ============================================= */
 .resp180-criterios-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -103,10 +303,7 @@
   gap: 6px;
 }
 
-.resp180-criterio-grid-header i {
-  color: var(--primary-light);
-  font-size: 11px;
-}
+.resp180-criterio-grid-header i { color: var(--primary-light); font-size: 11px; }
 
 .resp180-criterio-grid-texto {
   font-size: 12px;
@@ -116,11 +313,10 @@
   line-height: 1.5;
 }
 
-/* =============================================
-   LEGENDA DAS NOTAS
-   ============================================= */
+/* Legenda */
 .resp180-legenda-section {
   padding: 14px 24px;
+  border-top: 1px solid var(--border);
   border-bottom: 1px solid var(--border);
 }
 
@@ -153,28 +349,10 @@
 .resp180-legenda-btn.n3 { background: #22c55e; }
 .resp180-legenda-btn.n4 { background: #3b82f6; }
 
-/* =============================================
-   SEÇÃO DE AVALIADOS
-   ============================================= */
-.resp180-avaliados-section {
-  padding: 14px 24px 8px;
-}
+/* Avaliados */
+.resp180-avaliados-section { padding: 14px 24px 8px; }
+.resp180-sem-avaliados { font-size: 13px; color: var(--text-muted); text-align: center; padding: 20px 0; }
 
-.resp180-avaliados-label {
-  font-size: 13px;
-  font-weight: 600;
-  color: var(--text);
-  margin: 0 0 10px;
-}
-
-.resp180-sem-avaliados {
-  font-size: 13px;
-  color: var(--text-muted);
-  text-align: center;
-  padding: 20px 0;
-}
-
-/* ---- CARD DE AVALIADO ---- */
 .resp180-avaliado-card {
   border: 1px solid var(--border);
   border-radius: 8px;
@@ -183,7 +361,6 @@
   background: white;
 }
 
-/* Linha superior: avatar + nome + cargo */
 .resp180-avaliado-info {
   display: flex;
   align-items: center;
@@ -206,30 +383,15 @@
   flex-shrink: 0;
 }
 
-.resp180-avaliado-dados {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-}
+.resp180-avaliado-nome { font-size: 13px; font-weight: 700; color: var(--primary); }
+.resp180-avaliado-cargo { font-size: 11px; color: var(--text-muted); }
+.resp180-avaliado-dados { display: flex; flex-direction: column; gap: 2px; }
 
-.resp180-avaliado-nome {
-  font-size: 13px;
-  font-weight: 700;
-  color: var(--primary);
-}
-
-.resp180-avaliado-cargo {
-  font-size: 11px;
-  color: var(--text-muted);
-}
-
-/* Linha inferior: dropdowns por critério */
 .resp180-avaliado-dropdowns {
   display: flex;
   gap: 8px;
   padding: 10px 14px;
   flex-wrap: wrap;
-  align-items: flex-end;
 }
 
 .resp180-avaliado-criterio {
@@ -244,19 +406,9 @@
   font-size: 10px;
   font-weight: 700;
   color: var(--text-muted);
-  display: flex;
-  align-items: center;
-  gap: 4px;
   white-space: nowrap;
 }
 
-.resp180-tooltip-icon {
-  font-size: 9px;
-  color: var(--primary-light);
-  cursor: help;
-}
-
-/* ---- DROPDOWN DE NOTA ---- */
 .resp180-select-nota {
   width: 100%;
   padding: 6px 8px;
@@ -269,23 +421,16 @@
   background: #f8fafc;
   cursor: pointer;
   transition: all 0.15s;
-  appearance: auto;
 }
 
-.resp180-select-nota:focus {
-  outline: none;
-  border-color: var(--primary-light);
-  box-shadow: 0 0 0 2px rgba(59,130,246,0.12);
-}
-
-/* Cores conforme nota selecionada */
+.resp180-select-nota:focus { outline: none; border-color: var(--primary-light); }
 .resp180-select-nota.nota-1 { background: #ef4444; color: white; border-color: #ef4444; }
 .resp180-select-nota.nota-2 { background: #f59e0b; color: white; border-color: #f59e0b; }
 .resp180-select-nota.nota-3 { background: #22c55e; color: white; border-color: #22c55e; }
 .resp180-select-nota.nota-4 { background: #3b82f6; color: white; border-color: #3b82f6; }
 
 /* =============================================
-   RODAPÉ: Voltar | paginação | Próximo
+   RODAPÉ
    ============================================= */
 .resp180-rodape {
   display: flex;
@@ -298,156 +443,89 @@
 }
 
 .resp180-btn-voltar {
-  margin: 0;
-  width: auto;
-  padding: 8px 20px;
-  font-size: 13px;
-  font-weight: 600;
-  border-radius: 8px;
-  border: 1.5px solid var(--border);
-  background: white;
-  color: var(--text-muted);
-  cursor: pointer;
-  transition: all 0.15s;
-  box-shadow: none;
+  margin: 0; width: auto; padding: 8px 20px;
+  font-size: 13px; font-weight: 600; border-radius: 8px;
+  border: 1.5px solid var(--border); background: white;
+  color: var(--text-muted); cursor: pointer;
+  transition: all 0.15s; box-shadow: none;
 }
 
 .resp180-btn-voltar:hover {
-  border-color: var(--primary-light);
-  color: var(--primary);
-  background: #f0f9ff;
-  transform: none;
-  box-shadow: none;
+  border-color: var(--primary-light); color: var(--primary);
+  background: #f0f9ff; transform: none; box-shadow: none;
 }
 
 .resp180-btn-proximo {
-  margin: 0;
-  width: auto;
-  padding: 8px 24px;
-  font-size: 13px;
-  font-weight: 700;
-  border-radius: 8px;
-  border: none;
-  background: #16a34a;
-  color: white;
-  cursor: pointer;
-  transition: all 0.15s;
-  box-shadow: none;
+  margin: 0; width: auto; padding: 8px 24px;
+  font-size: 13px; font-weight: 700; border-radius: 8px;
+  border: none; background: #16a34a; color: white;
+  cursor: pointer; transition: all 0.15s; box-shadow: none;
 }
 
 .resp180-btn-proximo:hover {
-  background: #15803d;
-  transform: translateY(-1px);
+  background: #15803d; transform: translateY(-1px);
   box-shadow: 0 4px 12px rgba(22,163,74,0.3);
 }
 
 .resp180-btn-enviar { background: #16a34a; }
+.resp180-btn-enviar:disabled { opacity: 0.55; cursor: not-allowed; transform: none; box-shadow: none; }
 
-.resp180-btn-enviar:disabled {
-  opacity: 0.55;
-  cursor: not-allowed;
-  transform: none;
-  box-shadow: none;
-}
-
-/* Paginação */
-.resp180-paginacao {
-  display: flex;
-  gap: 6px;
-  align-items: center;
-}
+.resp180-paginacao { display: flex; gap: 6px; align-items: center; }
 
 .resp180-pag-num {
-  width: 28px;
-  height: 28px;
-  margin: 0;
-  padding: 0;
-  border-radius: 50%;
-  font-size: 12px;
-  font-weight: 600;
-  cursor: pointer;
-  border: none;
-  background: transparent;
-  color: var(--text-muted);
-  transition: all 0.15s;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: none;
+  width: 28px; height: 28px; margin: 0; padding: 0;
+  border-radius: 50%; font-size: 12px; font-weight: 600;
+  cursor: pointer; border: none; background: transparent;
+  color: var(--text-muted); transition: all 0.15s;
+  display: flex; align-items: center; justify-content: center; box-shadow: none;
 }
 
-.resp180-pag-num:hover {
-  background: #eff6ff;
-  color: var(--primary);
-  transform: none;
-  box-shadow: none;
-}
-
-.resp180-pag-num.active {
-  color: var(--primary);
-  font-weight: 800;
-  font-size: 14px;
-  background: transparent;
-  transform: none;
-  box-shadow: none;
-}
+.resp180-pag-num:hover { background: #eff6ff; color: var(--primary); transform: none; box-shadow: none; }
+.resp180-pag-num.active { color: var(--primary); font-weight: 800; font-size: 14px; }
 
 /* =============================================
    ERRO / SUCESSO
    ============================================= */
 .resp180-erro {
-  text-align: center;
-  padding: 56px 20px;
-  background: var(--surface);
-  border-radius: 12px;
-  border: 1px solid var(--border);
-  color: var(--text-muted);
+  text-align: center; padding: 56px 20px;
+  background: var(--surface); border-radius: 12px;
+  border: 1px solid var(--border); color: var(--text-muted);
 }
-
 .resp180-erro i { font-size: 44px; color: var(--border); display: block; margin-bottom: 14px; }
 .resp180-erro h3 { font-size: 17px; color: var(--primary); margin-bottom: 8px; }
 .resp180-erro a { color: var(--primary-light); font-weight: 600; }
 
 .resp180-sucesso {
-  text-align: center;
-  padding: 56px 20px;
-  background: var(--surface);
-  border-radius: 12px;
-  border: 1px solid var(--border);
-  box-shadow: var(--shadow-sm);
+  text-align: center; padding: 56px 20px;
+  background: var(--surface); border-radius: 12px;
+  border: 1px solid var(--border); box-shadow: var(--shadow-sm);
   animation: r180In 0.35s ease both;
 }
-
 .resp180-sucesso i { font-size: 52px; color: #16a34a; display: block; margin-bottom: 18px; }
 .resp180-sucesso h3 { font-size: 20px; font-weight: 700; color: var(--primary); margin-bottom: 8px; }
 .resp180-sucesso p { font-size: 13px; color: var(--text-muted); margin-bottom: 22px; }
 
 .resp180-sucesso-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 10px 22px;
-  background: var(--primary);
-  color: white;
-  border-radius: 8px;
-  font-size: 13px;
-  font-weight: 600;
-  text-decoration: none;
-  transition: all 0.2s;
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 10px 22px; background: var(--primary); color: white;
+  border-radius: 8px; font-size: 13px; font-weight: 600;
+  text-decoration: none; transition: all 0.2s;
 }
-
-.resp180-sucesso-btn:hover {
-  background: #1d4ed8;
-  transform: translateY(-1px);
-  box-shadow: 0 5px 16px rgba(30,58,138,0.25);
-}
+.resp180-sucesso-btn:hover { background: #1d4ed8; transform: translateY(-1px); box-shadow: 0 5px 16px rgba(30,58,138,0.25); }
 
 /* =============================================
    DARK MODE
    ============================================= */
 body.dark-mode .resp180-comp-page { background: #1e293b; border-color: #334155; }
 body.dark-mode .resp180-comp-header { border-color: #334155; }
-body.dark-mode .resp180-criterios-section { border-color: #334155; }
+body.dark-mode .resp180-criterio-card { background: #0f172a; border-color: #334155; }
+body.dark-mode .resp180-criterio-top { background: #1e293b; border-color: #334155; }
+body.dark-mode .resp180-criterio-bottom { background: #0f172a; }
+body.dark-mode .resp180-criterio-texto { color: #f1f5f9; }
+body.dark-mode .resp180-nota-display-btn:not([class*="n1"]):not([class*="n2"]):not([class*="n3"]):not([class*="n4"]) { background: #334155; }
+body.dark-mode .resp180-nota-dropdown { background: #1e293b; border-color: #334155; }
+body.dark-mode .resp180-nota-opcao { border-color: #334155; }
+body.dark-mode .resp180-nota-opcao-label { color: #f1f5f9; }
 body.dark-mode .resp180-criterio-grid-item { background: #0f172a; border-color: #334155; }
 body.dark-mode .resp180-criterio-grid-header { background: #1e293b; border-color: #334155; }
 body.dark-mode .resp180-criterio-grid-texto { color: #f1f5f9; }
@@ -461,8 +539,7 @@ body.dark-mode .resp180-btn-voltar { background: #0f172a; border-color: #334155;
 body.dark-mode .resp180-btn-voltar:hover { background: #1e293b; color: #93c5fd; border-color: #60a5fa; }
 body.dark-mode .resp180-pag-num:hover { background: #1e3a5f; color: #93c5fd; }
 body.dark-mode .resp180-pag-num.active { color: #93c5fd; }
-body.dark-mode .resp180-erro,
-body.dark-mode .resp180-sucesso { background: #1e293b; border-color: #334155; }
+body.dark-mode .resp180-erro, body.dark-mode .resp180-sucesso { background: #1e293b; border-color: #334155; }
 
 /* =============================================
    RESPONSIVE
@@ -472,18 +549,14 @@ body.dark-mode .resp180-sucesso { background: #1e293b; border-color: #334155; }
   .resp180-comp-header { padding: 16px 16px 12px; }
   .resp180-comp-titulo { font-size: 15px; }
   .resp180-criterios-section { padding: 12px 16px 10px; }
+  .resp180-criterio-bottom { gap: 10px; }
+  .resp180-nota-display-btn { width: 54px; height: 46px; }
+  .resp180-nota-display { font-size: 18px; }
+  .resp180-nota-dropdown { right: 0; min-width: 190px; }
   .resp180-criterios-grid { grid-template-columns: 1fr; }
   .resp180-legenda-section { padding: 12px 16px; }
   .resp180-legenda-grid { grid-template-columns: 1fr; }
   .resp180-avaliados-section { padding: 12px 16px 6px; }
-  .resp180-avaliado-dropdowns { gap: 6px; }
-  .resp180-avaliado-criterio { min-width: 70px; }
   .resp180-rodape { padding: 12px 16px; flex-wrap: wrap; gap: 8px; }
   .resp180-paginacao { order: -1; width: 100%; justify-content: center; }
-}
-
-@media (max-width: 420px) {
-  .resp180-avaliado-dropdowns { flex-direction: column; }
-  .resp180-avaliado-criterio { min-width: 0; width: 100%; }
-  .resp180-select-nota { width: 100%; }
 }
