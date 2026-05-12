@@ -127,7 +127,11 @@
   };
 
   // Mostra/oculta itens do dropdown conforme sessão ativa
+  // Só executa se o dropdown ainda não foi preenchido pelo script inline da página
   function atualizarDropdownUsuario() {
+    const acoesEl = document.getElementById('user-dropdown-acoes');
+    // Se já foi preenchido pelo script inline da página, não sobrescreve
+    if (acoesEl && acoesEl.innerHTML.trim() !== '') return;
     const sessao = (() => {
       try { return JSON.parse(localStorage.getItem('perfilLogado') || 'null'); } catch(e) { return null; }
     })();
