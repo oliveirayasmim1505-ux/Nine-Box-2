@@ -96,7 +96,8 @@ header a::before {
   border-bottom: 1px solid var(--border);
   padding: 0 32px;
   overflow-x: auto;
-  overflow-y: hidden;
+  overflow-y: visible;
+  position: relative;
 }
 
 .navbar-nav {
@@ -213,11 +214,14 @@ header a::before {
   list-style: none;
   padding: 6px 0;
   animation: dropdownIn 0.18s ease;
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
 }
 
 .navbar-item-dropdown.open .navbar-submenu,
 .navbar-item-dropdown:hover .navbar-submenu {
-  display: block;
+  display: block !important;
 }
 
 .navbar-submenu-link {

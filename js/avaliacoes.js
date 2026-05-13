@@ -226,10 +226,10 @@ function aplicarPermissoes() {
     }
   }
 
-  // Oculta o card de estagiário na tela de seleção para não-gestores
+  // Card de estagiário sempre visível na tela de seleção
   const cardEstagiario = document.getElementById('card-estagiario');
-  if (cardEstagiario && !isGestor()) {
-    cardEstagiario.style.display = 'none';
+  if (cardEstagiario) {
+    cardEstagiario.style.display = '';
   }
 }
 

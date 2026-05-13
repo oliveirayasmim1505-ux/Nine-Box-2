@@ -1,0 +1,83 @@
+/* Fix para garantir que o submenu apareça */
+.navbar {
+  overflow: visible !important;
+  position: relative !important;
+}
+
+.navbar-item-dropdown {
+  position: relative !important;
+}
+
+.navbar-submenu {
+  display: none !important;
+  position: absolute !important;
+  top: 100% !important;
+  left: 0 !important;
+  background: white !important;
+  border: 1.5px solid #e2e8f0 !important;
+  border-radius: 10px !important;
+  box-shadow: 0 8px 24px rgba(30, 58, 138, 0.10) !important;
+  min-width: 220px !important;
+  z-index: 9999 !important;
+  list-style: none !important;
+  padding: 8px 0 !important;
+  margin-top: 2px !important;
+}
+
+.navbar-item-dropdown.open .navbar-submenu {
+  display: block !important;
+}
+
+.navbar-item-dropdown:hover .navbar-submenu {
+  display: block !important;
+}
+
+.navbar-submenu li {
+  list-style: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+.navbar-submenu-link {
+  display: flex !important;
+  align-items: center !important;
+  gap: 10px !important;
+  padding: 10px 18px !important;
+  font-size: 13px !important;
+  font-weight: 500 !important;
+  color: #64748b !important;
+  text-decoration: none !important;
+  transition: all 0.15s !important;
+  white-space: nowrap !important;
+}
+
+.navbar-submenu-link:hover {
+  background: #f0f9ff !important;
+  color: #1e3a8a !important;
+}
+
+.navbar-submenu-link.active {
+  color: #1e3a8a !important;
+  font-weight: 600 !important;
+  background: #eff6ff !important;
+}
+
+/* Dark mode */
+body.dark-mode .navbar-submenu {
+  background: #1e293b !important;
+  border-color: #334155 !important;
+}
+
+body.dark-mode .navbar-submenu-link {
+  color: #94a3b8 !important;
+}
+
+body.dark-mode .navbar-submenu-link:hover {
+  background: #0f172a !important;
+  color: #e0e7ff !important;
+}
+
+body.dark-mode .navbar-submenu-link.active {
+  background: #0f172a !important;
+  color: #e0e7ff !important;
+}
