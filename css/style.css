@@ -105,7 +105,7 @@ header a::before {
   margin: 0;
   padding: 0;
   gap: 0;
-  justify-content: flex-start;
+  justify-content: center;
   flex-wrap: nowrap;
   min-width: max-content;
 }
@@ -115,19 +115,9 @@ header a::before {
   flex-shrink: 0;
 }
 
-.navbar-link {
-  display: flex;
-  align-items: center;
-  gap: 7px;
-  padding: 14px 16px;
-  color: var(--text-muted);
-  text-decoration: none;
-  font-size: 13px;
-  font-weight: 500;
-  transition: all 0.2s ease;
-  position: relative;
-  white-space: nowrap;
-}
+/* Removido - agora está na seção de espaçamento */
+
+/* Removido - agora está na seção de espaçamento */
 
 .navbar-link::after {
   content: '';
@@ -142,9 +132,7 @@ header a::before {
   transition: transform 0.2s ease;
 }
 
-.navbar-link:hover {
-  color: var(--primary);
-}
+/* Removido - agora está na seção de espaçamento com melhorias */
 
 .navbar-link:hover::after {
   transform: scaleX(1);
@@ -272,12 +260,67 @@ header a::before {
 }
 
 /* ---- ESPAÇAMENTO ENTRE GRUPOS NA NAVBAR ---- */
-/* Adiciona espaço extra antes de cada grupo */
+/* Adiciona espaço extra antes de cada grupo para melhor organização visual */
 .navbar-nav > .navbar-item:nth-child(4),  /* Antes de Contatos */
 .navbar-nav > .navbar-item:nth-child(5),  /* Antes de Avaliações */
 .navbar-nav > .navbar-item:nth-child(6),  /* Antes de Relatórios */
 .navbar-nav > .navbar-item:nth-child(7) { /* Antes de Perfil */
-  margin-left: 12px;
+  margin-left: 16px;
+  position: relative;
+}
+
+/* Separador visual sutil entre grupos */
+.navbar-nav > .navbar-item:nth-child(4)::before,
+.navbar-nav > .navbar-item:nth-child(5)::before,
+.navbar-nav > .navbar-item:nth-child(6)::before,
+.navbar-nav > .navbar-item:nth-child(7)::before {
+  content: '';
+  position: absolute;
+  left: -8px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 1px;
+  height: 20px;
+  background: var(--border);
+  opacity: 0.3;
+}
+
+/* Melhoria: Efeito hover mais suave */
+.navbar-link {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 14px 16px;
+  color: var(--text-muted);
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 500;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  white-space: nowrap;
+  border-radius: 6px 6px 0 0;
+}
+
+.navbar-link:hover {
+  color: var(--primary);
+  background: rgba(59, 130, 246, 0.05);
+}
+
+/* Melhoria: Badge de notificação para itens com novidades */
+.navbar-item[data-badge]::after {
+  content: attr(data-badge);
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background: #ef4444;
+  color: white;
+  font-size: 10px;
+  font-weight: 600;
+  padding: 2px 5px;
+  border-radius: 10px;
+  min-width: 16px;
+  text-align: center;
+  box-shadow: 0 2px 4px rgba(239, 68, 68, 0.3);
 }
 
 .user {
@@ -1098,6 +1141,19 @@ body.dark-mode .navbar-submenu-link:hover {
 
 body.dark-mode .navbar-submenu-link.active {
   background: #0f172a;
+}
+
+/* ---- SEPARADORES E MELHORIAS NO DARK MODE ---- */
+body.dark-mode .navbar-nav > .navbar-item:nth-child(4)::before,
+body.dark-mode .navbar-nav > .navbar-item:nth-child(5)::before,
+body.dark-mode .navbar-nav > .navbar-item:nth-child(6)::before,
+body.dark-mode .navbar-nav > .navbar-item:nth-child(7)::before {
+  background: #475569;
+  opacity: 0.4;
+}
+
+body.dark-mode .navbar-link:hover {
+  background: rgba(96, 165, 250, 0.1);
 }
 
 body.dark-mode #dark-mode-btn {
