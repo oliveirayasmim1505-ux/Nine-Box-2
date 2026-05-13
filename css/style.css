@@ -1097,6 +1097,37 @@ html.dark-mode-early .navbar {
 }
 
 /* =============================================
+   HELP BUTTON — Botão de ajuda/tour
+   ============================================= */
+#help-btn {
+  position: absolute;
+  right: 118px;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: transparent;
+  border: 1.5px solid var(--border);
+  color: var(--text-muted);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  margin-top: 0;
+  padding: 0;
+  transition: all 0.2s;
+  box-shadow: none;
+}
+
+#help-btn:hover {
+  background: #f0f9ff;
+  color: var(--primary);
+  border-color: var(--primary-light);
+  transform: scale(1.05);
+  box-shadow: none;
+}
+
+/* =============================================
    DARK MODE — variáveis e overrides completos
    ============================================= */
 
@@ -1162,6 +1193,18 @@ body.dark-mode #dark-mode-btn {
 }
 
 body.dark-mode #dark-mode-btn:hover {
+  background: #334155;
+  color: #93c5fd;
+  border-color: #60a5fa;
+}
+
+/* ---- HELP BUTTON ---- */
+body.dark-mode #help-btn {
+  border-color: #334155;
+  color: #94a3b8;
+}
+
+body.dark-mode #help-btn:hover {
   background: #334155;
   color: #93c5fd;
   border-color: #60a5fa;

@@ -12,6 +12,7 @@
   <script>if(localStorage.getItem('darkMode')==='1')document.documentElement.classList.add('dark-mode-early');</script>
   <link rel="stylesheet" href="css/nova-avaliacao.css">
   <link rel="stylesheet" href="css/enhancements.css">
+  <link rel="stylesheet" href="css/tour.css">
   <link rel="stylesheet" href="css/responsive.css">
 </head>
 
@@ -31,6 +32,10 @@
   </div>
   <button id="dark-mode-btn" onclick="toggleDarkMode()" title="Modo escuro" aria-label="Alternar modo escuro">
     <i class="fa-solid fa-moon" aria-hidden="true"></i>
+  </button>
+  <!-- Botão de Ajuda/Tour -->
+  <button id="help-btn" onclick="window.tourGuiado.iniciar('principal')" title="Tour guiado" aria-label="Iniciar tour guiado">
+    <i class="fa-solid fa-circle-question" aria-hidden="true"></i>
   </button>
   <!-- Notificações -->
   <div class="notif-wrap" id="notif-wrap">
@@ -181,6 +186,7 @@
 
 <script src="js/script.js"></script>
 <script src="js/navbar.js"></script>
+<script src="js/tour.js"></script>
 <script src="js/nova-avaliacao.js"></script>
 <script src="js/busca-global.js"></script>
 <script>

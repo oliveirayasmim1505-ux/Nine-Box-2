@@ -56,6 +56,21 @@
     white-space: nowrap;
   }
 
+  /* Ajusta posição dos botões no header */
+  #help-btn {
+    right: 108px;
+    width: 34px;
+    height: 34px;
+    font-size: 15px;
+  }
+
+  #dark-mode-btn {
+    right: 66px;
+    width: 34px;
+    height: 34px;
+    font-size: 14px;
+  }
+
   /* Busca global menor */
   .busca-global-input {
     width: 140px;
@@ -202,6 +217,9 @@
 
   /* ---- HEADER ---- */
   header h2 { font-size: 14px; max-width: 100px; }
+
+  /* Oculta botão de ajuda em mobile pequeno */
+  #help-btn { display: none; }
 
   /* Oculta texto da busca em mobile pequeno */
   .busca-global-input::placeholder { font-size: 11px; }

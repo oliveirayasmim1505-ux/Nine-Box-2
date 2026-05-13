@@ -42,6 +42,20 @@
   }
 
   // ====================================================================
+  // LISTENER GLOBAL — data-action="logout"
+  // Captura cliques no botão Sair da conta em qualquer página,
+  // usando delegação para funcionar mesmo com elementos criados dinamicamente.
+  // ====================================================================
+  document.addEventListener('click', (e) => {
+    const el = e.target.closest('[data-action="logout"]');
+    if (el) {
+      e.preventDefault();
+      e.stopImmediatePropagation();
+      abrirConfirmacaoLogout();
+    }
+  }, true); // true = fase de captura, roda antes da transição de página
+
+  // ====================================================================
   // TRANSIÇÃO SUAVE ENTRE PÁGINAS
   // ====================================================================
   function injetarTransicaoPagina() {
@@ -121,9 +135,9 @@
   window.confirmarLogout = function () {
     // Remove APENAS a sessão — todos os dados cadastrados ficam preservados
     localStorage.removeItem('perfilLogado');
-    window.location.href = window.location.pathname.includes('/pages/')
-      ? '../perfil.html'
-      : 'perfil.html';
+    // Redireciona para a home (index.html)
+    const isInPages = window.location.pathname.includes('/pages/');
+    window.location.href = isInPages ? '../index.html' : 'index.html';
   };
 
   // Mostra/oculta itens do dropdown conforme sessão ativa
@@ -176,7 +190,7 @@
           <a href="${perfilHref}" class="user-dropdown-item">
             <i class="fa-solid fa-user-pen"></i> Editar Perfil
           </a>
-          <a href="#" class="user-dropdown-item user-dropdown-sair" onclick="event.preventDefault();abrirConfirmacaoLogout()">
+          <a href="#" class="user-dropdown-item user-dropdown-sair" data-action="logout">
             <i class="fa-solid fa-right-from-bracket"></i> Sair da conta
           </a>`;
         return;

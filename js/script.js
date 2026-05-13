@@ -30,6 +30,20 @@ function usuarioIsEstagiario() {
   return user && user.tipo === 'estagiario';
 }
 
+/** Retorna true se o usuário logado for admin */
+function usuarioIsAdmin() {
+  const user = getUsuarioLogadoGlobal();
+  if (!user) return false;
+  return user.tipo === 'admin';
+}
+
+/** Retorna true se o usuário logado for gestor (professor) — não admin */
+function usuarioIsGestorSemAdmin() {
+  const user = getUsuarioLogadoGlobal();
+  if (!user) return false;
+  return user.tipo === 'professor' || user.tipo === 'gestor';
+}
+
 // ============================================================
 // STORAGE — Leitura e escrita no localStorage
 // ============================================================
