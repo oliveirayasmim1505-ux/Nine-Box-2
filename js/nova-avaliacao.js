@@ -424,14 +424,6 @@ function _naInjetarModal() {
 
   document.body.appendChild(modal);
 
-  // Aplica permissões: oculta o card de estagiário se o usuário não for gestor
-  const user = typeof getUsuarioLogadoGlobal === 'function' ? getUsuarioLogadoGlobal() : null;
-  const podeAvaliarEstagiario = user &&
-    (user.tipo === 'professor' || user.tipo === 'gestor' || user.tipo === 'admin');
-
-  const cardEst = document.getElementById('na-card-estagiario');
-  if (cardEst && !podeAvaliarEstagiario) cardEst.style.display = 'none';
-
   // Fecha o modal ao pressionar ESC
   document.addEventListener('keydown', e => {
     if (e.key === 'Escape' && document.getElementById('na-modal').classList.contains('open')) {
