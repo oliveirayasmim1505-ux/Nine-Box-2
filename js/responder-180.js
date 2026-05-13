@@ -172,6 +172,10 @@ function renderPaginaEstagiario(idx) {
         ${criteriosHTML}
       </div>
 
+      <div class="resp180-observacao-section">
+        <p class="resp180-observacao-label">NÃO PRECISA DE OBSERVAÇÃO</p>
+      </div>
+
       <div class="resp180-rodape">
         <button class="resp180-btn-voltar"
           onclick="${idx === 0 ? "window.location.href='avaliacao-180.html'" : `irParaPagina(${idx - 1})`}"
@@ -212,14 +216,14 @@ function renderPaginaGestor(idx) {
 
   const legendaHTML = `
     <div class="resp180-legenda-info">
-      <i class="fa-solid fa-circle" style="font-size:8px;color:var(--primary-light)"></i>
+      <i class="fa-solid fa-circle-info" style="font-size:12px;color:var(--primary-light)"></i>
       Os critérios são avaliados de 1 a 4, segundo a seguinte métrica:
     </div>
     <div class="resp180-legenda-grid">
-      <div class="resp180-legenda-btn n1">Nota 1 – Não cumpre o requisito</div>
-      <div class="resp180-legenda-btn n3">Nota 3 – Cumpre sempre</div>
-      <div class="resp180-legenda-btn n2">Nota 2 – Cumpre moderadamente</div>
-      <div class="resp180-legenda-btn n4">Nota 4 – Cumpre o requisito e supera expectativas</div>
+      <div class="resp180-legenda-btn n1">Nota 1 — Não cumpre o requisito</div>
+      <div class="resp180-legenda-btn n3">Nota 3 — Cumpre sempre</div>
+      <div class="resp180-legenda-btn n2">Nota 2 — Cumpre moderadamente</div>
+      <div class="resp180-legenda-btn n4">Nota 4 — Cumpre o requisito e supera expectativas</div>
     </div>
   `;
 
@@ -234,7 +238,7 @@ function renderPaginaGestor(idx) {
           const notaAtual = notasSelecionadas[chave] || '';
           return `
             <div class="resp180-avaliado-criterio">
-              <span class="resp180-avaliado-criterio-label">Critério ${cidx + 1}</span>
+              <span class="resp180-avaliado-criterio-label">Critério ${cidx + 1} <i class="fa-solid fa-circle-dot" style="font-size:6px;"></i></span>
               <select class="resp180-select-nota${notaAtual ? ` nota-${notaAtual}` : ''}"
                 onchange="selecionarNotaAvaliado(${av.id}, ${comp.id}, ${cidx}, this)">
                 ${opcoesSelect.replace(`value="${notaAtual}"`, `value="${notaAtual}" selected`)}
@@ -247,10 +251,14 @@ function renderPaginaGestor(idx) {
               <div class="resp180-avaliado-avatar">${iniciais}</div>
               <div class="resp180-avaliado-dados">
                 <span class="resp180-avaliado-nome">${av.nome}</span>
-                ${av.cargo ? `<span class="resp180-avaliado-cargo">Cargo: ${av.cargo}</span>` : ''}
+                ${av.cargo ? `<span class="resp180-avaliado-cargo">Cargo: ${av.cargo}</span>` : `<span class="resp180-avaliado-cargo">Sem cargo definido</span>`}
               </div>
             </div>
             <div class="resp180-avaliado-dropdowns">${dropdownsHTML}</div>
+            <div class="resp180-avaliado-obs">
+              <label class="resp180-obs-label">Observações:</label>
+              <textarea class="resp180-obs-textarea" placeholder="Comentário (Opcional)" rows="2"></textarea>
+            </div>
           </div>`;
       }).join('');
 
@@ -277,6 +285,9 @@ function renderPaginaGestor(idx) {
       <div class="resp180-avaliados-section">
         <p class="resp180-avaliados-label">Avaliados:</p>
         ${avaliadosHTML}
+      </div>
+      <div class="resp180-observacao-section">
+        <p class="resp180-observacao-label">NÃO PRECISA DE OBSERVAÇÃO</p>
       </div>
       <div class="resp180-rodape">
         <button class="resp180-btn-voltar"

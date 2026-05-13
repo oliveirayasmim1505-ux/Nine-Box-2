@@ -17,16 +17,16 @@
 </head>
 <body>
 
-<header>
-  <h2>Responder Avaliação 180°</h2>
+<header style="background: var(--primary);">
+  <h2 style="color: white;">Responder Avaliação 180°</h2>
   <div class="busca-global-wrap" id="busca-global-wrap">
     <i class="fa-solid fa-magnifying-glass busca-global-icon"></i>
     <input type="text" class="busca-global-input" id="busca-global-input" placeholder="Buscar pessoas, avaliações..." autocomplete="off" oninput="buscarGlobal(this.value)" onfocus="buscarGlobal(this.value)">
     <div class="busca-global-dropdown" id="busca-global-dropdown"></div>
   </div>
-  <button id="dark-mode-btn" onclick="toggleDarkMode()" title="Modo escuro" aria-label="Alternar modo escuro"><i class="fa-solid fa-moon" aria-hidden="true"></i></button>
+  <button id="dark-mode-btn" onclick="toggleDarkMode()" title="Modo escuro" aria-label="Alternar modo escuro" style="color: white;"><i class="fa-solid fa-moon" aria-hidden="true"></i></button>
   <div class="notif-wrap" id="notif-wrap">
-    <button id="notif-btn" onclick="toggleNotifDropdown()" title="Notificações" aria-label="Ver notificações" aria-haspopup="true">
+    <button id="notif-btn" onclick="toggleNotifDropdown()" title="Notificações" aria-label="Ver notificações" aria-haspopup="true" style="color: white;">
       <i class="fa-solid fa-bell" aria-hidden="true"></i>
       <span class="notif-badge" style="display:none" aria-live="polite">0</span>
     </button>
