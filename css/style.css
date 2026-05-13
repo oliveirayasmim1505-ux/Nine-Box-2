@@ -95,6 +95,8 @@ header a::before {
   background: var(--surface);
   border-bottom: 1px solid var(--border);
   padding: 0 32px;
+  overflow-x: auto;
+  overflow-y: hidden;
 }
 
 .navbar-nav {
@@ -103,11 +105,14 @@ header a::before {
   margin: 0;
   padding: 0;
   gap: 0;
-  justify-content: center;
+  justify-content: flex-start;
+  flex-wrap: nowrap;
+  min-width: max-content;
 }
 
 .navbar-item {
   position: relative;
+  flex-shrink: 0;
 }
 
 .navbar-link {
@@ -266,31 +271,13 @@ header a::before {
   color: var(--primary-light);
 }
 
-/* ---- SEPARADORES VISUAIS NA NAVBAR ---- */
-.navbar-item + .navbar-item {
-  position: relative;
-}
-
-/* Adiciona uma linha sutil entre grupos de itens */
-.navbar-nav > .navbar-item:nth-child(4)::before,
-.navbar-nav > .navbar-item:nth-child(6)::before,
-.navbar-nav > .navbar-item:nth-child(7)::before {
-  content: '';
-  position: absolute;
-  left: 12px;
-  right: 12px;
-  top: 0;
-  height: 1px;
-  background: linear-gradient(90deg, transparent, var(--border) 20%, var(--border) 80%, transparent);
-  opacity: 0.5;
-}
-
-/* Espaçamento extra entre grupos */
-.navbar-nav > .navbar-item:nth-child(4),
-.navbar-nav > .navbar-item:nth-child(6),
-.navbar-nav > .navbar-item:nth-child(7) {
-  margin-top: 8px;
-  padding-top: 8px;
+/* ---- ESPAÇAMENTO ENTRE GRUPOS NA NAVBAR ---- */
+/* Adiciona espaço extra antes de cada grupo */
+.navbar-nav > .navbar-item:nth-child(4),  /* Antes de Contatos */
+.navbar-nav > .navbar-item:nth-child(5),  /* Antes de Avaliações */
+.navbar-nav > .navbar-item:nth-child(6),  /* Antes de Relatórios */
+.navbar-nav > .navbar-item:nth-child(7) { /* Antes de Perfil */
+  margin-left: 12px;
 }
 
 .user {
@@ -1107,17 +1094,6 @@ body.dark-mode .navbar-submenu {
 
 body.dark-mode .navbar-submenu-link:hover {
   background: #0f172a;
-}
-
-body.dark-mode .navbar-submenu-link.active {
-  background: #0f172a;
-}
-
-/* ---- SEPARADORES NO DARK MODE ---- */
-body.dark-mode .navbar-nav > .navbar-item:nth-child(4)::before,
-body.dark-mode .navbar-nav > .navbar-item:nth-child(6)::before,
-body.dark-mode .navbar-nav > .navbar-item:nth-child(7)::before {
-  background: linear-gradient(90deg, transparent, #334155 20%, #334155 80%, transparent);
 }
 
 body.dark-mode .navbar-submenu-link.active {
