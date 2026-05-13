@@ -213,6 +213,24 @@ function aplicarRestricoesNavbarEstagiario() {
   });
 }
 
+/**
+ * Oculta da navbar os itens que gestores (não-admin) não devem acessar:
+ * apenas Relatórios.
+ */
+function aplicarRestricoesNavbarGestor() {
+  document.querySelectorAll('.navbar-link').forEach(link => {
+    const href = link.getAttribute('href') || '';
+    if (href.includes('relatorios.html')) {
+      const item = link.closest('.navbar-item');
+      if (item) item.style.display = 'none';
+    }
+  });
+}
+
+// ====================================================================
+// INICIALIZAÇÃO — Ativação de links e configurações iniciais
+// ====================================================================
+
 document.addEventListener('DOMContentLoaded', () => {
   const path = window.location.pathname;
   const page = path.split('/').pop() || 'index.html';
@@ -267,6 +285,10 @@ document.addEventListener('DOMContentLoaded', () => {
         // ---- RESTRIÇÕES DE NAVBAR PARA ESTAGIÁRIO ----
         if (pessoa.tipo === 'estagiario') {
           aplicarRestricoesNavbarEstagiario();
+        }
+        // ---- RESTRIÇÕES DE NAVBAR PARA GESTOR (não-admin) ----
+        if (pessoa.tipo === 'professor' && pessoa.tipo !== 'admin') {
+          aplicarRestricoesNavbarGestor();
         }
       }
     }
