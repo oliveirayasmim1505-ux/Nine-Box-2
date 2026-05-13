@@ -11,6 +11,54 @@ let r180Avaliados = [];    // Lista de avaliados vinculados à avaliação em ed
 let r180Competencias = []; // Lista de competências vinculadas à avaliação em edição
 
 // ====================================================================
+// PERMISSÕES — Controle de acesso
+// ====================================================================
+
+/**
+ * Verifica se o usuário pode criar/editar avaliações 180°
+ * Apenas admin e gestor podem criar/editar
+ */
+function podeEditarAvaliacao180() {
+  const user = getUsuarioLogadoGlobal();
+  if (!user) return false;
+  return user.tipo === 'admin' || user.tipo === 'professor';
+}
+
+/**
+ * Verifica se o usuário pode visualizar avaliações 180°
+ * Todos os usuários logados podem visualizar
+ */
+function podeVisualizarAvaliacao180() {
+  const user = getUsuarioLogadoGlobal();
+  return user !== null;
+}
+
+/**
+ * Aplica restrições visuais na interface conforme permissões
+ */
+function aplicarPermissoesAvaliacao180() {
+  const podeEditar = podeEditarAvaliacao180();
+  
+  // Oculta botão "Nova Avaliação" para quem não pode editar
+  const btnNovo = document.querySelector('.r180-btn-novo');
+  if (btnNovo && !podeEditar) {
+    btnNovo.style.display = 'none';
+  }
+  
+  // Adiciona mensagem informativa para estagiários
+  if (!podeEditar && podeVisualizarAvaliacao180()) {
+    const header = document.querySelector('.r180-lista-header');
+    if (header) {
+      const aviso = document.createElement('div');
+      aviso.className = 'av-info-box';
+      aviso.style.cssText = 'background: #dbeafe; border-left: 4px solid #3b82f6; padding: 12px 16px; border-radius: 6px; margin-top: 12px; font-size: 13px; color: #1e40af;';
+      aviso.innerHTML = '<i class="fa-solid fa-info-circle"></i> Você pode visualizar e responder avaliações, mas não pode criar ou editar.';
+      header.appendChild(aviso);
+    }
+  }
+}
+
+// ====================================================================
 // STORAGE — Persistência no localStorage
 // ====================================================================
 
@@ -34,6 +82,12 @@ function saveAvaliacoes180(data) {
  * @param {number|null} id - ID da avaliação a editar, ou null para nova
  */
 function abrirFormulario(id = null) {
+  // Verifica permissão para editar
+  if (!podeEditarAvaliacao180()) {
+    showToast('Você não tem permissão para criar ou editar avaliações 180°.', 'error');
+    return;
+  }
+  
   r180EditandoId = id;
   r180Avaliados = [];
   r180Competencias = [];
@@ -211,20 +265,36 @@ function renderLista180() {
   if (!container) return;
 
   const data = getAvaliacoes180();
+  const podeEditar = podeEditarAvaliacao180();
 
   if (data.length === 0) {
+    const btnCriar = podeEditar 
+      ? `<button class="r180-btn-novo" onclick="abrirFormulario()" style="margin:0 auto">
+           <i class="fa-solid fa-plus"></i> Criar primeira avaliação
+         </button>`
+      : '<p style="font-size:13px;color:var(--text-muted)">Aguarde a criação de avaliações pelos gestores.</p>';
+    
     container.innerHTML = `
       <div style="text-align:center;padding:60px 20px;color:var(--text-muted)">
         <i class="fa-solid fa-clipboard-list" style="font-size:48px;color:var(--border);display:block;margin-bottom:16px"></i>
         <p style="font-size:15px;margin:0 0 16px">Nenhuma avaliação 180° criada ainda.</p>
-        <button class="r180-btn-novo" onclick="abrirFormulario()" style="margin:0 auto">
-          <i class="fa-solid fa-plus"></i> Criar primeira avaliação
-        </button>
+        ${btnCriar}
       </div>`;
     return;
   }
 
-  container.innerHTML = data.map(a => `
+  container.innerHTML = data.map(a => {
+    // Botões de edição/remoção apenas para admin e gestor
+    const botoesEdicao = podeEditar 
+      ? `<button class="r180-btn-icon edit" onclick="abrirFormulario(${a.id})" title="Editar">
+           <i class="fa-solid fa-pen"></i>
+         </button>
+         <button class="r180-btn-icon del" onclick="removerAvaliacao180(${a.id})" title="Remover">
+           <i class="fa-solid fa-trash"></i>
+         </button>`
+      : '';
+    
+    return `
     <div class="r180-item-card">
       <div class="r180-item-icon"><i class="fa-solid fa-rotate"></i></div>
       <div class="r180-item-info">
@@ -245,14 +315,10 @@ function renderLista180() {
         <a href="responder-180.html?id=${a.id}" class="r180-btn-responder" title="Responder avaliação">
           <i class="fa-solid fa-pen-to-square"></i> Responder
         </a>
-        <button class="r180-btn-icon edit" onclick="abrirFormulario(${a.id})" title="Editar">
-          <i class="fa-solid fa-pen"></i>
-        </button>
-        <button class="r180-btn-icon del" onclick="removerAvaliacao180(${a.id})" title="Remover">
-          <i class="fa-solid fa-trash"></i>
-        </button>
+        ${botoesEdicao}
       </div>
-    </div>`).join('');
+    </div>`;
+  }).join('');
 }
 
 // ====================================================================
@@ -778,6 +844,7 @@ document.addEventListener('keydown', e => {
 
 // Inicializa a lista e configura validação ao carregar a página
 document.addEventListener('DOMContentLoaded', () => {
+  aplicarPermissoesAvaliacao180();
   renderLista180();
   addLiveValidation('r180-nome',    v => v.trim().length > 0, 'O nome da avaliação é obrigatório.');
   addLiveValidation('r180-empresa', v => v.trim().length > 0, 'O nome da empresa é obrigatório.');
