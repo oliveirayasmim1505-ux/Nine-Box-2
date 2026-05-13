@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Verificar Dados do Sistema</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #f1f5f9;
+      padding: 20px;
+    }
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      background: white;
+      border-radius: 12px;
+      padding: 30px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+    h1 {
+      color: #1e293b;
+      margin-bottom: 10px;
+      font-size: 24px;
+    }
+    .subtitle {
+      color: #64748b;
+      margin-bottom: 30px;
+      font-size: 14px;
+    }
+    .section {
+      margin-bottom: 30px;
+      padding: 20px;
+      background: #f8fafc;
+      border-radius: 8px;
+      border-left: 4px solid #3b82f6;
+    }
+    .section h2 {
+      color: #1e293b;
+      font-size: 18px;
+      margin-bottom: 15px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .stat {
+      display: flex;
+      justify-content: space-between;
+      padding: 10px 0;
+      border-bottom: 1px solid #e2e8f0;
+    }
+    .stat:last-child {
+      border-bottom: none;
+    }
+    .stat-label {
+      color: #475569;
+      font-weight: 500;
+    }
+    .stat-value {
+      color: #1e293b;
+      font-weight: 600;
+    }
+    .btn {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 6px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s;
+      margin-right: 10px;
+      margin-top: 10px;
+    }
+    .btn-primary {
+      background: #3b82f6;
+      color: white;
+    }
+    .btn-primary:hover {
+      background: #2563eb;
+    }
+    .btn-success {
+      background: #10b981;
+      color: white;
+    }
+    .btn-success:hover {
+      background: #059669;
+    }
+    .btn-danger {
+      background: #ef4444;
+      color: white;
+    }
+    .btn-danger:hover {
+      background: #dc2626;
+    }
+    .alert {
+      padding: 15px;
+      border-radius: 6px;
+      margin-bottom: 20px;
+    }
+    .alert-info {
+      background: #dbeafe;
+      color: #1e40af;
+      border-left: 4px solid #3b82f6;
+    }
+    .alert-success {
+      background: #d1fae5;
+      color: #065f46;
+      border-left: 4px solid #10b981;
+    }
+    .alert-warning {
+      background: #fef3c7;
+      color: #92400e;
+      border-left: 4px solid #f59e0b;
+    }
+    pre {
+      background: #1e293b;
+      color: #f1f5f9;
+      padding: 15px;
+      border-radius: 6px;
+      overflow-x: auto;
+      font-size: 12px;
+      max-height: 300px;
+      overflow-y: auto;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🔍 Verificação de Dados do Sistema</h1>
+    <p class="subtitle">Diagnóstico completo do localStorage</p>
+
+    <div id="alertas"></div>
+
+    <div class="section">
+      <h2>📊 Estatísticas Gerais</h2>
+      <div id="stats"></div>
+    </div>
+
+    <div class="section">
+      <h2>👥 Contatos Cadastrados</h2>
+      <div id="contatos-info"></div>
+      <button class="btn btn-primary" onclick="mostrarDados('contatos')">Ver Dados Completos</button>
+    </div>
+
+    <div class="section">
+      <h2>⭐ Avaliações Registradas</h2>
+      <div id="avaliacoes-info"></div>
+      <button class="btn btn-primary" onclick="mostrarDados('avaliacoes')">Ver Dados Completos</button>
+    </div>
+
+    <div class="section">
+      <h2>🔄 Avaliações 180°</h2>
+      <div id="avaliacoes180-info"></div>
+      <button class="btn btn-primary" onclick="mostrarDados('avaliacoes180')">Ver Dados Completos</button>
+    </div>
+
+    <div class="section">
+      <h2>📦 Nine Box</h2>
+      <div id="ninebox-info"></div>
+      <button class="btn btn-primary" onclick="mostrarDados('nineBoxAvaliacoes')">Ver Dados Completos</button>
+    </div>
+
+    <div class="section">
+      <h2>🎯 Competências</h2>
+      <div id="competencias-info"></div>
+      <button class="btn btn-primary" onclick="mostrarDados('competencias')">Ver Dados Completos</button>
+    </div>
+
+    <div class="section">
+      <h2>⚙️ Ações</h2>
+      <button class="btn btn-success" onclick="exportarTudo()">📥 Exportar Todos os Dados</button>
+      <button class="btn btn-primary" onclick="location.href='index.html'">🏠 Voltar ao Sistema</button>
+    </div>
+
+    <div id="dados-completos" style="margin-top: 20px;"></div>
+  </div>
+
+  <script>
+    function verificarDados() {
+      const alertas = document.getElementById('alertas');
+      const stats = document.getElementById('stats');
+      
+      // Lê todos os dados
+      const contatos = JSON.parse(localStorage.getItem('contatos') || '[]');
+      const avaliacoes = JSON.parse(localStorage.getItem('avaliacoes') || '[]');
+      const avaliacoes180 = JSON.parse(localStorage.getItem('avaliacoes180') || '[]');
+      const nineBox = JSON.parse(localStorage.getItem('nineBoxAvaliacoes') || '[]');
+      const competencias = JSON.parse(localStorage.getItem('competencias') || '[]');
+      const sessao = JSON.parse(localStorage.getItem('perfilLogado') || 'null');
+
+      // Alertas
+      let alertasHTML = '';
+      if (contatos.length === 0) {
+        alertasHTML += '<div class="alert alert-warning">⚠️ Nenhum contato cadastrado no sistema.</div>';
+      }
+      if (avaliacoes.length === 0) {
+        alertasHTML += '<div class="alert alert-warning">⚠️ Nenhuma avaliação registrada no sistema.</div>';
+      }
+      if (!sessao) {
+        alertasHTML += '<div class="alert alert-info">ℹ️ Nenhum usuário logado no momento.</div>';
+      } else {
+        const usuario = contatos.find(c => c.id === sessao.id);
+        if (usuario) {
+          alertasHTML += `<div class="alert alert-success">✅ Usuário logado: ${usuario.nome} (${usuario.tipo})</div>`;
+        }
+      }
+      alertas.innerHTML = alertasHTML;
+
+      // Estatísticas
+      const professores = contatos.filter(c => c.tipo === 'professor').length;
+      const estagiarios = contatos.filter(c => c.tipo === 'estagiario').length;
+      const admins = contatos.filter(c => c.tipo === 'admin').length;
+
+      stats.innerHTML = `
+        <div class="stat">
+          <span class="stat-label">Total de Contatos</span>
+          <span class="stat-value">${contatos.length}</span>
+        </div>
+        <div class="stat">
+          <span class="stat-label">Gestores</span>
+          <span class="stat-value">${professores}</span>
+        </div>
+        <div class="stat">
+          <span class="stat-label">Estagiários</span>
+          <span class="stat-value">${estagiarios}</span>
+        </div>
+        <div class="stat">
+          <span class="stat-label">Administradores</span>
+          <span class="stat-value">${admins}</span>
+        </div>
+        <div class="stat">
+          <span class="stat-label">Avaliações</span>
+          <span class="stat-value">${avaliacoes.length}</span>
+        </div>
+        <div class="stat">
+          <span class="stat-label">Avaliações 180°</span>
+          <span class="stat-value">${avaliacoes180.length}</span>
+        </div>
+        <div class="stat">
+          <span class="stat-label">Nine Box</span>
+          <span class="stat-value">${nineBox.length}</span>
+        </div>
+        <div class="stat">
+          <span class="stat-label">Competências</span>
+          <span class="stat-value">${competencias.length}</span>
+        </div>
+      `;
+
+      // Detalhes por seção
+      document.getElementById('contatos-info').innerHTML = `
+        <div class="stat">
+          <span class="stat-label">Total</span>
+          <span class="stat-value">${contatos.length} pessoas</span>
+        </div>
+      `;
+
+      document.getElementById('avaliacoes-info').innerHTML = `
+        <div class="stat">
+          <span class="stat-label">Total</span>
+          <span class="stat-value">${avaliacoes.length} avaliações</span>
+        </div>
+        <div class="stat">
+          <span class="stat-label">De Gestores</span>
+          <span class="stat-value">${avaliacoes.filter(a => a.tipo === 'professor').length}</span>
+        </div>
+        <div class="stat">
+          <span class="stat-label">De Estagiários</span>
+          <span class="stat-value">${avaliacoes.filter(a => a.tipo === 'estagiario').length}</span>
+        </div>
+      `;
+
+      document.getElementById('avaliacoes180-info').innerHTML = `
+        <div class="stat">
+          <span class="stat-label">Total</span>
+          <span class="stat-value">${avaliacoes180.length} avaliações 180°</span>
+        </div>
+      `;
+
+      document.getElementById('ninebox-info').innerHTML = `
+        <div class="stat">
+          <span class="stat-label">Total</span>
+          <span class="stat-value">${nineBox.length} pessoas no Nine Box</span>
+        </div>
+      `;
+
+      document.getElementById('competencias-info').innerHTML = `
+        <div class="stat">
+          <span class="stat-label">Total</span>
+          <span class="stat-value">${competencias.length} competências cadastradas</span>
+        </div>
+      `;
+    }
+
+    function mostrarDados(chave) {
+      const dados = JSON.parse(localStorage.getItem(chave) || '[]');
+      const container = document.getElementById('dados-completos');
+      
+      container.innerHTML = `
+        <div class="section">
+          <h2>📄 Dados Completos: ${chave}</h2>
+          <pre>${JSON.stringify(dados, null, 2)}</pre>
+        </div>
+      `;
+      
+      container.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function exportarTudo() {
+      const dados = {
+        contatos: JSON.parse(localStorage.getItem('contatos') || '[]'),
+        avaliacoes: JSON.parse(localStorage.getItem('avaliacoes') || '[]'),
+        avaliacoes180: JSON.parse(localStorage.getItem('avaliacoes180') || '[]'),
+        nineBoxAvaliacoes: JSON.parse(localStorage.getItem('nineBoxAvaliacoes') || '[]'),
+        competencias: JSON.parse(localStorage.getItem('competencias') || '[]'),
+        perfilLogado: JSON.parse(localStorage.getItem('perfilLogado') || 'null'),
+        darkMode: localStorage.getItem('darkMode'),
+        exportadoEm: new Date().toISOString()
+      };
+
+      const blob = new Blob([JSON.stringify(dados, null, 2)], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `backup-portal-estagio-${new Date().toISOString().split('T')[0]}.json`;
+      a.click();
+      URL.revokeObjectURL(url);
+
+      alert('✅ Dados exportados com sucesso!');
+    }
+
+    // Executa ao carregar
+    verificarDados();
+  </script>
+</body>
+</html>
