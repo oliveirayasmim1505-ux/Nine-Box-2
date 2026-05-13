@@ -71,7 +71,7 @@
           icon:  'fa-solid fa-users',
           itens: pessoas.slice(0, 5).map(c => ({
             texto: escapeHtml(c.nome),
-            sub:   escapeHtml(c.email || (c.tipo === 'professor' ? 'Professor' : 'Estagiário')),
+            sub:   escapeHtml(c.email || (c.tipo === 'professor' ? 'Gestor' : 'Estagiário')),
             url:   base + 'pages/consultar.html',
             icon:  c.tipo === 'professor' ? 'fa-solid fa-chalkboard-user' : 'fa-solid fa-user-tie',
           })),

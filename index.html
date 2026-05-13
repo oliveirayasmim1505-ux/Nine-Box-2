@@ -248,7 +248,7 @@ document.addEventListener('DOMContentLoaded', () => {
         <div class="dash-welcome">
           <i class="fa-solid fa-graduation-cap"></i>
           <h3>Comece agora!</h3>
-          <p>Cadastre professores e estagiários para usar todas as funcionalidades do sistema.</p>
+          <p>Cadastre gestores e estagiários para usar todas as funcionalidades do sistema.</p>
           <a href="pages/cadastrar.html" class="dash-welcome-btn">
             <i class="fa-solid fa-user-plus"></i> Cadastrar primeira pessoa
           </a>
@@ -257,7 +257,7 @@ document.addEventListener('DOMContentLoaded', () => {
       container.innerHTML = `
         <div class="dash-stat">
           <i class="fa-solid fa-chalkboard-user"></i>
-          <div><span class="dash-stat-val">${professores}</span><span class="dash-stat-label">Professores</span></div>
+          <div><span class="dash-stat-val">${professores}</span><span class="dash-stat-label">Gestores</span></div>
         </div>
         <div class="dash-stat">
           <i class="fa-solid fa-user-tie"></i>
@@ -285,7 +285,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const pessoa = contatos.find(c => c.id === sessao.id);
     if (pessoa) {
       if (nomeEl) nomeEl.textContent = pessoa.nome;
-      if (tipoEl) tipoEl.textContent = pessoa.tipo === 'professor' ? 'Professor' : pessoa.tipo === 'admin' ? 'Admin' : 'Estagiário';
+      if (tipoEl) tipoEl.textContent = pessoa.tipo === 'professor' ? 'Gestor' : pessoa.tipo === 'admin' ? 'Admin' : 'Estagiário';
 
       // Avatar: foto ou iniciais
       if (avatarEl) {
@@ -311,9 +311,9 @@ document.addEventListener('DOMContentLoaded', () => {
         <a href="perfil.html" class="user-dropdown-item">
           <i class="fa-solid fa-user-pen"></i> Editar Perfil
         </a>
-        <button class="user-dropdown-item user-dropdown-sair" onclick="abrirConfirmacaoLogout()">
+        <a href="#" class="user-dropdown-item user-dropdown-sair" onclick="event.preventDefault();abrirConfirmacaoLogout()">
           <i class="fa-solid fa-right-from-bracket"></i> Sair da conta
-        </button>`;
+        </a>`;
       return;
     }
   }

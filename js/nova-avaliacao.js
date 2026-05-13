@@ -105,7 +105,7 @@ function _naRenderEtapa2() {
   const isProfessor = naTipo === 'professor';
 
   // Atualiza título e subtítulo do modal
-  document.getElementById('na-titulo').textContent    = isProfessor ? 'Avaliar Professor' : 'Avaliar Estagiário';
+  document.getElementById('na-titulo').textContent    = isProfessor ? 'Avaliar Gestor' : 'Avaliar Estagiário';
   document.getElementById('na-subtitulo').textContent = isProfessor
     ? 'Avalie por critérios com estrelas'
     : 'Escreva um comentário sobre o desempenho';
@@ -338,7 +338,7 @@ function _naInjetarModal() {
             <div class="na-tipo-icon">
               <i class="fa-solid fa-chalkboard-user"></i>
             </div>
-            <span class="na-tipo-nome">Professor</span>
+            <span class="na-tipo-nome">Gestor</span>
             <span class="na-tipo-desc">Avaliação por critérios com estrelas</span>
           </div>
 
@@ -425,11 +425,9 @@ function _naInjetarModal() {
   document.body.appendChild(modal);
 
   // Aplica permissões: oculta o card de estagiário se o usuário não for gestor
-  const user = typeof getUsuarioLogado === 'function' ? getUsuarioLogado() : null;
-  const podeAvaliarEstagiario = !user ||
-    user.tipo === 'professor' ||
-    user.tipo === 'gestor'    ||
-    user.tipo === 'admin';
+  const user = typeof getUsuarioLogadoGlobal === 'function' ? getUsuarioLogadoGlobal() : null;
+  const podeAvaliarEstagiario = user &&
+    (user.tipo === 'professor' || user.tipo === 'gestor' || user.tipo === 'admin');
 
   const cardEst = document.getElementById('na-card-estagiario');
   if (cardEst && !podeAvaliarEstagiario) cardEst.style.display = 'none';

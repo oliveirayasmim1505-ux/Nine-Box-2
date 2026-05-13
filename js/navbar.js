@@ -183,8 +183,35 @@ document.addEventListener('click', (e) => {
 });
 
 // ====================================================================
-// INICIALIZAÇÃO — Ativação de links e configurações iniciais
+// RESTRIÇÕES DE NAVBAR — Estagiário
 // ====================================================================
+
+/**
+ * Oculta da navbar os itens que estagiários não devem acessar:
+ * Cadastrar, Relatórios e o submenu de Nine Box e Competências.
+ */
+function aplicarRestricoesNavbarEstagiario() {
+  // Itens a ocultar por href
+  const hrefsRestritos = ['cadastrar.html', 'relatorios.html'];
+
+  document.querySelectorAll('.navbar-link, .navbar-submenu-link').forEach(link => {
+    const href = link.getAttribute('href') || '';
+    if (hrefsRestritos.some(h => href.includes(h))) {
+      const item = link.closest('.navbar-item, li');
+      if (item) item.style.display = 'none';
+    }
+  });
+
+  // Oculta Nine Box e Competências do submenu de Avaliações
+  const subRestrito = ['nine-box.html', 'competencias.html'];
+  document.querySelectorAll('.navbar-submenu-link').forEach(link => {
+    const href = link.getAttribute('href') || '';
+    if (subRestrito.some(h => href.includes(h))) {
+      const li = link.closest('li');
+      if (li) li.style.display = 'none';
+    }
+  });
+}
 
 document.addEventListener('DOMContentLoaded', () => {
   const path = window.location.pathname;
@@ -223,7 +250,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  // Exibe o primeiro nome do usuário logado no link do Perfil
+  // Troca o ícone do link Perfil quando o usuário está logado
   try {
     const sessao = JSON.parse(localStorage.getItem('perfilLogado') || 'null');
     if (sessao) {
@@ -232,14 +259,14 @@ document.addEventListener('DOMContentLoaded', () => {
       if (pessoa) {
         const perfilLink = document.querySelector('.navbar-link[href*="perfil"]');
         if (perfilLink) {
-          const span = perfilLink.querySelector('span');
-          if (span) {
-            const primeiroNome = pessoa.nome.split(' ')[0];
-            span.textContent = primeiroNome;
-          }
-          // Troca o ícone padrão pelo ícone de usuário logado
+          // Troca o ícone padrão pelo ícone de usuário logado (mantém o texto "Perfil")
           const icon = perfilLink.querySelector('i');
           if (icon) icon.className = 'fa-solid fa-circle-user';
+        }
+
+        // ---- RESTRIÇÕES DE NAVBAR PARA ESTAGIÁRIO ----
+        if (pessoa.tipo === 'estagiario') {
+          aplicarRestricoesNavbarEstagiario();
         }
       }
     }

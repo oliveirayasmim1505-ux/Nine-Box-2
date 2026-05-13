@@ -4,6 +4,33 @@
 // ============================================================
 
 // ============================================================
+// PERMISSÕES — Controle de acesso global
+// ============================================================
+
+/** Retorna o objeto do usuário logado ou null */
+function getUsuarioLogadoGlobal() {
+  try {
+    const sessao = JSON.parse(localStorage.getItem('perfilLogado') || 'null');
+    if (!sessao) return null;
+    const contatos = JSON.parse(localStorage.getItem('contatos') || '[]');
+    return contatos.find(c => c.id === sessao.id) || null;
+  } catch(e) { return null; }
+}
+
+/** Retorna true se o usuário logado for gestor/admin */
+function usuarioIsGestor() {
+  const user = getUsuarioLogadoGlobal();
+  if (!user) return false;
+  return user.tipo === 'professor' || user.tipo === 'gestor' || user.tipo === 'admin';
+}
+
+/** Retorna true se o usuário logado for estagiário */
+function usuarioIsEstagiario() {
+  const user = getUsuarioLogadoGlobal();
+  return user && user.tipo === 'estagiario';
+}
+
+// ============================================================
 // STORAGE — Leitura e escrita no localStorage
 // ============================================================
 

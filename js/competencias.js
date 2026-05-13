@@ -192,7 +192,7 @@ function renderLista() {
 
   // Mapeamentos de rótulos para exibição nos badges
   const tipoLabel = { desempenho: 'Desempenho', comportamento: 'Comportamento', tecnica: 'Técnica', lideranca: 'Liderança' };
-  const deLabel   = { gestor: 'Gestor', professor: 'Professor', estagiario: 'Estagiário', todos: 'Todos' };
+  const deLabel   = { gestor: 'Gestor', professor: 'Gestor', estagiario: 'Estagiário', todos: 'Todos' };
 
   container.innerHTML = data.map(c => `
     <div class="comp-card">
@@ -230,4 +230,31 @@ document.addEventListener('DOMContentLoaded', () => {
   addLiveValidation('comp-nome', v => v.trim().length > 0, 'O nome da competência é obrigatório.');
   addLiveValidation('comp-de',   v => v !== '',            'Selecione a quem esta competência pertence.');
   addLiveValidation('comp-tipo', v => v !== '',            'Selecione o tipo da competência.');
+
+  // ---- RESTRIÇÕES PARA ESTAGIÁRIO ----
+  aplicarRestricoesCompEstagiario();
 });
+
+/**
+ * Para estagiários: oculta o botão "Nova Competência" e os botões
+ * de editar/remover nos cards. Apenas visualização é permitida.
+ */
+function aplicarRestricoesCompEstagiario() {
+  if (!usuarioIsEstagiario()) return;
+
+  // Oculta o botão de nova competência no header
+  const btnNovo = document.querySelector('.comp-btn-novo-header, [onclick*="abrirFormulario()"]');
+  if (btnNovo) btnNovo.style.display = 'none';
+
+  // Observa o DOM para ocultar botões nos cards quando forem renderizados
+  const observer = new MutationObserver(() => {
+    document.querySelectorAll('.comp-card-actions').forEach(el => {
+      el.style.display = 'none';
+    });
+    // Oculta também o botão "Criar primeira competência" no estado vazio
+    const btnEmpty = document.querySelector('.comp-empty .comp-btn-novo');
+    if (btnEmpty) btnEmpty.style.display = 'none';
+  });
+  const container = document.getElementById('comp-lista-container');
+  if (container) observer.observe(container, { childList: true, subtree: true });
+}

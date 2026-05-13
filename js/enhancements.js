@@ -152,7 +152,7 @@
       const pessoa = contatos.find(c => c.id === sessao.id);
       if (pessoa) {
         if (nomeEl) nomeEl.textContent = pessoa.nome;
-        if (tipoEl) tipoEl.textContent = pessoa.tipo === 'professor' ? 'Professor' : pessoa.tipo === 'admin' ? 'Admin' : 'Estagiário';
+        if (tipoEl) tipoEl.textContent = pessoa.tipo === 'professor' ? 'Gestor' : pessoa.tipo === 'admin' ? 'Admin' : 'Estagiário';
 
         if (avatarEl) {
           if (pessoa.foto) {
@@ -176,9 +176,9 @@
           <a href="${perfilHref}" class="user-dropdown-item">
             <i class="fa-solid fa-user-pen"></i> Editar Perfil
           </a>
-          <button class="user-dropdown-item user-dropdown-sair" onclick="abrirConfirmacaoLogout()">
+          <a href="#" class="user-dropdown-item user-dropdown-sair" onclick="event.preventDefault();abrirConfirmacaoLogout()">
             <i class="fa-solid fa-right-from-bracket"></i> Sair da conta
-          </button>`;
+          </a>`;
         return;
       }
     }
@@ -319,7 +319,7 @@
     injetarBreadcrumb();
     ativarLazyLoad();
     atualizarTitulo();
-    atualizarDropdownUsuario();
+    // atualizarDropdownUsuario() — gerenciado pelo script inline de cada página
 
     // Pequeno delay para interceptar botões que podem ser criados dinamicamente
     setTimeout(interceptarBotoesSair, 300);

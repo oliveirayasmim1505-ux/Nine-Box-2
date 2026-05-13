@@ -8,6 +8,18 @@
   <link rel="stylesheet" href="../css/pages.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <script>if(localStorage.getItem('darkMode')==='1')document.documentElement.classList.add('dark-mode-early');</script>
+  <script>
+    // Guard de rota: estagiários não podem acessar Relatórios
+    (function(){
+      try {
+        var s = JSON.parse(localStorage.getItem('perfilLogado') || 'null');
+        if (!s) return;
+        var c = JSON.parse(localStorage.getItem('contatos') || '[]');
+        var u = c.find(function(x){ return x.id === s.id; });
+        if (u && u.tipo === 'estagiario') window.location.replace('../index.html');
+      } catch(e){}
+    })();
+  </script>
   <link rel="stylesheet" href="../css/nova-avaliacao.css">
   <link rel="stylesheet" href="../css/enhancements.css">
   <link rel="stylesheet" href="../css/responsive.css">
@@ -105,7 +117,7 @@
     <div class="pg-toolbar" style="margin-top: 24px;">
       <div class="pg-filtros">
         <button class="pg-filtro active" data-filtro="todos" onclick="filtrarRel('todos')">Todos</button>
-        <button class="pg-filtro" data-filtro="professor" onclick="filtrarRel('professor')">Professores</button>
+        <button class="pg-filtro" data-filtro="professor" onclick="filtrarRel('professor')">Gestores</button>
         <button class="pg-filtro" data-filtro="estagiario" onclick="filtrarRel('estagiario')">Estagiários</button>
       </div>
       <div style="display:flex;gap:10px;align-items:center">

@@ -373,6 +373,11 @@ header a::before {
   background: var(--border);
 }
 
+#user-dropdown-acoes {
+  display: flex;
+  flex-direction: column;
+}
+
 .user-dropdown-item {
   display: flex;
   align-items: center;
@@ -390,15 +395,18 @@ header a::before {
   font-family: inherit;
   text-align: left;
   margin: 0 !important;
-  box-shadow: none;
+  box-shadow: none !important;
   border-radius: 0;
+  letter-spacing: normal;
+  position: static !important;
+  transform: none !important;
 }
 
 .user-dropdown-item:hover {
   background: #f0f9ff;
   color: var(--primary);
-  transform: none;
-  box-shadow: none;
+  transform: none !important;
+  box-shadow: none !important;
 }
 
 .user-dropdown-item i {

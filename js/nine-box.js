@@ -58,7 +58,7 @@ function setTipoNB(tipo) {
 
   // Atualiza o label do select conforme o tipo
   const label = document.getElementById('nb-pessoa-label');
-  if (label) label.textContent = tipo === 'professor' ? 'Professor' : 'Estagiário';
+  if (label) label.textContent = tipo === 'professor' ? 'Gestor' : 'Estagiário';
 
   popularSelectNB();
 }
@@ -341,7 +341,7 @@ function abrirModal(av) {
   body.innerHTML = `
     <div class="nb-modal-row">
       <span>Tipo</span>
-      <span>${av.tipo === 'professor' ? 'Professor' : 'Estagiário'}</span>
+      <span>${av.tipo === 'professor' ? 'Gestor' : 'Estagiário'}</span>
     </div>
     <div class="nb-modal-row">
       <span>Performance</span>
@@ -356,6 +356,7 @@ function abrirModal(av) {
       <span>${av.data}</span>
     </div>
     ${av.comentario ? `<div class="nb-modal-comentario">"${av.comentario}"</div>` : ''}
+    ${!usuarioIsEstagiario() ? `
     <div class="nb-modal-actions">
       <button class="nb-modal-btn edit" onclick="editarNB('${av.pessoaId}')">
         <i class="fa-solid fa-pen"></i> Editar
@@ -363,7 +364,7 @@ function abrirModal(av) {
       <button class="nb-modal-btn remove" onclick="removerNB('${av.pessoaId}')">
         <i class="fa-solid fa-trash"></i> Remover
       </button>
-    </div>
+    </div>` : ''}
   `;
 
   overlay.classList.add('open');
@@ -473,4 +474,27 @@ document.addEventListener('DOMContentLoaded', () => {
   document.addEventListener('keydown', e => {
     if (e.key === 'Escape') fecharModal();
   });
+
+  // ---- RESTRIÇÕES PARA ESTAGIÁRIO ----
+  aplicarRestricoesNBEstagiario();
 });
+
+/**
+ * Para estagiários: oculta o formulário de posicionamento e os botões
+ * de editar/remover no modal. O grid fica visível em modo somente leitura.
+ */
+function aplicarRestricoesNBEstagiario() {
+  if (!usuarioIsEstagiario()) return;
+
+  // Oculta o painel de formulário (lado esquerdo)
+  const painel = document.querySelector('.nb-panel');
+  if (painel) {
+    painel.innerHTML = `
+      <div style="display:flex;flex-direction:column;align-items:center;gap:12px;padding:32px 16px;text-align:center">
+        <i class="fa-solid fa-eye" style="font-size:36px;color:var(--primary-light)"></i>
+        <p style="color:var(--text-muted);font-size:13px;margin:0">
+          Você está visualizando o Nine Box em modo somente leitura.
+        </p>
+      </div>`;
+  }
+}

@@ -242,9 +242,10 @@ function renderPessoas() {
           <div class="pg-pessoa-sub">${sub}</div>
         </div>
         <span class="pg-badge ${c.tipo}">${tipoLabel}</span>
+        ${!usuarioIsEstagiario() ? `
         <button class="btn-danger" onclick="removerPessoa(${c.id})" title="Remover">
           <i class="fa-solid fa-trash"></i>
-        </button>
+        </button>` : ''}
       </div>
     `;
   }).join('');
@@ -319,7 +320,7 @@ function renderResumo() {
       <span class="rel-stat-valor">${total}</span>
     </div>
     <div class="rel-stat">
-      <span class="rel-stat-label">Professores Avaliados</span>
+      <span class="rel-stat-label">Gestores Avaliados</span>
       <span class="rel-stat-valor">${totalProf}</span>
     </div>
     <div class="rel-stat">
@@ -521,7 +522,7 @@ function exportarCSV() {
     const c = a.criterios || {};
     linhas.push([
       a.avaliado,
-      a.tipo === 'professor' ? 'Professor' : 'Estagiário',
+      a.tipo === 'professor' ? 'Gestor' : 'Estagiário',
       c.pontualidade || '',
       c.comunicacao  || '',
       c.tecnico      || '',
@@ -557,9 +558,42 @@ document.addEventListener('DOMContentLoaded', () => {
   addLiveValidation('cad-email', v => !v.trim() || REGEX_EMAIL_ACADEMICO.test(v.trim()), 'Use um e-mail acadêmico institucional.');
   addLiveValidation('cad-senha', v => !v || v.length >= 6,                              'A senha deve ter pelo menos 6 caracteres.');
 
+  // ---- RESTRIÇÕES PARA ESTAGIÁRIO ----
+  aplicarRestricoesEstagiario();
+
   // Renderiza a lista de pessoas (página Consultar)
   renderPessoas();
 
   // Renderiza os relatórios (página Relatórios)
   renderRelatorio();
 });
+
+/**
+ * Aplica restrições visuais e funcionais para usuários estagiários.
+ * - Cadastrar: bloqueia o formulário inteiro
+ * - Consultar: oculta botão de remover
+ * - Relatórios: oculta exportação e dados sensíveis
+ */
+function aplicarRestricoesEstagiario() {
+  if (!usuarioIsEstagiario()) return;
+
+  // ---- CADASTRAR: bloqueia o formulário ----
+  const formCad = document.querySelector('.pg-card');
+  if (formCad && window.location.pathname.includes('cadastrar')) {
+    formCad.innerHTML = `
+      <div style="display:flex;flex-direction:column;align-items:center;gap:16px;padding:48px 24px;text-align:center">
+        <i class="fa-solid fa-lock" style="font-size:48px;color:var(--text-muted)"></i>
+        <h3 style="color:var(--primary);margin:0">Acesso restrito</h3>
+        <p style="color:var(--text-muted);margin:0;max-width:320px">
+          Apenas gestores podem cadastrar novas pessoas no sistema.
+        </p>
+        <a href="../index.html" style="margin-top:8px;padding:10px 24px;background:var(--primary);color:white;border-radius:var(--radius-sm);font-weight:600;font-size:14px;text-decoration:none">
+          Voltar ao início
+        </a>
+      </div>`;
+  }
+
+  // ---- RELATÓRIOS: oculta botão de exportar CSV ----
+  const btnExportar = document.querySelector('[onclick*="exportarCSV"]');
+  if (btnExportar) btnExportar.style.display = 'none';
+}

@@ -75,7 +75,7 @@
     <!-- TIPO -->
     <div class="nb-toggle">
       <button class="nb-toggle-btn active" data-type="professor" onclick="setTipoNB('professor')">
-        <i class="fa-solid fa-chalkboard-user"></i> Professor
+        <i class="fa-solid fa-chalkboard-user"></i> Gestor
       </button>
       <button class="nb-toggle-btn" data-type="estagiario" onclick="setTipoNB('estagiario')">
         <i class="fa-solid fa-user-tie"></i> Estagiário
@@ -84,7 +84,7 @@
 
     <!-- SELECT PESSOA -->
     <div class="nb-field">
-      <label id="nb-pessoa-label">Professor</label>
+      <label id="nb-pessoa-label">Gestor</label>
       <select id="nb-pessoa">
         <option value="">Selecione...</option>
       </select>
@@ -155,11 +155,11 @@
     <div class="nb-grid-controls">
       <div class="nb-filtros">
         <button class="nb-filtro active" data-filtro="todos" onclick="filtrarNB('todos')">Todos</button>
-        <button class="nb-filtro" data-filtro="professor" onclick="filtrarNB('professor')">Professores</button>
+        <button class="nb-filtro" data-filtro="professor" onclick="filtrarNB('professor')">Gestores</button>
         <button class="nb-filtro" data-filtro="estagiario" onclick="filtrarNB('estagiario')">Estagiários</button>
       </div>
       <div class="nb-legend">
-        <span class="nb-legend-item"><span class="nb-legend-dot professor"></span>Professor</span>
+        <span class="nb-legend-item"><span class="nb-legend-dot professor"></span>Gestor</span>
         <span class="nb-legend-item"><span class="nb-legend-dot estagiario"></span>Estagiário</span>
       </div>
     </div>

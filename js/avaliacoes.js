@@ -64,7 +64,7 @@ function irParaFormulario() {
   document.getElementById('step-tipo').style.display = 'none';
   document.getElementById('step-form').style.display = 'block';
   document.getElementById('av-header-title').textContent =
-    tipoSelecionado === 'professor' ? 'Avaliar Professor' : 'Avaliar Estagiário';
+    tipoSelecionado === 'professor' ? 'Avaliar Gestor' : 'Avaliar Estagiário';
 
   tipoAtual = tipoSelecionado;
   setTipo(tipoSelecionado);
@@ -117,7 +117,7 @@ function renderHistoricoFull() {
   const pagina = avaliacoes.slice(inicio, inicio + ITENS_POR_PAGINA);
 
   container.innerHTML = pagina.map(a => {
-    const tipoLabel = a.tipo === 'professor' ? 'Professor' : 'Estagiário';
+    const tipoLabel = a.tipo === 'professor' ? 'Gestor' : 'Estagiário';
 
     // Avaliação de estagiário por comentário (sem estrelas)
     if (a.tipo === 'estagiario' && a.tipoAvaliacao === 'comentario') {
@@ -174,12 +174,13 @@ function getUsuarioLogado() {
 
 /**
  * Verifica se o usuário tem permissão de gestor (pode avaliar estagiários).
- * Sem login, professor, gestor e admin têm acesso total.
+ * Estagiários logados NÃO têm acesso. Sem login, acesso é negado.
  * @returns {boolean}
  */
 function isGestor() {
   const user = getUsuarioLogado();
-  return !user || user.tipo === 'professor' || user.tipo === 'gestor' || user.tipo === 'admin';
+  if (!user) return false; // sem login = sem acesso de gestor
+  return user.tipo === 'professor' || user.tipo === 'gestor' || user.tipo === 'admin';
 }
 
 /**
@@ -188,7 +189,17 @@ function isGestor() {
  */
 function isAdmin() {
   const user = getUsuarioLogado();
-  return !user || user.tipo === 'admin';
+  if (!user) return false;
+  return user.tipo === 'admin';
+}
+
+/**
+ * Verifica se o usuário logado é estagiário.
+ * @returns {boolean}
+ */
+function isEstagiario() {
+  const user = getUsuarioLogado();
+  return user && user.tipo === 'estagiario';
 }
 
 /**
@@ -239,7 +250,7 @@ function setTipo(tipo) {
   });
 
   const label = document.getElementById('avaliado-label');
-  if (label) label.textContent = tipo === 'professor' ? 'Professor' : 'Estagiário';
+  if (label) label.textContent = tipo === 'professor' ? 'Gestor' : 'Estagiário';
 
   const criteriosProfessor = document.getElementById('criterios-professor');
   const criteriosEstagiario = document.getElementById('criterios-estagiario');
@@ -574,7 +585,7 @@ function renderHistorico() {
   const pagina = avaliacoes.slice(inicio, inicio + ITENS_POR_PAGINA);
 
   container.innerHTML = pagina.map(a => {
-    const tipoLabel = a.tipo === 'professor' ? 'Professor' : 'Estagiário';
+    const tipoLabel = a.tipo === 'professor' ? 'Gestor' : 'Estagiário';
 
     // Avaliação de estagiário por comentário
     if (a.tipo === 'estagiario' && a.tipoAvaliacao === 'comentario') {
