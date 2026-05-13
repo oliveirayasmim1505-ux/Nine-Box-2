@@ -302,6 +302,71 @@
       }
     ];
 
+    // Avaliações 180° de exemplo
+    const avaliacoes180Exemplo = [
+      {
+        id: 5001,
+        nome: "Avaliação 180° - Prof. João Silva",
+        avaliado: "Prof. João Silva",
+        avaliadoId: 1001,
+        tipo: "professor",
+        inicio: "01/05/2026",
+        fim: "15/05/2026",
+        status: "ativa",
+        competencias: [
+          { id: 4001, nome: "Comunicação Efetiva" },
+          { id: 4003, nome: "Conhecimento Técnico" }
+        ],
+        avaliadores: [
+          { id: 1002, nome: "Prof. Maria Santos", tipo: "par", respondeu: true },
+          { id: 1005, nome: "Prof. Pedro Lima", tipo: "par", respondeu: false },
+          { id: 1003, nome: "Ana Costa", tipo: "subordinado", respondeu: true }
+        ],
+        respostas: [
+          {
+            avaliadorId: 1002,
+            avaliadorNome: "Prof. Maria Santos",
+            data: "03/05/2026",
+            notas: { 4001: 5, 4003: 5 },
+            comentario: "Excelente colega, sempre disposto a ajudar."
+          },
+          {
+            avaliadorId: 1003,
+            avaliadorNome: "Ana Costa",
+            data: "04/05/2026",
+            notas: { 4001: 4, 4003: 5 },
+            comentario: "Professor muito competente e atencioso."
+          }
+        ]
+      },
+      {
+        id: 5002,
+        nome: "Avaliação 180° - Ana Costa",
+        avaliado: "Ana Costa",
+        avaliadoId: 1003,
+        tipo: "estagiario",
+        inicio: "01/05/2026",
+        fim: "15/05/2026",
+        status: "ativa",
+        competencias: [
+          { id: 4002, nome: "Trabalho em Equipe" }
+        ],
+        avaliadores: [
+          { id: 1001, nome: "Prof. João Silva", tipo: "superior", respondeu: true },
+          { id: 1004, nome: "Carlos Oliveira", tipo: "par", respondeu: false }
+        ],
+        respostas: [
+          {
+            avaliadorId: 1001,
+            avaliadorNome: "Prof. João Silva",
+            data: "05/05/2026",
+            notas: { 4002: 5 },
+            comentario: "Estagiária exemplar, muito dedicada."
+          }
+        ]
+      }
+    ];
+
     // Salva os dados
     if (!dados.temContatos) {
       localStorage.setItem('contatos', JSON.stringify(contatosExemplo));
@@ -323,6 +388,13 @@
     if (competenciasAtuais.length === 0) {
       localStorage.setItem('competencias', JSON.stringify(competenciasExemplo));
       console.log('✅ Competências carregadas:', competenciasExemplo.length);
+    }
+
+    // Sempre atualiza avaliações 180° (não verifica se existe)
+    const avaliacoes180Atuais = JSON.parse(localStorage.getItem('avaliacoes180') || '[]');
+    if (avaliacoes180Atuais.length === 0) {
+      localStorage.setItem('avaliacoes180', JSON.stringify(avaliacoes180Exemplo));
+      console.log('✅ Avaliações 180° carregadas:', avaliacoes180Exemplo.length);
     }
 
     console.log('✅ Dados de exemplo carregados com sucesso!');
