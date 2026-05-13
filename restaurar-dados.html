@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Restaurar Dados - Portal de Estágio</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    .container {
+      max-width: 600px;
+      width: 100%;
+      background: white;
+      border-radius: 16px;
+      padding: 40px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    }
+    h1 {
+      color: #1e293b;
+      margin-bottom: 10px;
+      font-size: 28px;
+      text-align: center;
+    }
+    .subtitle {
+      color: #64748b;
+      margin-bottom: 30px;
+      font-size: 14px;
+      text-align: center;
+    }
+    .option {
+      background: #f8fafc;
+      border: 2px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 15px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .option:hover {
+      border-color: #3b82f6;
+      background: #eff6ff;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(59, 130, 246, 0.2);
+    }
+    .option h3 {
+      color: #1e293b;
+      font-size: 18px;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .option p {
+      color: #64748b;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+    .option .icon {
+      font-size: 24px;
+    }
+    .btn {
+      width: 100%;
+      padding: 14px;
+      border: none;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 15px;
+      cursor: pointer;
+      transition: all 0.2s;
+      margin-top: 10px;
+    }
+    .btn-primary {
+      background: linear-gradient(135deg, #3b82f6, #2563eb);
+      color: white;
+    }
+    .btn-primary:hover {
+      background: linear-gradient(135deg, #2563eb, #1d4ed8);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
+    }
+    .btn-secondary {
+      background: #f1f5f9;
+      color: #475569;
+    }
+    .btn-secondary:hover {
+      background: #e2e8f0;
+    }
+    .alert {
+      padding: 15px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      display: none;
+    }
+    .alert.show {
+      display: block;
+      animation: slideIn 0.3s ease;
+    }
+    .alert-success {
+      background: #d1fae5;
+      color: #065f46;
+      border-left: 4px solid #10b981;
+    }
+    .alert-warning {
+      background: #fef3c7;
+      color: #92400e;
+      border-left: 4px solid #f59e0b;
+    }
+    @keyframes slideIn {
+      from {
+        opacity: 0;
+        transform: translateY(-10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    .stats {
+      background: #f8fafc;
+      border-radius: 8px;
+      padding: 15px;
+      margin-top: 20px;
+    }
+    .stat-item {
+      display: flex;
+      justify-content: space-between;
+      padding: 8px 0;
+      border-bottom: 1px solid #e2e8f0;
+    }
+    .stat-item:last-child {
+      border-bottom: none;
+    }
+    .stat-label {
+      color: #64748b;
+      font-size: 14px;
+    }
+    .stat-value {
+      color: #1e293b;
+      font-weight: 600;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🔄 Restaurar Dados</h1>
+    <p class="subtitle">Escolha uma opção para restaurar os dados do sistema</p>
+
+    <div id="alert" class="alert"></div>
+
+    <div class="option" onclick="restaurarDadosExemplo()">
+      <h3><span class="icon">📦</span> Restaurar Dados de Exemplo</h3>
+      <p>Adiciona 6 contatos (3 gestores + 3 estagiários), 2 avaliações tradicionais e 3 avaliações Nine Box.</p>
+    </div>
+
+    <div class="option" onclick="restaurarApenasAvaliacoes()">
+      <h3><span class="icon">⭐</span> Restaurar Apenas Avaliações</h3>
+      <p>Mantém os contatos atuais e adiciona apenas as avaliações de exemplo.</p>
+    </div>
+
+    <div class="option" onclick="limparTudo()">
+      <h3><span class="icon">🗑️</span> Limpar Todos os Dados</h3>
+      <p>Remove todos os dados do sistema (contatos, avaliações, Nine Box, etc.).</p>
+    </div>
+
+    <div class="stats" id="stats-atuais">
+      <h3 style="color: #1e293b; font-size: 16px; margin-bottom: 10px;">📊 Dados Atuais</h3>
+      <div id="stats-content"></div>
+    </div>
+
+    <button class="btn btn-secondary" onclick="location.href='index.html'">← Voltar ao Sistema</button>
+    <button class="btn btn-secondary" onclick="location.href='verificar-dados.html'">🔍 Ver Diagnóstico Completo</button>
+  </div>
+
+  <script>
+    function mostrarAlerta(mensagem, tipo = 'success') {
+      const alert = document.getElementById('alert');
+      alert.className = `alert alert-${tipo} show`;
+      alert.textContent = mensagem;
+      
+      setTimeout(() => {
+        alert.classList.remove('show');
+      }, 5000);
+    }
+
+    function atualizarStats() {
+      const contatos = JSON.parse(localStorage.getItem('contatos') || '[]');
+      const avaliacoes = JSON.parse(localStorage.getItem('avaliacoes') || '[]');
+      const nineBox = JSON.parse(localStorage.getItem('nineBoxAvaliacoes') || '[]');
+      const avaliacoes180 = JSON.parse(localStorage.getItem('avaliacoes180') || '[]');
+      const competencias = JSON.parse(localStorage.getItem('competencias') || '[]');
+
+      document.getElementById('stats-content').innerHTML = `
+        <div class="stat-item">
+          <span class="stat-label">Contatos</span>
+          <span class="stat-value">${contatos.length}</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-label">Avaliações</span>
+          <span class="stat-value">${avaliacoes.length}</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-label">Nine Box</span>
+          <span class="stat-value">${nineBox.length}</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-label">Avaliações 180°</span>
+          <span class="stat-value">${avaliacoes180.length}</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-label">Competências</span>
+          <span class="stat-value">${competencias.length}</span>
+        </div>
+      `;
+    }
+
+    function restaurarDadosExemplo() {
+      if (!confirm('Isso irá substituir todos os dados atuais. Deseja continuar?')) {
+        return;
+      }
+
+      const contatosExemplo = [
+        {
+          id: 1001,
+          nome: "Prof. João Silva",
+          email: "joao.silva@universidade.edu",
+          tipo: "professor",
+          disciplina: "Engenharia de Software",
+          foto: null
+        },
+        {
+          id: 1002,
+          nome: "Prof. Maria Santos",
+          email: "maria.santos@universidade.edu",
+          tipo: "professor",
+          disciplina: "Banco de Dados",
+          foto: null
+        },
+        {
+          id: 1003,
+          nome: "Ana Costa",
+          email: "ana.costa@email.com",
+          tipo: "estagiario",
+          matricula: "2021001",
+          foto: null
+        },
+        {
+          id: 1004,
+          nome: "Carlos Oliveira",
+          email: "carlos.oliveira@email.com",
+          tipo: "estagiario",
+          matricula: "2021002",
+          foto: null
+        },
+        {
+          id: 1005,
+          nome: "Prof. Pedro Lima",
+          email: "pedro.lima@universidade.edu",
+          tipo: "professor",
+          disciplina: "Algoritmos",
+          foto: null
+        },
+        {
+          id: 1006,
+          nome: "Beatriz Ferreira",
+          email: "beatriz.ferreira@email.com",
+          tipo: "estagiario",
+          matricula: "2021003",
+          foto: null
+        }
+      ];
+
+      const avaliacoesExemplo = [
+        {
+          id: 3001,
+          tipo: "professor",
+          avaliado: "Prof. João Silva",
+          criterios: {
+            pontualidade: 5,
+            comunicacao: 4,
+            tecnico: 5,
+            proatividade: 4,
+            equipe: 5
+          },
+          media: 4.6,
+          comentario: "Excelente professor, muito dedicado.",
+          data: "26/04/2026"
+        },
+        {
+          id: 3002,
+          tipo: "estagiario",
+          avaliado: "Ana Costa",
+          criterios: {},
+          media: null,
+          comentario: "Estagiária muito dedicada e pontual. Demonstra grande interesse em aprender e sempre busca feedback para melhorar. Sua comunicação é clara e ela se integra bem com a equipe.",
+          data: "26/04/2026",
+          tipoAvaliacao: "comentario"
+        }
+      ];
+
+      const nineBoxExemplo = [
+        {
+          id: 2001,
+          pessoaId: 1001,
+          tipo: "professor",
+          pessoa: "Prof. João Silva",
+          performance: 3,
+          potential: 2,
+          comentario: "Excelente professor, muito dedicado às aulas.",
+          data: "27/04/2026",
+          categoria: "Especialista"
+        },
+        {
+          id: 2002,
+          pessoaId: 1003,
+          tipo: "estagiario",
+          pessoa: "Ana Costa",
+          performance: 2,
+          potential: 3,
+          comentario: "Demonstra muito potencial, está sempre buscando aprender mais.",
+          data: "27/04/2026",
+          categoria: "Estrela"
+        },
+        {
+          id: 2003,
+          pessoaId: 1002,
+          tipo: "professor",
+          pessoa: "Prof. Maria Santos",
+          performance: 3,
+          potential: 3,
+          comentario: "Professora excepcional com grande potencial de liderança.",
+          data: "27/04/2026",
+          categoria: "Superstar"
+        }
+      ];
+
+      localStorage.setItem('contatos', JSON.stringify(contatosExemplo));
+      localStorage.setItem('avaliacoes', JSON.stringify(avaliacoesExemplo));
+      localStorage.setItem('nineBoxAvaliacoes', JSON.stringify(nineBoxExemplo));
+
+      mostrarAlerta('✅ Dados de exemplo restaurados com sucesso!', 'success');
+      atualizarStats();
+    }
+
+    function restaurarApenasAvaliacoes() {
+      const contatos = JSON.parse(localStorage.getItem('contatos') || '[]');
+      
+      if (contatos.length === 0) {
+        mostrarAlerta('⚠️ Você precisa ter contatos cadastrados primeiro!', 'warning');
+        return;
+      }
+
+      if (!confirm('Isso irá adicionar avaliações de exemplo. Deseja continuar?')) {
+        return;
+      }
+
+      const avaliacoesExemplo = [
+        {
+          id: Date.now(),
+          tipo: "professor",
+          avaliado: contatos.find(c => c.tipo === 'professor')?.nome || "Gestor",
+          criterios: {
+            pontualidade: 5,
+            comunicacao: 4,
+            tecnico: 5,
+            proatividade: 4,
+            equipe: 5
+          },
+          media: 4.6,
+          comentario: "Excelente profissional, muito dedicado.",
+          data: new Date().toLocaleDateString('pt-BR')
+        },
+        {
+          id: Date.now() + 1,
+          tipo: "estagiario",
+          avaliado: contatos.find(c => c.tipo === 'estagiario')?.nome || "Estagiário",
+          criterios: {},
+          media: null,
+          comentario: "Estagiário muito dedicado e pontual. Demonstra grande interesse em aprender e sempre busca feedback para melhorar.",
+          data: new Date().toLocaleDateString('pt-BR'),
+          tipoAvaliacao: "comentario"
+        }
+      ];
+
+      const avaliacoesAtuais = JSON.parse(localStorage.getItem('avaliacoes') || '[]');
+      localStorage.setItem('avaliacoes', JSON.stringify([...avaliacoesAtuais, ...avaliacoesExemplo]));
+
+      mostrarAlerta('✅ Avaliações adicionadas com sucesso!', 'success');
+      atualizarStats();
+    }
+
+    function limparTudo() {
+      if (!confirm('⚠️ ATENÇÃO: Isso irá remover TODOS os dados do sistema. Esta ação não pode ser desfeita. Deseja continuar?')) {
+        return;
+      }
+
+      if (!confirm('Tem certeza absoluta? Todos os contatos, avaliações e dados serão perdidos!')) {
+        return;
+      }
+
+      localStorage.removeItem('contatos');
+      localStorage.removeItem('avaliacoes');
+      localStorage.removeItem('nineBoxAvaliacoes');
+      localStorage.removeItem('avaliacoes180');
+      localStorage.removeItem('competencias');
+      localStorage.removeItem('perfilLogado');
+
+      mostrarAlerta('✅ Todos os dados foram removidos.', 'success');
+      atualizarStats();
+    }
+
+    // Atualiza stats ao carregar
+    atualizarStats();
+  </script>
+</body>
+</html>
