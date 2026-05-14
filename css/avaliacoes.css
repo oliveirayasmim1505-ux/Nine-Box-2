@@ -836,3 +836,152 @@
   color: var(--text-muted);
   white-space: nowrap;
 }
+
+/* =============================================
+   DARK MODE — AVALIAÇÕES
+   ============================================= */
+
+body.dark-mode .av-step-box {
+  background: #1e293b;
+  border: 1px solid #334155;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+}
+
+body.dark-mode .av-step-subtitle {
+  color: #e2e8f0;
+}
+
+body.dark-mode .av-tipo-card {
+  background: #1e293b;
+  border-color: #334155;
+}
+
+body.dark-mode .av-tipo-card:hover {
+  border-color: #60a5fa;
+  background: #1e3a5f;
+}
+
+body.dark-mode .av-tipo-card.selected {
+  background: #1e3a5f;
+  border-color: #3b82f6;
+}
+
+body.dark-mode .av-tipo-icon {
+  background: #0f172a;
+}
+
+body.dark-mode .av-tipo-card.selected .av-tipo-icon {
+  background: #1e3a5f;
+}
+
+body.dark-mode .av-tipo-card span {
+  color: #e2e8f0;
+}
+
+body.dark-mode .av-tipo-card.selected span {
+  color: #93c5fd;
+}
+
+body.dark-mode .av-btn-voltar {
+  background: transparent;
+  border-color: #334155;
+  color: #94a3b8;
+}
+
+body.dark-mode .av-btn-voltar:hover {
+  background: #1e293b;
+  color: #93c5fd;
+  border-color: #60a5fa;
+}
+
+body.dark-mode .av-btn-proximo:disabled {
+  background: #334155;
+  color: #64748b;
+}
+
+body.dark-mode .av-form-card,
+body.dark-mode .av-historico-card {
+  background: #1e293b;
+  border: 1px solid #334155;
+}
+
+body.dark-mode .av-field label {
+  color: #94a3b8;
+}
+
+body.dark-mode .av-field select,
+body.dark-mode .av-field textarea {
+  background: #0f172a;
+  color: #f1f5f9;
+  border-color: #334155;
+}
+
+body.dark-mode .av-criterios,
+body.dark-mode .av-criterios-estagiario {
+  border-color: #334155;
+}
+
+body.dark-mode .av-criterio {
+  border-color: #334155;
+}
+
+body.dark-mode .av-criterio-label {
+  color: #e2e8f0;
+}
+
+body.dark-mode .av-media-box {
+  background: #0f172a;
+  border-color: #334155;
+  color: #93c5fd;
+}
+
+body.dark-mode .av-aspecto {
+  border-color: #334155;
+}
+
+body.dark-mode .av-aspecto-label {
+  color: #e2e8f0;
+}
+
+body.dark-mode .av-aspecto-desc {
+  color: #64748b;
+}
+
+body.dark-mode .av-section-title {
+  color: #93c5fd;
+}
+
+body.dark-mode .av-historico-header {
+  border-color: #334155;
+}
+
+body.dark-mode .av-item {
+  background: #0f172a;
+  border-color: #334155;
+}
+
+body.dark-mode .av-item-nome {
+  color: #93c5fd;
+}
+
+body.dark-mode .av-item-comentario {
+  color: #94a3b8;
+}
+
+body.dark-mode .av-filtro {
+  background: #0f172a;
+  border-color: #334155;
+  color: #94a3b8;
+}
+
+body.dark-mode .av-filtro.active {
+  background: #1e3a5f;
+  color: #93c5fd;
+  border-color: #3b82f6;
+}
+
+body.dark-mode .av-btn-voltar-form {
+  background: #0f172a;
+  border-color: #334155;
+  color: #94a3b8;
+}
