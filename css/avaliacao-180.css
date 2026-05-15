@@ -1347,7 +1347,7 @@ body.dark-mode .r180-lista-header p { color: #64748b; }
   font-size: 10px;
   transition: all 0.15s;
   box-shadow: none;
-  opacity: 0;
+  opacity: 1;
 }
 
 .r180-resposta-item:hover .r180-btn-del-resposta {

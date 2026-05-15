@@ -498,7 +498,7 @@
   font-size: 11px;
   transition: all 0.15s;
   box-shadow: none;
-  opacity: 0;
+  opacity: 1;
 }
 
 .av-item:hover .av-item-del,

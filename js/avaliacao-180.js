@@ -295,7 +295,7 @@ function renderLista180() {
           <div class="r180-resposta-item">
             <span class="r180-resposta-nome"><i class="fa-solid fa-user" style="font-size:10px;margin-right:4px;"></i>${r.respondente}</span>
             <span class="r180-resposta-data">${r.data}</span>
-            ${podeEditar ? `<button class="r180-btn-del-resposta" onclick="deletarResposta180(${r.id})" title="Excluir resposta"><i class="fa-solid fa-trash"></i></button>` : ''}
+            <button class="r180-btn-del-resposta" onclick="deletarResposta180(${r.id})" title="Excluir resposta"><i class="fa-solid fa-trash"></i></button>
           </div>`).join('')}
       </div>` : '';
 
