@@ -255,7 +255,27 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const container = document.getElementById('dash-stats');
   if (container) {
-    if (contatos.length === 0) {
+    // Se não há sessão, mostra tudo zerado
+    if (!sessao) {
+      container.innerHTML = `
+        <div class="dash-stat">
+          <i class="fa-solid fa-chalkboard-user"></i>
+          <div><span class="dash-stat-val">0</span><span class="dash-stat-label">Gestores</span></div>
+        </div>
+        <div class="dash-stat">
+          <i class="fa-solid fa-user-tie"></i>
+          <div><span class="dash-stat-val">0</span><span class="dash-stat-label">Estagiários</span></div>
+        </div>
+        <div class="dash-stat">
+          <i class="fa-solid fa-star"></i>
+          <div><span class="dash-stat-val">0</span><span class="dash-stat-label">Avaliações</span></div>
+        </div>
+        <div class="dash-stat">
+          <i class="fa-solid fa-th"></i>
+          <div><span class="dash-stat-val">0</span><span class="dash-stat-label">Nine Box</span></div>
+        </div>
+      `;
+    } else if (contatos.length === 0) {
       // Mensagem de boas-vindas para novos usuários
       container.innerHTML = `
         <div class="dash-welcome">
