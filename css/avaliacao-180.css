@@ -1233,3 +1233,63 @@
   transform: translateY(-1px);
   box-shadow: 0 4px 12px rgba(22, 101, 52, 0.15);
 }
+
+/* =============================================
+   DARK MODE — AVALIAÇÃO 180°
+   ============================================= */
+body.dark-mode .r180-main { background: transparent; }
+body.dark-mode .r180-card { background: #1e293b; border: 1px solid #334155; }
+body.dark-mode .r180-card-header { border-color: #334155; }
+body.dark-mode .r180-card-header h3 { color: #93c5fd; }
+body.dark-mode .r180-card-sub { color: #64748b; }
+body.dark-mode .r180-item-card { background: #1e293b; border-color: #334155; }
+body.dark-mode .r180-item-card:hover { border-color: #60a5fa; }
+body.dark-mode .r180-item-icon { background: #0f172a; }
+body.dark-mode .r180-item-nome { color: #93c5fd; }
+body.dark-mode .r180-item-meta { color: #64748b; }
+body.dark-mode .r180-info-item { background: #0f172a; border-color: #334155; }
+body.dark-mode .r180-info-item label { color: #94a3b8; }
+body.dark-mode .r180-info-item input,
+body.dark-mode .r180-info-item select { color: #f1f5f9; background: transparent; }
+body.dark-mode .r180-data-pair label { color: #94a3b8; }
+body.dark-mode .r180-data-pair input { color: #f1f5f9; }
+body.dark-mode .r180-section-title { color: #93c5fd; }
+body.dark-mode .r180-section textarea { background: #0f172a; color: #f1f5f9; border-color: #334155; }
+body.dark-mode .r180-avaliado-item { background: #1e293b; border-color: #334155; }
+body.dark-mode .r180-avaliado-nome { color: #e2e8f0; }
+body.dark-mode .r180-comp-item { background: #1e293b; border-color: #334155; }
+body.dark-mode .r180-comp-icon { background: #0f172a; }
+body.dark-mode .r180-comp-nome { color: #e2e8f0; }
+body.dark-mode .r180-comp-desc { color: #64748b; }
+body.dark-mode .r180-empty-small { background: #0f172a; border-color: #334155; color: #64748b; }
+body.dark-mode .r180-form-actions { border-color: #334155; }
+body.dark-mode .r180-btn-voltar { background: transparent; border-color: #334155; color: #94a3b8; }
+body.dark-mode .r180-btn-voltar:hover { background: #1e293b; color: #93c5fd; }
+body.dark-mode .r180-btn-cancelar { border-color: #334155; color: #94a3b8; }
+body.dark-mode .r180-btn-cancelar:hover { background: #1e293b; color: #93c5fd; }
+body.dark-mode .r180-modal { background: #1e293b; }
+body.dark-mode .r180-modal-header { border-color: #334155; }
+body.dark-mode .r180-modal-header h4 { color: #93c5fd; }
+body.dark-mode .r180-modal-close { background: #0f172a; color: #94a3b8; }
+body.dark-mode .r180-field label { color: #94a3b8; }
+body.dark-mode .r180-field input,
+body.dark-mode .r180-field select { background: #0f172a; color: #f1f5f9; border-color: #334155; }
+body.dark-mode .r180-modal-actions { border-color: #334155; }
+body.dark-mode .r180-modal-actions-3 { border-color: #334155; }
+body.dark-mode .r180-check-item { background: #1e293b; border-color: #334155; }
+body.dark-mode .r180-check-item:hover { background: #1e3a5f; border-color: #60a5fa; }
+body.dark-mode .r180-check-item.selecionado { background: #1e3a5f; border-color: #3b82f6; }
+body.dark-mode .r180-check-nome { color: #e2e8f0; }
+body.dark-mode .r180-check-item input[type="checkbox"] { background: #0f172a; border-color: #334155; }
+body.dark-mode .r180-comp-check-item { background: #1e293b; border-color: #334155; }
+body.dark-mode .r180-comp-check-item:hover { background: #1e3a5f; }
+body.dark-mode .r180-comp-check-item.selecionado { background: #1e3a5f; border-color: #3b82f6; }
+body.dark-mode .r180-comp-check-nome { color: #e2e8f0; }
+body.dark-mode .r180-comp-check-icon { background: #0f172a; }
+body.dark-mode .r180-comp-search-wrap { background: #0f172a; border-color: #334155; }
+body.dark-mode .r180-comp-search-wrap input { color: #f1f5f9; }
+body.dark-mode .r180-dropdown-select { background: #1e293b; border-color: #334155; color: #94a3b8; }
+body.dark-mode .r180-tag { background: #0f172a; border-color: #334155; color: #94a3b8; }
+body.dark-mode .r180-tag strong { color: #e2e8f0; }
+body.dark-mode .r180-lista-header h3 { color: #93c5fd; }
+body.dark-mode .r180-lista-header p { color: #64748b; }

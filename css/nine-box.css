@@ -719,3 +719,38 @@
     height: 600px;
   }
 }
+
+/* =============================================
+   DARK MODE — NINE BOX
+   ============================================= */
+body.dark-mode .nb-panel { background: #1e293b; border-color: #334155; }
+body.dark-mode .nb-panel-header { color: #93c5fd; border-color: #334155; }
+body.dark-mode .nb-toggle { background: #0f172a; }
+body.dark-mode .nb-toggle-btn { color: #94a3b8; }
+body.dark-mode .nb-toggle-btn.active { background: #1e293b; color: #93c5fd; }
+body.dark-mode .nb-field label { color: #94a3b8; }
+body.dark-mode .nb-field select,
+body.dark-mode .nb-field textarea { background: #0f172a; color: #f1f5f9; border-color: #334155; }
+body.dark-mode .nb-axis-section { background: linear-gradient(135deg, #0f172a, #1e293b); border-color: #60a5fa; }
+body.dark-mode .nb-axis-label { color: #93c5fd; }
+body.dark-mode .nb-axis-btn { background: #0f172a; border-color: #334155; color: #94a3b8; }
+body.dark-mode .nb-axis-btn:hover { border-color: #60a5fa; color: #93c5fd; }
+body.dark-mode .nb-axis-btn.selected { background: var(--primary); color: white; border-color: var(--primary); }
+body.dark-mode .nb-preview { background: linear-gradient(135deg, #1e3a5f, #1e293b); border-color: #3b82f6; color: #93c5fd; }
+body.dark-mode .nb-grid-area { background: #0f172a; }
+body.dark-mode .nb-filtro { background: transparent; border-color: #334155; color: #94a3b8; }
+body.dark-mode .nb-filtro:hover { border-color: #60a5fa; color: #93c5fd; }
+body.dark-mode .nb-filtro.active { background: var(--primary); color: white; border-color: var(--primary); }
+body.dark-mode .nb-legend-item { color: #94a3b8; }
+body.dark-mode .nb-axis-title { color: #93c5fd; }
+body.dark-mode .nb-axis-ticks span,
+body.dark-mode .nb-axis-ticks-x span { color: #64748b; }
+body.dark-mode .nb-box-name { color: rgba(255,255,255,0.8); }
+body.dark-mode .nb-modal { background: #1e293b; }
+body.dark-mode .nb-modal-header { border-color: #334155; }
+body.dark-mode .nb-modal-header h4 { color: #93c5fd; }
+body.dark-mode .nb-modal-close { background: #0f172a; color: #94a3b8; }
+body.dark-mode .nb-modal-row { border-color: #334155; }
+body.dark-mode .nb-modal-row span:first-child { color: #64748b; }
+body.dark-mode .nb-modal-row span:last-child { color: #93c5fd; }
+body.dark-mode .nb-modal-comentario { background: #0f172a; color: #94a3b8; }

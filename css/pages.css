@@ -968,3 +968,60 @@
     grid-template-columns: repeat(2, 1fr);
   }
 }
+
+/* =============================================
+   DARK MODE — PAGES (Cadastrar, Consultar, Relatórios, Perfil, Sobre)
+   ============================================= */
+body.dark-mode .pg-card { background: #1e293b; border: 1px solid #334155; }
+body.dark-mode .pg-field label { color: #94a3b8; }
+body.dark-mode .pg-field input,
+body.dark-mode .pg-field select,
+body.dark-mode .pg-field textarea { background: #0f172a; color: #f1f5f9; border-color: #334155; }
+body.dark-mode .pg-field input:focus,
+body.dark-mode .pg-field select:focus { border-color: #60a5fa; }
+body.dark-mode .pg-type-btn { background: #0f172a; border-color: #334155; color: #94a3b8; }
+body.dark-mode .pg-type-btn.active { background: #1e3a5f; color: #93c5fd; border-color: #3b82f6; }
+body.dark-mode .pg-filtro { background: #0f172a; border-color: #334155; color: #94a3b8; }
+body.dark-mode .pg-filtro.active { background: #1e3a5f; color: #93c5fd; border-color: #3b82f6; }
+body.dark-mode .pg-search-wrap { background: #0f172a; border-color: #334155; }
+body.dark-mode .pg-search-wrap input { color: #f1f5f9; }
+body.dark-mode .pg-empty { color: #64748b; }
+body.dark-mode .pg-pessoa-card { background: #1e293b; border-color: #334155; }
+body.dark-mode .pg-pessoa-card:hover { border-color: #60a5fa; }
+body.dark-mode .pg-pessoa-nome { color: #93c5fd; }
+body.dark-mode .pg-pessoa-email { color: #64748b; }
+body.dark-mode .pg-badge { background: #0f172a; color: #94a3b8; border-color: #334155; }
+
+/* Relatórios */
+body.dark-mode .rel-table-wrap { background: #1e293b; border-color: #334155; }
+body.dark-mode .rel-table thead tr { background: #0f172a; }
+body.dark-mode .rel-table th { color: #94a3b8; border-color: #334155; }
+body.dark-mode .rel-table td { color: #e2e8f0; border-color: #334155; }
+body.dark-mode .rel-table tr:hover td { background: #1e3a5f; }
+body.dark-mode .rel-resumo-card { background: #1e293b; border-color: #334155; }
+
+/* Perfil */
+body.dark-mode .pf-card { background: #1e293b; border-color: #334155; }
+body.dark-mode .pf-card-left { background: #1e293b; }
+body.dark-mode .pf-nome { color: #93c5fd; }
+body.dark-mode .pf-login-card { background: #1e293b; border-color: #334155; }
+body.dark-mode .pf-login-desc { color: #64748b; }
+body.dark-mode .pf-tabs { border-color: #334155; }
+body.dark-mode .pf-tab { color: #94a3b8; }
+body.dark-mode .pf-tab.active { color: #93c5fd; border-color: #3b82f6; }
+body.dark-mode .pf-stats { border-color: #334155; }
+body.dark-mode .pf-stat-val { color: #93c5fd; }
+body.dark-mode .pf-stat-label { color: #64748b; }
+
+/* Sobre */
+body.dark-mode .sobre-hero { background: #1e293b; border-color: #334155; }
+body.dark-mode .sobre-hero-titulo { color: #93c5fd; }
+body.dark-mode .sobre-hero-desc { color: #94a3b8; }
+body.dark-mode .sobre-section-titulo { color: #93c5fd; }
+body.dark-mode .sobre-texto-card { background: #1e293b; border-color: #334155; color: #e2e8f0; }
+body.dark-mode .sobre-feature-card { background: #1e293b; border-color: #334155; }
+body.dark-mode .sobre-feature-card strong { color: #e2e8f0; }
+body.dark-mode .sobre-feature-card span { color: #94a3b8; }
+body.dark-mode .sobre-perfil-card { background: #1e293b; border-color: #334155; }
+body.dark-mode .sobre-perfil-lista li { color: #94a3b8; border-color: #334155; }
+body.dark-mode .sobre-footer { color: #64748b; }
