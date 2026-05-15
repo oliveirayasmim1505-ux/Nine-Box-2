@@ -433,18 +433,20 @@ function _naInjetarModal() {
 }
 
 // ============================================================
-// BOTÃO FLUTUANTE (FAB) — Aparece apenas em avaliacoes.html
+// BOTÃO FLUTUANTE (FAB) — Aparece em páginas de avaliação
 // ============================================================
 
 /**
  * Cria e insere o botão flutuante "Nova Avaliação" no canto inferior direito.
- * Só é exibido na página avaliacoes.html.
+ * Exibido nas páginas de avaliação.
  */
 function _naInjetarFab() {
   if (document.getElementById('na-fab')) return;
 
-  // Verifica se está na página correta
-  if (!window.location.pathname.includes('avaliacoes.html')) return;
+  // Verifica se está em uma das páginas de avaliação
+  const path = window.location.pathname;
+  const paginasPermitidas = ['avaliacoes.html', 'avaliar-professor.html', 'avaliar-estagiario.html'];
+  if (!paginasPermitidas.some(p => path.includes(p))) return;
 
   const fab       = document.createElement('button');
   fab.id          = 'na-fab';
