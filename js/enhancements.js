@@ -56,33 +56,11 @@
   }, true); // true = fase de captura, roda antes da transição de página
 
   // ====================================================================
-  // TRANSIÇÃO SUAVE ENTRE PÁGINAS
+  // TRANSIÇÃO SUAVE ENTRE PÁGINAS — DESATIVADA (causava tela em branco)
   // ====================================================================
   function injetarTransicaoPagina() {
-    if (document.getElementById('page-transition-overlay')) return;
-
-    const overlay = document.createElement('div');
-    overlay.id = 'page-transition-overlay';
-    overlay.className = 'page-transition-overlay';
-    document.body.appendChild(overlay);
-
-    // Intercepta cliques em links internos
-    document.addEventListener('click', (e) => {
-      const link = e.target.closest('a[href]');
-      if (!link) return;
-
-      const href = link.getAttribute('href');
-      // Ignora links externos, âncoras, javascript: e target="_blank"
-      if (!href || href.startsWith('http') || href.startsWith('#') ||
-          href.startsWith('javascript') || href.startsWith('mailto') ||
-          link.target === '_blank') return;
-
-      e.preventDefault();
-      overlay.classList.add('fade-out');
-      setTimeout(() => {
-        window.location.href = href;
-      }, 200);
-    });
+    // Desativado temporariamente para evitar tela em branco
+    return;
   }
 
   // ====================================================================

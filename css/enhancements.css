@@ -304,7 +304,6 @@ body.dark-mode .skeleton {
 
 /* Fade-in ao carregar — garante que o body sempre fica visível */
 body {
-  animation: fadeIn 0.25s ease forwards;
   opacity: 1 !important;
 }
 
