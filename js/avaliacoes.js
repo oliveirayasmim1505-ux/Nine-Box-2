@@ -128,6 +128,7 @@ function renderHistoricoFull() {
             <div class="av-item-meta">
               <span class="av-item-tipo ${a.tipo}">${tipoLabel}</span>
               <span class="av-item-data">${a.data}</span>
+              ${isGestor() ? `<button class="av-item-del" onclick="deletarAvaliacao(${a.id})" title="Excluir avaliação"><i class="fa-solid fa-trash"></i></button>` : ''}
             </div>
           </div>
           <p class="av-item-comentario">"${a.comentario}"</p>
@@ -146,6 +147,7 @@ function renderHistoricoFull() {
           <div class="av-item-meta">
             <span class="av-item-tipo ${a.tipo}">${tipoLabel}</span>
             <span class="av-item-data">${a.data}</span>
+            ${isGestor() ? `<button class="av-item-del" onclick="deletarAvaliacao(${a.id})" title="Excluir avaliação"><i class="fa-solid fa-trash"></i></button>` : ''}
           </div>
         </div>
         <div class="av-item-criterios">${criteriosBadges}</div>
@@ -557,6 +559,23 @@ function filtrar(tipo) {
  * Renderiza o histórico de avaliações no painel lateral do formulário,
  * aplicando filtro de permissão e paginação.
  */
+// ====================================================================
+// DELETAR AVALIAÇÃO
+// ====================================================================
+
+/**
+ * Remove uma avaliação pelo ID com confirmação.
+ * @param {number} id - ID da avaliação a remover
+ */
+function deletarAvaliacao(id) {
+  if (!confirm('Deseja excluir esta avaliação? Esta ação não pode ser desfeita.')) return;
+  const avaliacoes = getAvaliacoes().filter(a => a.id !== id);
+  saveAvaliacoes(avaliacoes);
+  showToast('Avaliação excluída.', 'info');
+  renderHistorico();
+  renderHistoricoFull();
+}
+
 function renderHistorico() {
   const container = document.getElementById('historico-lista');
   if (!container) return;
@@ -596,6 +615,7 @@ function renderHistorico() {
             <div class="av-item-meta">
               <span class="av-item-tipo ${a.tipo}">${tipoLabel}</span>
               <span class="av-item-data">${a.data}</span>
+              ${isGestor() ? `<button class="av-item-del" onclick="deletarAvaliacao(${a.id})" title="Excluir avaliação"><i class="fa-solid fa-trash"></i></button>` : ''}
             </div>
           </div>
           <div class="av-item-tipo-avaliacao">
@@ -621,6 +641,7 @@ function renderHistorico() {
           <div class="av-item-meta">
             <span class="av-item-tipo ${a.tipo}">${tipoLabel}</span>
             <span class="av-item-data">${a.data}</span>
+            ${isGestor() ? `<button class="av-item-del" onclick="deletarAvaliacao(${a.id})" title="Excluir avaliação"><i class="fa-solid fa-trash"></i></button>` : ''}
           </div>
         </div>
         <div class="av-item-criterios">${criteriosBadges}</div>
