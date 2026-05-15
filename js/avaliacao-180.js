@@ -284,6 +284,21 @@ function renderLista180() {
   }
 
   container.innerHTML = data.map(a => {
+    // Busca respostas desta avaliação
+    const respostas = getRespostas180().filter(r => r.avaliacaoId === a.id);
+    const respostasHTML = respostas.length > 0 ? `
+      <div class="r180-respostas-lista">
+        <p style="font-size:11px;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.5px;margin:8px 0 6px;">
+          <i class="fa-solid fa-reply" style="margin-right:4px;"></i> ${respostas.length} resposta${respostas.length > 1 ? 's' : ''}
+        </p>
+        ${respostas.map(r => `
+          <div class="r180-resposta-item">
+            <span class="r180-resposta-nome"><i class="fa-solid fa-user" style="font-size:10px;margin-right:4px;"></i>${r.respondente}</span>
+            <span class="r180-resposta-data">${r.data}</span>
+            ${podeEditar ? `<button class="r180-btn-del-resposta" onclick="deletarResposta180(${r.id})" title="Excluir resposta"><i class="fa-solid fa-trash"></i></button>` : ''}
+          </div>`).join('')}
+      </div>` : '';
+
     // Botões de edição/remoção apenas para admin e gestor
     const botoesEdicao = podeEditar 
       ? `<button class="r180-btn-icon edit" onclick="abrirFormulario(${a.id})" title="Editar">
@@ -310,6 +325,7 @@ function renderLista180() {
           <span class="r180-badge r180-badge-ativo">${a.avaliados?.length || 0} avaliados</span>
           <span class="r180-badge" style="background:#f5f3ff;color:#5b21b6">${a.competencias?.length || 0} competências</span>
         </div>
+        ${respostasHTML}
       </div>
       <div class="r180-item-actions">
         <a href="responder-180.html?id=${a.id}" class="r180-btn-responder" title="Responder avaliação">
@@ -849,3 +865,26 @@ document.addEventListener('DOMContentLoaded', () => {
   addLiveValidation('r180-nome',    v => v.trim().length > 0, 'O nome da avaliação é obrigatório.');
   addLiveValidation('r180-empresa', v => v.trim().length > 0, 'O nome da empresa é obrigatório.');
 });
+
+// ====================================================================
+// DELETAR RESPOSTA 180°
+// ====================================================================
+
+/**
+ * Remove uma resposta de avaliação 180° pelo ID com confirmação.
+ * @param {number} id - ID da resposta a remover
+ */
+function deletarResposta180(id) {
+  if (!confirm('Deseja excluir esta resposta? Esta ação não pode ser desfeita.')) return;
+  const respostas = getRespostas180().filter(r => r.id !== id);
+  saveRespostas180(respostas);
+  showToast('Resposta excluída.', 'info');
+  renderLista180();
+}
+
+function getRespostas180() {
+  try { return JSON.parse(localStorage.getItem('respostas180') || '[]'); } catch(e) { return []; }
+}
+function saveRespostas180(data) {
+  localStorage.setItem('respostas180', JSON.stringify(data));
+}

@@ -1293,3 +1293,76 @@ body.dark-mode .r180-tag { background: #0f172a; border-color: #334155; color: #9
 body.dark-mode .r180-tag strong { color: #e2e8f0; }
 body.dark-mode .r180-lista-header h3 { color: #93c5fd; }
 body.dark-mode .r180-lista-header p { color: #64748b; }
+
+/* =============================================
+   RESPOSTAS NA LISTA DE AVALIAÇÕES 180°
+   ============================================= */
+.r180-respostas-lista {
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid var(--border);
+}
+
+.r180-resposta-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 8px;
+  border-radius: 6px;
+  background: #f8fafc;
+  margin-bottom: 4px;
+  transition: background 0.15s;
+}
+
+.r180-resposta-item:hover {
+  background: #eff6ff;
+}
+
+.r180-resposta-nome {
+  flex: 1;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.r180-resposta-data {
+  font-size: 11px;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+
+.r180-btn-del-resposta {
+  margin: 0;
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  border-radius: 5px;
+  border: none;
+  background: #fff0f0;
+  color: #dc2626;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  transition: all 0.15s;
+  box-shadow: none;
+  opacity: 0;
+}
+
+.r180-resposta-item:hover .r180-btn-del-resposta {
+  opacity: 1;
+}
+
+.r180-btn-del-resposta:hover {
+  background: #fee2e2;
+  color: #b91c1c;
+  transform: scale(1.1);
+  box-shadow: none;
+}
+
+body.dark-mode .r180-resposta-item { background: #0f172a; }
+body.dark-mode .r180-resposta-item:hover { background: #1e3a5f; }
+body.dark-mode .r180-resposta-nome { color: #e2e8f0; }
+body.dark-mode .r180-btn-del-resposta { background: #450a0a; color: #f87171; }
+body.dark-mode .r180-btn-del-resposta:hover { background: #7f1d1d; }
