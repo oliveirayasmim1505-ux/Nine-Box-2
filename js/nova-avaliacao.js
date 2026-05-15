@@ -319,7 +319,7 @@ function _naInjetarModal() {
   modal.innerHTML = `
     <div class="na-modal">
 
-      <!-- Cabeçalho com título dinâmico e botão de fechar -->
+      <!-- Cabeçalho -->
       <div class="na-modal-header">
         <div class="na-modal-header-text">
           <h4 id="na-titulo">Nova Avaliação</h4>
@@ -332,6 +332,7 @@ function _naInjetarModal() {
 
       <!-- ETAPA 1: Cards de seleção do tipo -->
       <div id="na-etapa-1" class="na-etapa">
+
         <div class="na-tipo-cards">
 
           <div class="na-tipo-card" data-tipo="professor" onclick="_naSelecionarTipo('professor')">
@@ -340,6 +341,7 @@ function _naInjetarModal() {
             </div>
             <span class="na-tipo-nome">Gestor</span>
             <span class="na-tipo-desc">Avaliação por critérios com estrelas</span>
+            <div class="na-tipo-check"><i class="fa-solid fa-check"></i></div>
           </div>
 
           <div class="na-tipo-card" data-tipo="estagiario" id="na-card-estagiario" onclick="_naSelecionarTipo('estagiario')">
@@ -348,12 +350,15 @@ function _naInjetarModal() {
             </div>
             <span class="na-tipo-nome">Estagiário</span>
             <span class="na-tipo-desc">Avaliação qualitativa por comentário</span>
+            <div class="na-tipo-check"><i class="fa-solid fa-check"></i></div>
           </div>
 
         </div>
 
         <div class="na-etapa-footer">
-          <button class="na-btn-cancelar" onclick="fecharNovaAvaliacao()">Cancelar</button>
+          <button class="na-btn-cancelar" onclick="fecharNovaAvaliacao()">
+            <i class="fa-solid fa-xmark"></i> Cancelar
+          </button>
           <button class="na-btn-avancar" id="na-btn-avancar" onclick="_naAvancar()" disabled>
             Próximo <i class="fa-solid fa-arrow-right"></i>
           </button>
@@ -363,17 +368,23 @@ function _naInjetarModal() {
       <!-- ETAPA 2: Formulário de avaliação -->
       <div id="na-etapa-2" class="na-etapa" style="display:none">
 
-        <!-- Select para escolher quem será avaliado -->
+        <!-- Pessoa avaliada -->
         <div class="na-field">
-          <label for="na-avaliado" id="na-avaliado-label">Selecionar pessoa</label>
+          <label for="na-avaliado" id="na-avaliado-label">
+            <i class="fa-solid fa-user" style="color:var(--primary-light);margin-right:5px;"></i>
+            Selecionar pessoa
+          </label>
           <select id="na-avaliado">
             <option value="">Selecione...</option>
           </select>
         </div>
 
-        <!-- Critérios com estrelas (visível apenas para professor) -->
+        <!-- Critérios com estrelas (professor) -->
         <div id="na-criterios-wrap">
-          <p class="na-section-title">Critérios de Avaliação</p>
+          <p class="na-section-title">
+            <i class="fa-solid fa-star" style="color:#f59e0b;margin-right:5px;"></i>
+            Critérios de Avaliação
+          </p>
           ${NA_CRITERIOS.map(c => `
           <div class="na-criterio">
             <span class="na-criterio-label">
@@ -385,15 +396,18 @@ function _naInjetarModal() {
           </div>`).join('')}
         </div>
 
-        <!-- Média calculada automaticamente (visível apenas para professor) -->
+        <!-- Média -->
         <div id="na-media-wrap" class="na-media-box">
-          <span>Média geral</span>
+          <span><i class="fa-solid fa-chart-simple" style="margin-right:6px;color:var(--primary-light);"></i>Média geral</span>
           <span id="na-media-valor" class="na-media-valor">—</span>
         </div>
 
-        <!-- Aspectos para guiar o comentário (visível apenas para estagiário) -->
+        <!-- Aspectos estagiário -->
         <div id="na-aspectos-wrap" style="display:none">
-          <p class="na-section-title">Aspectos para Comentar</p>
+          <p class="na-section-title">
+            <i class="fa-solid fa-list-check" style="color:var(--primary-light);margin-right:5px;"></i>
+            Aspectos para Comentar
+          </p>
           <div class="na-aspectos-lista">
             <div class="na-aspecto"><i class="fa-regular fa-clock"></i> Pontualidade</div>
             <div class="na-aspecto"><i class="fa-regular fa-comments"></i> Comunicação</div>
@@ -403,9 +417,12 @@ function _naInjetarModal() {
           </div>
         </div>
 
-        <!-- Campo de comentário (opcional para professor, obrigatório para estagiário) -->
+        <!-- Comentário -->
         <div class="na-field">
-          <label for="na-comentario" id="na-comentario-label">Comentário</label>
+          <label for="na-comentario" id="na-comentario-label">
+            <i class="fa-regular fa-comment" style="color:var(--primary-light);margin-right:5px;"></i>
+            Comentário
+          </label>
           <textarea id="na-comentario" rows="3" placeholder="Descreva sua avaliação..."></textarea>
         </div>
 
@@ -414,7 +431,7 @@ function _naInjetarModal() {
             <i class="fa-solid fa-arrow-left"></i> Voltar
           </button>
           <button class="na-btn-salvar" onclick="_naSalvar()">
-            <i class="fa-solid fa-paper-plane"></i> Enviar Avaliação
+            <i class="fa-solid fa-paper-plane"></i> <span id="na-btn-salvar-texto">Enviar Avaliação</span>
           </button>
         </div>
 
